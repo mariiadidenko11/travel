@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>БезМеж — Увійти</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+/* ============================================================
+   БезМеж — Design System Variables (shared across all pages)
+   ============================================================ */
+:root {
+  --primary:       #40B3E0;
+  --primary-dark:  #2a9cc8;
+  --dark:          #1A1A1A;
+  --gray:          #757575;
+  --gray-light:    #A0A0A0;
+  --bg:            #F5F7F9;
+  --white:         #FFFFFF;
+  --border:        #D9D9D9;
+  --input-bg:      #F2F4F6;
+  --radius-md:     16px;
+  --radius-lg:     20px;
+  --radius-xl:     28px;
+}
+
+/* ─── Reset ────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--dark);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+}
+
+/* ─── Auth wrapper ──────────────────────────────────────────── */
+.auth {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Card ────────────────────────────────────────────────────── */
+.auth__card {
+  width: 100%;
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 8px 48px rgba(0,0,0,.10), 0 2px 12px rgba(0,0,0,.06);
+  padding: 48px 44px 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Logo ─────────────────────────────────────────────────────── */
+.auth__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+  text-decoration: none;
+}
+.auth__logo-icon { width: 42px; height: 42px; flex-shrink: 0; }
+.auth__logo-text {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: -.4px;
+}
+
+/* ── Heading ──────────────────────────────────────────────────── */
+.auth__heading {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--dark);
+  text-align: center;
+  margin-bottom: 6px;
+  letter-spacing: -.3px;
+}
+.auth__sub {
+  font-size: 15px;
+  color: var(--gray);
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+/* ── Form ─────────────────────────────────────────────────────── */
+.auth__form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── Field ────────────────────────────────────────────────────── */
+.auth__field { position: relative; width: 100%; }
+
+.auth__input {
+  width: 100%;
+  background: var(--input-bg);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-md);
+  padding: 15px 18px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  color: var(--dark);
+  outline: none;
+  transition: border-color .2s, background .2s, box-shadow .2s;
+}
+.auth__input::placeholder { color: var(--gray-light); font-weight: 400; }
+.auth__input:hover  { background: #edf0f3; }
+.auth__input:focus  {
+  background: var(--white);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(64,179,224,.12);
+}
+.auth__input--password { padding-right: 48px; }
+
+/* ── Eye toggle ───────────────────────────────────────────────── */
+.auth__eye {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--gray-light);
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  transition: color .18s;
+}
+.auth__eye:hover { color: var(--primary); }
+.auth__eye svg   { width: 18px; height: 18px; }
+
+/* ── Row: remember + forgot ───────────────────────────────────── */
+.auth__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2px;
+}
+
+/* ── Remember me ──────────────────────────────────────────────── */
+.auth__remember {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+.auth__remember-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  background: var(--white);
+  cursor: pointer;
+  position: relative;
+  transition: border-color .18s, background .18s;
+}
+.auth__remember-checkbox:checked {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.auth__remember-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 6px;
+  width: 5px; height: 9px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+.auth__remember-checkbox:focus-visible {
+  box-shadow: 0 0 0 3px rgba(64,179,224,.22);
+  outline: none;
+}
+.auth__remember-label { font-size: 14px; color: var(--gray); }
+
+/* ── Forgot password ──────────────────────────────────────────── */
+.auth__forgot {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--primary);
+  text-decoration: none;
+  transition: opacity .18s;
+}
+.auth__forgot:hover { opacity: .75; text-decoration: underline; }
+
+/* ── Submit ───────────────────────────────────────────────────── */
+.auth__submit {
+  width: 100%;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s, transform .18s, box-shadow .2s;
+  margin-top: 6px;
+  box-shadow: 0 4px 20px rgba(64,179,224,.35);
+  letter-spacing: .1px;
+}
+.auth__submit:hover {
+  background: var(--primary-dark);
+  box-shadow: 0 6px 24px rgba(64,179,224,.45);
+  transform: translateY(-1px);
+}
+.auth__submit:active { transform: translateY(0); }
+
+/* ── Footer text ──────────────────────────────────────────────── */
+.auth__footer-text {
+  margin-top: 24px;
+  font-size: 14px;
+  color: var(--gray);
+  text-align: center;
+}
+.auth__footer-text a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+.auth__footer-text a:hover { text-decoration: underline; }
+
+/* ─── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .auth__card {
+    padding: 36px 24px 32px;
+    border-radius: var(--radius-lg);
+  }
+  .auth__logo-text { font-size: 22px; }
+}
+  </style>
+</head>
+<body>
+
+<main class="auth" role="main">
+  <div class="auth__card">
+
+    <!-- ── Logo ─────────────────────────────────────────── -->
+    <a href="index.html" class="auth__logo" aria-label="БезМеж — на головну">
+      <svg class="auth__logo-icon" viewBox="0 0 42 42" fill="none"
+           xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="21" cy="21" r="19.5" stroke="#40B3E0" stroke-width="2"/>
+        <!-- mountain arc -->
+        <path d="M10 29 C13 20, 17 17, 21 11 C25 17, 29 20, 32 29"
+              stroke="#40B3E0" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <!-- peak dot -->
+        <circle cx="21" cy="11" r="2.4" fill="#40B3E0"/>
+        <!-- small plane accent top-right -->
+        <path d="M30 10 L34 8 L32 12"
+              stroke="#40B3E0" stroke-width="1.4"
+              stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <span class="auth__logo-text">БезМеж</span>
+    </a>
+
+    <!-- ── Heading ──────────────────────────────────────── -->
+    <h1 class="auth__heading">З поверненням!</h1>
+    <p  class="auth__sub">Ваша наступна пригода вже чекає</p>
+
+    <!-- ── Form ─────────────────────────────────────────── -->
+    <form class="auth__form" novalidate>
+
+      <!-- Email -->
+      <div class="auth__field">
+        <input
+          class="auth__input"
+          type="email"
+          name="email"
+          id="email"
+          placeholder="Введіть вашу пошту"
+          autocomplete="email"
+          required
+        />
+      </div>
+
+      <!-- Password -->
+      <div class="auth__field">
+        <input
+          class="auth__input auth__input--password"
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Введіть ваш пароль"
+          autocomplete="current-password"
+          required
+        />
+        <button
+          type="button"
+          class="auth__eye"
+          id="togglePassword"
+          aria-label="Показати пароль"
+        >
+          <svg id="eyeIcon" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round">
+            <!-- eye-off (default: hidden) -->
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8
+                     a18.45 18.45 0 0 1 5.06-5.94"/>
+            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8
+                     a18.5 18.5 0 0 1-2.16 3.19"/>
+            <line x1="1" y1="1" x2="23" y2="23"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Remember me  +  Forgot password (same row) -->
+      <div class="auth__row">
+        <label class="auth__remember">
+          <input
+            class="auth__remember-checkbox"
+            type="checkbox"
+            name="remember"
+            id="remember"
+          />
+          <span class="auth__remember-label">Запам'ятайте мене</span>
+        </label>
+
+        <a href="#" class="auth__forgot">Забули пароль?</a>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="auth__submit">Увійти</button>
+
+    </form>
+
+    <!-- ── Footer link ───────────────────────────────────── -->
+    <p class="auth__footer-text">
+      Новий користувач? <a href="register.html">Зареєструватися</a>
+    </p>
+
+  </div><!-- /card -->
+</main>
+
+<script>
+  // ── Password visibility toggle ──────────────────────────────
+  const toggleBtn = document.getElementById('togglePassword');
+  const pwdInput  = document.getElementById('password');
+  const eyeIcon   = document.getElementById('eyeIcon');
+
+  const ICON_OFF = `
+    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8
+             a18.45 18.45 0 0 1 5.06-5.94"/>
+    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8
+             a18.5 18.5 0 0 1-2.16 3.19"/>
+    <line x1="1" y1="1" x2="23" y2="23"/>
+  `;
+  const ICON_ON = `
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+    <circle cx="12" cy="12" r="3"/>
+  `;
+
+  toggleBtn.addEventListener('click', () => {
+    const visible = pwdInput.type === 'text';
+    pwdInput.type       = visible ? 'password' : 'text';
+    eyeIcon.innerHTML   = visible ? ICON_OFF : ICON_ON;
+    toggleBtn.setAttribute('aria-label', visible ? 'Показати пароль' : 'Приховати пароль');
+  });
+</script>
+
+</body>
+</html>

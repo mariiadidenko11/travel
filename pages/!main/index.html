@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>БезМеж — Плануйте подорожі, які ви запам'ятаєте назавжди</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+/* ============================================================
+   БезМеж — Design System & Home Page CSS (compiled from SCSS)
+   ============================================================ */
+
+/* ─── Variables (CSS custom props for runtime use) ─────────── */
+:root {
+  --primary:      #40B3E0;
+  --primary-dark: #2a9cc8;
+  --dark:         #1A1A1A;
+  --gray:         #757575;
+  --gray-light:   #A0A0A0;
+  --bg:           #F5F7F9;
+  --white:        #FFFFFF;
+  --border:       #D9D9D9;
+  --star:         #F5C842;
+  --radius-sm:    10px;
+  --radius-md:    16px;
+  --radius-lg:    20px;
+  --radius-xl:    28px;
+  --shadow-sm:    0 2px 8px rgba(0,0,0,.06);
+  --shadow-md:    0 4px 20px rgba(0,0,0,.08);
+  --shadow-lg:    0 8px 40px rgba(0,0,0,.10);
+}
+
+/* ─── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--dark);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; }
+a  { text-decoration: none; color: inherit; }
+
+/* ─── Container ─────────────────────────────────────────────── */
+.container {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ─── NAV ───────────────────────────────────────────────────── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(217,217,217,.5);
+}
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+}
+.nav__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.nav__logo-icon {
+  width: 36px;
+  height: 36px;
+}
+.nav__logo-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--dark);
+  letter-spacing: -.3px;
+}
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  list-style: none;
+}
+.nav__links a {
+  font-size: 15px;
+  font-weight: 450;
+  color: var(--dark);
+  transition: color .18s;
+}
+.nav__links a:hover { color: var(--primary); }
+.nav__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.nav__actions-login {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--dark);
+  transition: color .18s;
+}
+.nav__actions-login:hover { color: var(--primary); }
+
+/* ─── Buttons ───────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: all .22s ease;
+  white-space: nowrap;
+  line-height: 1;
+}
+.btn--primary {
+  background: var(--primary);
+  color: #fff;
+  padding: 13px 26px;
+  box-shadow: 0 4px 16px rgba(64,179,224,.35);
+}
+.btn--primary:hover {
+  background: var(--primary-dark);
+  box-shadow: 0 6px 22px rgba(64,179,224,.45);
+  transform: translateY(-1px);
+}
+.btn--hero {
+  background: var(--primary);
+  color: #fff;
+  padding: 15px 32px;
+  font-size: 16px;
+  box-shadow: 0 4px 20px rgba(64,179,224,.38);
+}
+.btn--hero:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+/* ─── HERO ──────────────────────────────────────────────────── */
+.hero {
+  padding: 72px 0 56px;
+  text-align: center;
+  background: var(--bg);
+}
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(64,179,224,.10);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 50px;
+  margin-bottom: 28px;
+}
+.hero__badge::before { content: '✦'; font-size: 11px; }
+.hero__title {
+  font-size: clamp(36px, 5vw, 58px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -.8px;
+  color: var(--dark);
+  margin-bottom: 4px;
+}
+.hero__title span {
+  color: var(--primary);
+  display: block;
+}
+.hero__sub {
+  font-size: 17px;
+  color: var(--gray);
+  max-width: 460px;
+  margin: 20px auto 36px;
+  line-height: 1.65;
+}
+.hero__cta { margin-bottom: 56px; }
+
+/* ── Three stacked photos ──────────────────────────────────── */
+.hero__images {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 300px;
+  margin-top: 8px;
+}
+.hero__img-wrap {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  flex-shrink: 0;
+}
+.hero__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero__img-wrap--left {
+  width: 240px;
+  height: 220px;
+  transform: rotate(-4deg) translateX(30px) translateY(20px);
+  z-index: 1;
+}
+.hero__img-wrap--center {
+  width: 260px;
+  height: 300px;
+  z-index: 3;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 16px 48px rgba(0,0,0,.18);
+}
+.hero__img-wrap--right {
+  width: 240px;
+  height: 220px;
+  transform: rotate(4deg) translateX(-30px) translateY(20px);
+  z-index: 1;
+}
+
+/* ─── STATS ─────────────────────────────────────────────────── */
+.stats { padding: 52px 0; }
+.stats__inner {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  box-shadow: var(--shadow-sm);
+}
+.stats__item {
+  padding: 32px 28px;
+  text-align: center;
+  position: relative;
+}
+.stats__item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 24px; bottom: 24px;
+  width: 1px;
+  background: var(--border);
+}
+.stats__value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--dark);
+  letter-spacing: -.5px;
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+.stats__label {
+  font-size: 13.5px;
+  color: var(--gray-light);
+  font-weight: 400;
+}
+
+/* ─── FEATURES ──────────────────────────────────────────────── */
+.features { padding: 72px 0 80px; }
+.features__label {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 16px;
+}
+.features__title {
+  text-align: center;
+  font-size: clamp(26px, 3.5vw, 38px);
+  font-weight: 800;
+  color: var(--dark);
+  letter-spacing: -.5px;
+  margin-bottom: 12px;
+}
+.features__sub {
+  text-align: center;
+  font-size: 16px;
+  color: var(--gray);
+  margin-bottom: 52px;
+}
+.features__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.features__card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  padding: 32px 28px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow .22s, transform .22s;
+}
+.features__card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+.features__card-icon {
+  font-size: 36px;
+  margin-bottom: 18px;
+  display: block;
+}
+.features__card-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 10px;
+}
+.features__card-desc {
+  font-size: 14.5px;
+  color: var(--gray);
+  line-height: 1.65;
+}
+
+/* ─── TESTIMONIALS ──────────────────────────────────────────── */
+.testimonials { padding: 72px 0 88px; }
+.testimonials__label {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 16px;
+}
+.testimonials__title {
+  text-align: center;
+  font-size: clamp(26px, 3.5vw, 38px);
+  font-weight: 800;
+  color: var(--dark);
+  letter-spacing: -.5px;
+  margin-bottom: 10px;
+}
+.testimonials__sub {
+  text-align: center;
+  font-size: 16px;
+  color: var(--gray);
+  margin-bottom: 52px;
+}
+.testimonials__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.testimonials__card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  padding: 28px 24px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.testimonials__stars {
+  color: #F5C842;
+  font-size: 18px;
+  letter-spacing: 2px;
+}
+.testimonials__text {
+  font-size: 14.5px;
+  color: var(--gray);
+  line-height: 1.7;
+  flex: 1;
+}
+.testimonials__author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+.testimonials__avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.testimonials__avatar--m { background: #9b59b6; }
+.testimonials__avatar--a { background: #e67e22; }
+.testimonials__author-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 2px;
+}
+.testimonials__author-role {
+  font-size: 12.5px;
+  color: var(--gray-light);
+}
+
+/* ─── CTA BANNER ────────────────────────────────────────────── */
+.cta-banner {
+  background: linear-gradient(135deg, #40B3E0 0%, #1e9fd4 60%, #0e7aab 100%);
+  padding: 96px 0;
+  text-align: center;
+}
+.cta-banner__title {
+  font-size: clamp(28px, 4vw, 46px);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -.6px;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+.cta-banner__sub {
+  font-size: 17px;
+  color: rgba(255,255,255,.82);
+  max-width: 560px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+.cta-banner__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: #fff;
+  padding: 15px 34px;
+  border: 1.5px solid rgba(255,255,255,.7);
+  border-radius: 50px;
+  font-size: 15.5px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: background .2s;
+}
+.cta-banner__btn:hover { background: rgba(255,255,255,.12); }
+
+/* ─── FOOTER ────────────────────────────────────────────────── */
+.footer {
+  background: #0f2a3a;
+  padding: 64px 0 36px;
+  text-align: center;
+}
+.footer__logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0;
+}
+.footer__logo-icon {
+  width: 60px;
+  height: 60px;
+  background: rgba(255,255,255,.06);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.footer__logo-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+}
+.footer__tagline {
+  font-size: 12px;
+  color: rgba(255,255,255,.38);
+  letter-spacing: .5px;
+  margin-top: 2px;
+}
+.footer__copy {
+  margin-top: 36px;
+  font-size: 13px;
+  color: rgba(255,255,255,.32);
+}
+
+/* ─── Responsive ────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .nav__links { display: none; }
+  .stats__inner { grid-template-columns: repeat(2, 1fr); }
+  .stats__item:nth-child(2)::after { display: none; }
+  .features__grid { grid-template-columns: repeat(2, 1fr); }
+  .testimonials__grid { grid-template-columns: 1fr; }
+  .hero__img-wrap--left { width: 180px; height: 170px; }
+  .hero__img-wrap--center { width: 200px; height: 240px; }
+  .hero__img-wrap--right { width: 180px; height: 170px; }
+  .hero__images { height: 240px; }
+}
+@media (max-width: 600px) {
+  .features__grid { grid-template-columns: 1fr; }
+  .hero__images { height: 200px; }
+  .hero__img-wrap--left  { width: 130px; height: 130px; transform: rotate(-4deg) translateX(18px) translateY(14px); }
+  .hero__img-wrap--center{ width: 150px; height: 190px; }
+  .hero__img-wrap--right { width: 130px; height: 130px; transform: rotate(4deg) translateX(-18px) translateY(14px); }
+}
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     NAV
+═══════════════════════════════════════════════════════════ -->
+<header class="nav">
+  <div class="container">
+    <div class="nav__inner">
+
+      <!-- Logo -->
+      <a href="/" class="nav__logo">
+        <svg class="nav__logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="17" stroke="#40B3E0" stroke-width="2"/>
+          <path d="M9 24 C12 16, 16 14, 18 10 C20 14, 24 16, 27 24" stroke="#40B3E0" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <circle cx="18" cy="10" r="2.5" fill="#40B3E0"/>
+        </svg>
+        <span class="nav__logo-text">БезМеж</span>
+      </a>
+
+      <!-- Links -->
+      <ul class="nav__links">
+        <li><a href="#features">Функції</a></li>
+        <li><a href="#testimonials">Огляд</a></li>
+      </ul>
+
+      <!-- Actions -->
+      <div class="nav__actions">
+        <a href="#" class="nav__actions-login">Увійти</a>
+        <a href="#" class="btn btn--primary">Почати зараз</a>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="container">
+
+    <div class="hero__badge">Ваш особистий супутник у подорожах</div>
+
+    <h1 class="hero__title">
+      Плануйте подорожі, які ви
+      <span>запам'ятаєте назавжди</span>
+    </h1>
+
+    <p class="hero__sub">
+      Планувальник подорожей і щоденник, що супроводжує вас&nbsp;— від
+      першого пошуку до останньої спогади.
+    </p>
+
+    <div class="hero__cta">
+      <a href="#" class="btn btn--hero">Почати планування подорожі →</a>
+    </div>
+
+    <!-- Three stacked destination photos -->
+    <div class="hero__images">
+
+      <!-- Left: Japan pagoda -->
+      <div class="hero__img-wrap hero__img-wrap--left">
+        <img
+          src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=480&q=80"
+          alt="Японська пагода у вишневому саду"
+          loading="lazy"
+        />
+      </div>
+
+      <!-- Center: Alpine lake -->
+      <div class="hero__img-wrap hero__img-wrap--center">
+        <img
+          src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=520&q=85"
+          alt="Гірське озеро з бірюзовою водою"
+          loading="eager"
+        />
+      </div>
+
+      <!-- Right: Canyon sunset -->
+      <div class="hero__img-wrap hero__img-wrap--right">
+        <img
+          src="https://images.unsplash.com/photo-1474044159687-1ee9f3a51722?w=480&q=80"
+          alt="Каньйон на заході сонця"
+          loading="lazy"
+        />
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     STATS
+═══════════════════════════════════════════════════════════ -->
+<section class="stats">
+  <div class="container">
+    <div class="stats__inner">
+
+      <div class="stats__item">
+        <div class="stats__value">50 тис +</div>
+        <div class="stats__label">Запланованих подорожей</div>
+      </div>
+
+      <div class="stats__item">
+        <div class="stats__value">120 +</div>
+        <div class="stats__label">Країн охоплено</div>
+      </div>
+
+      <div class="stats__item">
+        <div class="stats__value">4.9&nbsp;★</div>
+        <div class="stats__label">Рейтинг користувачів</div>
+      </div>
+
+      <div class="stats__item">
+        <div class="stats__value">Безкоштовно</div>
+        <div class="stats__label">Для старту</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     FEATURES
+═══════════════════════════════════════════════════════════ -->
+<section class="features" id="features">
+  <div class="container">
+
+    <p class="features__label">ФУНКЦІЇ</p>
+    <h2 class="features__title">Усе необхідне&nbsp;- нічого зайвого</h2>
+    <p class="features__sub">Створено для мандрівників, які люблять і пригоди, і порядок</p>
+
+    <div class="features__grid">
+
+      <div class="features__card">
+        <span class="features__card-icon">🗺️</span>
+        <h3 class="features__card-title">Розумне планування подорожей</h3>
+        <p class="features__card-desc">
+          Організовуйте напрямки, дати та бюджети в одному зручному та
+          красивому робочому просторі
+        </p>
+      </div>
+
+      <div class="features__card">
+        <span class="features__card-icon">💳</span>
+        <h3 class="features__card-title">Контроль бюджету</h3>
+        <p class="features__card-desc">
+          Організовуйте свої витрати, встановлюйте ліміти та стежте за
+          бюджетом у реальному часі
+        </p>
+      </div>
+
+      <div class="features__card">
+        <span class="features__card-icon">🏨</span>
+        <h3 class="features__card-title">Керування бронюваннями</h3>
+        <p class="features__card-desc">
+          Зберігайте квитки, броні готелів та підтвердження в одному
+          безпечному місці
+        </p>
+      </div>
+
+      <div class="features__card">
+        <span class="features__card-icon">✅</span>
+        <h3 class="features__card-title">Списки справ</h3>
+        <p class="features__card-desc">
+          Нічого не забудьте&nbsp;— від пакування валізи до отримання візи
+        </p>
+      </div>
+
+      <div class="features__card">
+        <span class="features__card-icon">📸</span>
+        <h3 class="features__card-title">Галерея спогадів</h3>
+        <p class="features__card-desc">
+          Завантажуйте фото та нотатки з кожної точки вашої подорожі
+        </p>
+      </div>
+
+      <div class="features__card">
+        <span class="features__card-icon">📊</span>
+        <h3 class="features__card-title">Аналітика та Порівняння</h3>
+        <p class="features__card-desc">
+          Порівнюйте бюджети, тривалість та активність усіх ваших подорожей
+          у детальних звітах
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     TESTIMONIALS
+═══════════════════════════════════════════════════════════ -->
+<section class="testimonials" id="testimonials">
+  <div class="container">
+
+    <p class="testimonials__label">МАНДРІВНИКИ ЦЕ ОБОЖНЮЮТЬ</p>
+    <h2 class="testimonials__title">Історії з дороги</h2>
+    <p class="testimonials__sub">Реальний досвід нашої спільноти мандрівників</p>
+
+    <div class="testimonials__grid">
+
+      <!-- Card 1 -->
+      <div class="testimonials__card">
+        <div class="testimonials__stars">★★★★★</div>
+        <p class="testimonials__text">
+          БезМеж змінив те, як я планую подорожі. Це єдиний інструмент,
+          який настільки ж красивий, як і місця, які я відвідую.
+        </p>
+        <div class="testimonials__author">
+          <div class="testimonials__avatar">С</div>
+          <div>
+            <div class="testimonials__author-name">Софія К.</div>
+            <div class="testimonials__author-role">Фотограф і мандрівник</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="testimonials__card">
+        <div class="testimonials__stars">★★★★★</div>
+        <p class="testimonials__text">
+          Дуже сподобалось, все зроблено на найвищому рівні, особливо вразило
+          бронювання, воно максимально зручне і зрозуміле, і всі нотатки
+          завжди під рукою в одному місці!
+        </p>
+        <div class="testimonials__author">
+          <div class="testimonials__avatar testimonials__avatar--m">М</div>
+          <div>
+            <div class="testimonials__author-name">Максим Д.</div>
+            <div class="testimonials__author-role">Дизайнер</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="testimonials__card">
+        <div class="testimonials__stars">★★★★★</div>
+        <p class="testimonials__text">
+          Мені подобається що цей додаток не перевантажений, а також що можна
+          додавати свої фото і зберігати спогади прямо в кожній поїздці!
+        </p>
+        <div class="testimonials__author">
+          <div class="testimonials__avatar testimonials__avatar--a">А</div>
+          <div>
+            <div class="testimonials__author-name">Андрій Н.</div>
+            <div class="testimonials__author-role">Маркетолог</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     CTA BANNER
+═══════════════════════════════════════════════════════════ -->
+<section class="cta-banner">
+  <div class="container">
+    <h2 class="cta-banner__title">Ваша наступна пригода починається тут</h2>
+    <p class="cta-banner__sub">
+      Приєднуйтесь до тисяч мандрівників, які розумніше планують і
+      краще ведуть свої подорожні щоденники
+    </p>
+    <a href="#" class="cta-banner__btn">Почніть безкоштовно — банківська картка не потрібна</a>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+
+    <div class="footer__logo">
+      <div class="footer__logo-icon">
+        <!-- plane-inside-circle logo -->
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+          <path d="M8 21 C10.5 14, 14 12, 16 8 C18 12, 21.5 14, 24 21" stroke="rgba(255,255,255,0.7)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+          <circle cx="16" cy="8" r="2" fill="rgba(255,255,255,0.8)"/>
+        </svg>
+      </div>
+      <div class="footer__logo-text">БезМеж</div>
+      <div class="footer__tagline">Стирає всі межі</div>
+    </div>
+
+    <p class="footer__copy">
+      © 2025 БезМеж. Створено з турботою для допитливих мандрівників
+    </p>
+
+  </div>
+</footer>
+
+</body>
+</html>

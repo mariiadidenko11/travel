@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>БезМеж — Втеча на Санторіні</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+/* ============================================================
+   БезМеж — Trip Overview Page CSS
+   Shared design system — consistent with all pages
+   ============================================================ */
+
+:root {
+  --primary:        #40B3E0;
+  --primary-dark:   #2a9cc8;
+  --primary-light:  #e8f6fc;
+  --dark:           #1A1A1A;
+  --gray:           #757575;
+  --gray-light:     #A0A0A0;
+  --bg:             #F5F7F9;
+  --white:          #FFFFFF;
+  --border:         #D9D9D9;
+  --star:           #F5C842;
+  --green:          #27AE60;
+  --green-dark:     #1e8a4a;
+  --radius-sm:      8px;
+  --radius-md:      12px;
+  --radius-lg:      16px;
+  --radius-xl:      20px;
+  --shadow-card:    0 2px 12px rgba(0,0,0,.07);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--dark);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+img { display: block; max-width: 100%; }
+a   { text-decoration: none; color: inherit; }
+
+/* ─── Container ─────────────────────────────────────────────── */
+.container {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 24px;
+  width: 100%;
+}
+
+/* ════════════════════════════════════════
+   NAV
+════════════════════════════════════════ */
+.nav {
+  background: var(--white);
+  border-bottom: 1px solid rgba(217,217,217,.5);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  gap: 8px;
+}
+/* Logo: coloured "V" square */
+.nav__logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  text-decoration: none;
+  margin-right: 16px;
+}
+.nav__logo-icon {
+  width: 32px; height: 32px;
+  background: var(--primary);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 800; color: #fff;
+}
+.nav__logo-text {
+  font-size: 16px; font-weight: 700;
+  color: var(--primary); letter-spacing: -.2px;
+}
+.nav__links { display: flex; align-items: center; gap: 4px; flex: 1; }
+.nav__link {
+  font-size: 14px; font-weight: 500;
+  color: var(--dark);
+  padding: 7px 14px;
+  border-radius: var(--radius-md);
+  transition: color .18s, background .18s;
+  white-space: nowrap;
+}
+.nav__link:hover { color: var(--primary); background: var(--primary-light); }
+.nav__link--active { background: var(--primary); color: var(--white); }
+
+/* Search */
+.nav__search { position: relative; flex-shrink: 0; }
+.nav__search-icon {
+  position: absolute; left: 11px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-light); pointer-events: none;
+}
+.nav__search-icon svg { width: 14px; height: 14px; }
+.nav__search-input {
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 50px;
+  padding: 8px 14px 8px 32px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px; color: var(--dark);
+  outline: none; width: 180px;
+  transition: border-color .2s, box-shadow .2s;
+}
+.nav__search-input::placeholder { color: var(--gray-light); }
+.nav__search-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(64,179,224,.10);
+}
+
+/* Add button */
+.nav__add-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--primary); color: var(--white);
+  border: none; border-radius: 50px;
+  padding: 8px 18px;
+  font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 600;
+  cursor: pointer; white-space: nowrap;
+  box-shadow: 0 3px 12px rgba(64,179,224,.28);
+  transition: background .2s, transform .15s;
+}
+.nav__add-btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+/* Divider + avatar */
+.nav__divider { width: 1px; height: 33px; background: #757575; margin: 0 6px; flex-shrink: 0; opacity: .6; }
+.nav__avatar-wrap { position: relative; flex-shrink: 0; }
+.nav__avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--primary);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 15px; font-weight: 700; color: #fff;
+  user-select: none;
+}
+.nav__avatar-online {
+  position: absolute; top: 0; right: 0;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #4BF332; border: 2px solid #fff; pointer-events: none;
+}
+
+/* ════════════════════════════════════════
+   BACK LINK
+════════════════════════════════════════ */
+.back-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 13.5px; font-weight: 500; color: var(--gray);
+  padding: 16px 0 0;
+  transition: color .18s;
+}
+.back-link svg { width: 15px; height: 15px; flex-shrink: 0; }
+.back-link:hover { color: var(--primary); }
+
+/* ════════════════════════════════════════
+   PAGE
+════════════════════════════════════════ */
+.page { flex: 1; padding: 12px 0 72px; }
+
+/* ════════════════════════════════════════
+   HERO BANNER
+════════════════════════════════════════ */
+.hero-banner {
+  position: relative;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  height: 320px;
+  margin-top: 12px;
+}
+.hero-banner__img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+/* Gradient overlay */
+.hero-banner::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,.72) 0%,
+    rgba(0,0,0,.30) 45%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+.hero-banner__content {
+  position: absolute;
+  bottom: 28px; left: 28px; right: 28px;
+  z-index: 2;
+}
+.hero-banner__badge {
+  display: inline-block;
+  background: #D1FAE5;
+  color: #065F46;
+  font-size: 11px; font-weight: 700;
+  padding: 3px 12px; border-radius: 50px;
+  letter-spacing: .3px; margin-bottom: 10px;
+}
+.hero-banner__title {
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 800; color: #fff;
+  letter-spacing: -.5px; line-height: 1.2;
+  margin-bottom: 6px;
+}
+.hero-banner__location {
+  font-size: 14px; color: rgba(255,255,255,.85);
+}
+
+/* ════════════════════════════════════════
+   STATS ROW
+════════════════════════════════════════ */
+.stats { margin-top: 20px; }
+.stats__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+.stats__card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  padding: 16px 18px;
+  display: flex; align-items: center; gap: 12px;
+  box-shadow: var(--shadow-card);
+}
+.stats__icon {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--primary-light);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.stats__icon svg { width: 19px; height: 19px; color: var(--primary); }
+.stats__label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .8px; text-transform: uppercase;
+  color: var(--gray-light); margin-bottom: 2px;
+}
+.stats__value {
+  font-size: 20px; font-weight: 800;
+  color: var(--dark); letter-spacing: -.4px; line-height: 1;
+}
+
+/* ════════════════════════════════════════
+   RATING CARD
+════════════════════════════════════════ */
+.rating-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  padding: 18px 22px;
+  margin-top: 14px;
+  box-shadow: var(--shadow-card);
+}
+.rating-card__label {
+  font-size: 13.5px; font-weight: 600;
+  color: var(--dark); margin-bottom: 8px;
+}
+.rating-card__stars { display: flex; align-items: center; gap: 4px; }
+.rating-card__star {
+  font-size: 22px; cursor: pointer;
+  transition: transform .15s; line-height: 1;
+  color: var(--star);
+}
+.rating-card__star--empty { color: var(--border); }
+.rating-card__star:hover  { transform: scale(1.15); }
+
+/* ════════════════════════════════════════
+   TAB BAR
+════════════════════════════════════════ */
+.tab-bar {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  padding: 6px;
+  margin-top: 20px;
+  display: flex; align-items: center; gap: 2px;
+  box-shadow: var(--shadow-card);
+  overflow-x: auto;
+}
+.tab-bar__tab {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px; font-weight: 500;
+  color: var(--gray); background: none; border: none;
+  padding: 8px 18px; border-radius: var(--radius-md);
+  cursor: pointer; white-space: nowrap;
+  transition: background .18s, color .18s;
+}
+.tab-bar__tab:hover { background: var(--bg); color: var(--dark); }
+.tab-bar__tab--active {
+  background: var(--primary); color: var(--white); font-weight: 600;
+}
+.tab-bar__tab--active:hover { background: var(--primary-dark); }
+
+/* ════════════════════════════════════════
+   OVERVIEW CONTENT — 2-col grid
+════════════════════════════════════════ */
+.overview {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+/* Details card */
+.details-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+}
+.details-card__title {
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--gray-light); margin-bottom: 18px;
+}
+.details-card__list { display: flex; flex-direction: column; gap: 14px; }
+.details-card__row  { display: flex; align-items: baseline; gap: 12px; }
+.details-card__key  {
+  font-size: 13.5px; color: var(--gray); font-weight: 400;
+  flex: 0 0 140px; min-width: 0;
+}
+.details-card__val  {
+  font-size: 13.5px; font-weight: 700; color: var(--dark);
+  flex: 1; min-width: 0;
+}
+
+/* Progress card */
+.progress-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+}
+.progress-card__title {
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--gray-light); margin-bottom: 22px;
+}
+.progress-card__list { display: flex; flex-direction: column; gap: 18px; }
+.progress-card__row  {
+  display: flex; align-items: center;
+  justify-content: space-between; margin-bottom: 7px;
+}
+.progress-card__label { font-size: 13.5px; color: var(--gray); font-weight: 400; }
+.progress-card__pct   { font-size: 13.5px; font-weight: 700; color: var(--dark); }
+.progress-card__track {
+  width: 100%; height: 6px;
+  background: #F0F0F0; border-radius: 50px; overflow: hidden;
+}
+.progress-card__fill {
+  height: 100%; border-radius: 50px;
+  transition: width .4s ease;
+}
+.progress-card__fill--blue {
+  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+}
+.progress-card__fill--green {
+  background: linear-gradient(90deg, var(--green) 0%, var(--green-dark) 100%);
+}
+.progress-card__tasks { font-size: 13.5px; font-weight: 700; color: var(--dark); }
+
+/* ════════════════════════════════════════
+   FOOTER
+════════════════════════════════════════ */
+.footer {
+  background: #0f2a3a;
+  padding: 56px 0 36px;
+  text-align: center;
+  margin-top: auto;
+}
+.footer__logo { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.footer__logo-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: rgba(255,255,255,.07);
+  display: flex; align-items: center; justify-content: center; margin: 0 auto;
+}
+.footer__logo-text  { font-size: 20px; font-weight: 700; color: #fff; letter-spacing: -.3px; }
+.footer__tagline    { font-size: 12px; color: rgba(255,255,255,.36); letter-spacing: .6px; }
+.footer__copy       { margin-top: 32px; font-size: 13px; color: rgba(255,255,255,.28); }
+
+/* ─── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 780px) {
+  .stats__grid { grid-template-columns: repeat(2, 1fr); }
+  .overview    { grid-template-columns: 1fr; }
+  .hero-banner { height: 240px; }
+}
+@media (max-width: 520px) {
+  .container   { padding: 0 16px; }
+  .nav__search { display: none; }
+  .hero-banner { height: 200px; }
+  .hero-banner__title { font-size: 22px; }
+}
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     NAV — matches screenshot exactly
+════════════════════════════════════════ -->
+<header class="nav">
+  <div class="nav__inner">
+
+    <!-- Logo: "V" box + "Voyage Planner" — as in screenshot -->
+    <a href="index.html" class="nav__logo" aria-label="БезМеж — головна">
+      <div class="nav__logo-icon" aria-hidden="true">V</div>
+      <span class="nav__logo-text">Voyage Planner</span>
+    </a>
+
+    <!-- Nav links -->
+    <div class="nav__links">
+      <a href="my-trips.html" class="nav__link nav__link--active">Мої поїздки</a>
+      <a href="#"             class="nav__link">Статистика</a>
+    </div>
+
+    <!-- Search -->
+    <div class="nav__search">
+      <span class="nav__search-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </span>
+      <input class="nav__search-input" type="search"
+             placeholder="Пошук подорожей..." aria-label="Пошук подорожей" />
+    </div>
+
+    <!-- Add button -->
+    <button class="nav__add-btn" aria-label="Додати нову подорож">
+      + Нова подорож
+    </button>
+
+    <!-- Divider + avatar -->
+    <div class="nav__divider" aria-hidden="true"></div>
+    <div class="nav__avatar-wrap">
+      <div class="nav__avatar" role="img" aria-label="Профіль — онлайн">АВ</div>
+      <span class="nav__avatar-online" aria-label="Онлайн"></span>
+    </div>
+
+  </div>
+</header>
+
+
+<!-- ════════════════════════════════════════
+     PAGE
+════════════════════════════════════════ -->
+<main class="page">
+  <div class="container">
+
+    <!-- ← Back link -->
+    <a href="my-trips.html" class="back-link" aria-label="Назад у мої подорожі">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      Назад у мої подорожі
+    </a>
+
+    <!-- ── HERO BANNER ───────────────────────────────────────── -->
+    <div class="hero-banner">
+      <img
+        class="hero-banner__img"
+        src="https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=1200&q=85"
+        alt="Санторіні — блакитні куполи та море"
+        loading="eager"
+      />
+      <div class="hero-banner__content">
+        <span class="hero-banner__badge">Активна</span>
+        <h1 class="hero-banner__title">Втеча на Санторіні</h1>
+        <p class="hero-banner__location">Греція,&nbsp; Санторіні</p>
+      </div>
+    </div>
+
+    <!-- ── STATS ROW ─────────────────────────────────────────── -->
+    <section class="stats" aria-label="Статистика подорожі">
+      <div class="stats__grid">
+
+        <!-- Trip progress -->
+        <div class="stats__card">
+          <div class="stats__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#40B3E0"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div>
+            <div class="stats__label">Прогрес подорожі</div>
+            <div class="stats__value">28%</div>
+          </div>
+        </div>
+
+        <!-- Total budget -->
+        <div class="stats__card">
+          <div class="stats__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#40B3E0"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10
+                       15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="stats__label">Загальний бюджет</div>
+            <div class="stats__value">$6500</div>
+          </div>
+        </div>
+
+        <!-- Spent -->
+        <div class="stats__card">
+          <div class="stats__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#40B3E0"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10
+                       15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="stats__label">Витрачено</div>
+            <div class="stats__value">$1 200</div>
+          </div>
+        </div>
+
+        <!-- Remaining -->
+        <div class="stats__card">
+          <div class="stats__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#40B3E0"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10
+                       15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="stats__label">Залишилось</div>
+            <div class="stats__value">$6 800</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── RATING CARD ───────────────────────────────────────── -->
+    <div class="rating-card" aria-label="Оцінка враження">
+      <p class="rating-card__label">Оцініть свої враження</p>
+      <div class="rating-card__stars" role="group" aria-label="Рейтинг зірками">
+        <span class="rating-card__star"          data-val="1" role="button" tabindex="0" aria-label="1 зірка"  onclick="rate(1)" onkeydown="if(event.key==='Enter')rate(1)">★</span>
+        <span class="rating-card__star"          data-val="2" role="button" tabindex="0" aria-label="2 зірки" onclick="rate(2)" onkeydown="if(event.key==='Enter')rate(2)">★</span>
+        <span class="rating-card__star"          data-val="3" role="button" tabindex="0" aria-label="3 зірки" onclick="rate(3)" onkeydown="if(event.key==='Enter')rate(3)">★</span>
+        <span class="rating-card__star"          data-val="4" role="button" tabindex="0" aria-label="4 зірки" onclick="rate(4)" onkeydown="if(event.key==='Enter')rate(4)">★</span>
+        <span class="rating-card__star rating-card__star--empty" data-val="5" role="button" tabindex="0" aria-label="5 зірок" onclick="rate(5)" onkeydown="if(event.key==='Enter')rate(5)">★</span>
+      </div>
+    </div>
+
+    <!-- ── TAB BAR ───────────────────────────────────────────── -->
+    <nav class="tab-bar" role="tablist" aria-label="Вкладки подорожі">
+      <button class="tab-bar__tab tab-bar__tab--active" role="tab" aria-selected="true">Огляд</button>
+      <button class="tab-bar__tab" role="tab" aria-selected="false">Список справ</button>
+      <button class="tab-bar__tab" role="tab" aria-selected="false">Місця</button>
+      <button class="tab-bar__tab" role="tab" aria-selected="false">Бронювання</button>
+      <button class="tab-bar__tab" role="tab" aria-selected="false">Нотатки</button>
+      <button class="tab-bar__tab" role="tab" aria-selected="false">Фото</button>
+    </nav>
+
+    <!-- ── OVERVIEW CONTENT ──────────────────────────────────── -->
+    <div class="overview">
+
+      <!-- Details card -->
+      <div class="details-card">
+        <h2 class="details-card__title">Деталі подорожі</h2>
+        <dl class="details-card__list">
+
+          <div class="details-card__row">
+            <dt class="details-card__key">Місце призначення</dt>
+            <dd class="details-card__val">Греція, Санторіні</dd>
+          </div>
+
+          <div class="details-card__row">
+            <dt class="details-card__key">Кількість днів</dt>
+            <dd class="details-card__val">10 днів</dd>
+          </div>
+
+          <div class="details-card__row">
+            <dt class="details-card__key">Настрій</dt>
+            <dd class="details-card__val">Дослідження міста</dd>
+          </div>
+
+          <div class="details-card__row">
+            <dt class="details-card__key">Статус</dt>
+            <dd class="details-card__val">Майбутня</dd>
+          </div>
+
+        </dl>
+      </div>
+
+      <!-- Progress card -->
+      <div class="progress-card">
+        <h2 class="progress-card__title">Прогрес</h2>
+        <div class="progress-card__list">
+
+          <!-- Trip progress — blue 63% -->
+          <div class="progress-card__item">
+            <div class="progress-card__row">
+              <span class="progress-card__label">Прогрес подорожі</span>
+              <span class="progress-card__pct">63%</span>
+            </div>
+            <div class="progress-card__track"
+                 role="progressbar" aria-valuenow="63" aria-valuemin="0" aria-valuemax="100"
+                 aria-label="Прогрес подорожі 63%">
+              <div class="progress-card__fill progress-card__fill--blue" style="width:63%"></div>
+            </div>
+          </div>
+
+          <!-- Budget used — green 85% -->
+          <div class="progress-card__item">
+            <div class="progress-card__row">
+              <span class="progress-card__label">Використано бюджету</span>
+              <span class="progress-card__pct">85%</span>
+            </div>
+            <div class="progress-card__track"
+                 role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"
+                 aria-label="Використано бюджету 85%">
+              <div class="progress-card__fill progress-card__fill--green" style="width:85%"></div>
+            </div>
+          </div>
+
+          <!-- Tasks done — text only -->
+          <div class="progress-card__item">
+            <div class="progress-card__row">
+              <span class="progress-card__label">Виконання завдань</span>
+              <span class="progress-card__tasks">2 / 3</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /overview -->
+
+  </div>
+</main>
+
+
+<!-- ════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__logo">
+      <div class="footer__logo-icon">
+        <svg width="36" height="36" viewBox="0 0 42 42" fill="none"
+             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="21" cy="21" r="19.5" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+          <path d="M10 30 C13 21, 17 18, 21 11 C25 18, 29 21, 32 30"
+                stroke="rgba(255,255,255,.75)" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <circle cx="21" cy="11" r="2.2" fill="rgba(255,255,255,.85)"/>
+          <path d="M30 9.5 L33.5 8 L32 11.5"
+                stroke="rgba(255,255,255,.7)" stroke-width="1.4"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="footer__logo-text">БезМеж</div>
+      <div class="footer__tagline">подорожі без меж</div>
+    </div>
+    <p class="footer__copy">© 2025 БезМеж. Створено з турботою для допитливих мандрівників</p>
+  </div>
+</footer>
+
+<script>
+  // ── Tab switching ───────────────────────────────────────────
+  document.querySelectorAll('.tab-bar__tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab-bar__tab').forEach(t => {
+        t.classList.remove('tab-bar__tab--active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.add('tab-bar__tab--active');
+      tab.setAttribute('aria-selected', 'true');
+    });
+  });
+
+  // ── Star rating ─────────────────────────────────────────────
+  const stars = document.querySelectorAll('.rating-card__star');
+  let currentRating = 4;
+
+  function rate(val) {
+    currentRating = val;
+    stars.forEach((s, i) => {
+      const filled = i < val;
+      s.classList.toggle('rating-card__star--empty', !filled);
+    });
+  }
+
+  // Hover preview
+  stars.forEach((star, idx) => {
+    star.addEventListener('mouseenter', () => {
+      stars.forEach((s, i) => s.classList.toggle('rating-card__star--empty', i > idx));
+    });
+    star.addEventListener('mouseleave', () => rate(currentRating));
+  });
+
+  // Init at 4 stars
+  rate(4);
+</script>
+
+</body>
+</html>

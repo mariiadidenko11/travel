@@ -1,0 +1,635 @@
+// ============================================================
+// БезМеж — My Trips Page SCSS
+// Shared design system — consistent with all pages
+// ============================================================
+
+// ─── Variables ───────────────────────────────────────────────
+$primary:        #40B3E0;
+$primary-dark:   #2a9cc8;
+$primary-light:  #e8f6fc;
+$dark:           #1A1A1A;
+$gray:           #757575;
+$gray-light:     #A0A0A0;
+$bg:             #F5F7F9;
+$white:          #FFFFFF;
+$border:         #D9D9D9;
+$star:           #F5C842;
+
+$radius-sm:      8px;
+$radius-md:      16px;
+$radius-lg:      20px;
+$radius-xl:      24px;
+
+$shadow-sm:      0 2px 8px rgba(0,0,0,.06);
+$shadow-md:      0 6px 24px rgba(0,0,0,.10);
+$shadow-card:    0 2px 12px rgba(0,0,0,.07);
+
+// Status colours
+$status-active:  #40B3E0;
+$status-pending: #F5A623;
+$status-done:    #E53E3E;
+
+$font: 'Inter', sans-serif;
+
+// ─── Reset ───────────────────────────────────────────────────
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: $font;
+  background: $bg;
+  color: $dark;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+img { display: block; max-width: 100%; }
+a   { text-decoration: none; color: inherit; }
+
+// ─── Container ───────────────────────────────────────────────
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+  width: 100%;
+}
+
+// ═══════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════
+.nav {
+  background: $white;
+  border-bottom: 1px solid rgba($border, .5);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    gap: 12px;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    flex-shrink: 0;
+    text-decoration: none;
+    &-icon { width: 32px; height: 32px; }
+    &-text { font-size: 17px; font-weight: 700; color: $dark; letter-spacing: -.3px; }
+  }
+
+  &__actions { display: flex; align-items: center; gap: 2px; }
+
+  &__link {
+    font-size: 14px;
+    font-weight: 500;
+    color: $dark;
+    padding: 8px 14px;
+    border-radius: $radius-md;
+    transition: color .18s, background .18s;
+    &:hover { color: $primary; background: $primary-light; }
+
+    &--active {
+      background: $primary;
+      color: $white;
+      &:hover { background: $primary-dark; color: $white; }
+    }
+  }
+
+  &__divider {
+    width: 1px; height: 22px;
+    background: $border;
+    margin: 0 8px;
+    flex-shrink: 0;
+  }
+
+  &__avatar {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+}
+
+// ═══════════════════════════════════════
+// TOOLBAR — search + tabs
+// ═══════════════════════════════════════
+.toolbar {
+  padding: 20px 0 0;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  &__search {
+    position: relative;
+    width: 220px;
+    flex-shrink: 0;
+
+    &-icon {
+      position: absolute;
+      left: 13px; top: 50%;
+      transform: translateY(-50%);
+      color: $gray-light;
+      display: flex;
+      pointer-events: none;
+      svg { width: 15px; height: 15px; }
+    }
+
+    &-input {
+      width: 100%;
+      background: $white;
+      border: 1.5px solid $border;
+      border-radius: $radius-md;
+      padding: 10px 14px 10px 38px;
+      font-family: $font;
+      font-size: 14px;
+      color: $dark;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      &::placeholder { color: $gray-light; }
+      &:focus {
+        border-color: $primary;
+        box-shadow: 0 0 0 3px rgba($primary, .10);
+      }
+    }
+  }
+
+  &__tabs { display: flex; align-items: center; gap: 4px; }
+
+  &__tab {
+    font-family: $font;
+    font-size: 14px;
+    font-weight: 500;
+    color: $gray;
+    background: none;
+    border: none;
+    padding: 9px 16px;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: background .18s, color .18s;
+    &:hover { background: rgba($primary, .08); color: $primary; }
+
+    &--active {
+      background: $primary;
+      color: $white;
+      &:hover { background: $primary-dark; }
+    }
+  }
+}
+
+// ═══════════════════════════════════════
+// STATS ROW
+// ═══════════════════════════════════════
+.stats {
+  padding: 20px 0 0;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  &__card {
+    background: $white;
+    border-radius: $radius-lg;
+    border: 1px solid $border;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: $shadow-sm;
+  }
+
+  &__icon {
+    width: 40px; height: 40px;
+    border-radius: $radius-sm;
+    background: $primary-light;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    svg { width: 22px; height: 22px; color: $primary; }
+  }
+
+  &__label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .9px;
+    text-transform: uppercase;
+    color: $gray-light;
+    margin-bottom: 3px;
+  }
+
+  &__value {
+    font-size: 24px;
+    font-weight: 800;
+    color: $dark;
+    letter-spacing: -.5px;
+    line-height: 1;
+  }
+}
+
+// ═══════════════════════════════════════
+// TRIPS SECTION
+// ═══════════════════════════════════════
+.trips {
+  padding: 36px 0 0;
+  flex: 1;
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  &__heading {
+    font-size: 24px;
+    font-weight: 800;
+    color: $dark;
+    letter-spacing: -.4px;
+    margin-bottom: 4px;
+  }
+
+  &__sub { font-size: 14px; color: $gray; }
+
+  &__add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: $primary;
+    color: $white;
+    border: none;
+    border-radius: $radius-md;
+    padding: 11px 20px;
+    font-family: $font;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px rgba($primary, .30);
+    transition: background .2s, transform .18s, box-shadow .2s;
+    flex-shrink: 0;
+    &:hover {
+      background: $primary-dark;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba($primary, .40);
+    }
+  }
+
+  // 3-column grid
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    align-items: start;
+  }
+}
+
+// ═══════════════════════════════════════
+// TRIP CARD
+// ═══════════════════════════════════════
+.trip-card {
+  background: $white;
+  border-radius: $radius-xl;
+  border: 1px solid $border;
+  overflow: hidden;
+  box-shadow: $shadow-card;
+  transition: box-shadow .22s, transform .22s;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: $shadow-md;
+    transform: translateY(-4px);
+  }
+
+  // Image
+  &__img-wrap {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  &__img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform .45s ease;
+  }
+  &:hover &__img { transform: scale(1.06); }
+
+  // Status badge
+  &__badge {
+    position: absolute;
+    top: 12px; right: 12px;
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 4px 11px;
+    border-radius: 50px;
+    letter-spacing: .2px;
+    white-space: nowrap;
+
+    &--active  { background: $status-active;  color: $white; }
+    &--pending { background: $status-pending; color: $white; }
+    &--done    { background: $status-done;    color: $white; }
+  }
+
+  // Stars overlay
+  &__stars {
+    position: absolute;
+    bottom: 10px; left: 12px;
+    font-size: 12px;
+    color: $star;
+    letter-spacing: 2px;
+
+    // White stars for "Очікує" status cards
+    &--pending { color: rgba($white, .82); }
+  }
+
+  // Body
+  &__body {
+    padding: 18px 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+
+  &__title {
+    font-size: 17px;
+    font-weight: 800;
+    color: $dark;
+    letter-spacing: -.2px;
+    line-height: 1.3;
+  }
+
+  // Location row (city + country with pin icon)
+  &__location {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12.5px;
+    color: $gray;
+    margin-top: -4px;
+
+    svg { width: 13px; height: 13px; flex-shrink: 0; color: $primary; }
+  }
+
+  // Date row
+  &__date {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    color: $gray-light;
+    svg { width: 14px; height: 14px; flex-shrink: 0; }
+  }
+
+  // Budget row
+  &__budget {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    color: $gray;
+    &-value { font-weight: 700; color: $dark; font-size: 13px; }
+  }
+
+  // ── Mini budget+progress summary box ─────────────────────
+  &__summary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: $bg;
+    border-radius: 10px;
+    padding: 9px 12px;
+    margin-top: 2px;
+  }
+
+  &__summary-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__summary-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: $gray-light;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+  }
+
+  &__summary-values {
+    font-size: 13px;
+    font-weight: 700;
+    color: $dark;
+    white-space: nowrap;
+  }
+
+  &__summary-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    min-width: 72px;
+  }
+
+  &__summary-pct {
+    font-size: 12px;
+    font-weight: 700;
+    color: $primary;
+  }
+
+  &__summary-bar {
+    width: 100%;
+    height: 4px;
+    background: $border;
+    border-radius: 50px;
+    overflow: hidden;
+  }
+
+  &__summary-fill {
+    height: 100%;
+    border-radius: 50px;
+    background: linear-gradient(90deg, $primary 0%, $primary-dark 100%);
+    &--full { background: linear-gradient(90deg, #27AE60 0%, #1e8a4a 100%); }
+    &--zero { background: transparent; }
+  }
+
+  // Progress row
+  &__progress {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 13px;
+    color: $gray;
+
+    &-label { white-space: nowrap; }
+
+    &-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+    }
+
+    &-track {
+      flex: 1;
+      height: 5px;
+      background: #E8ECF0;
+      border-radius: 50px;
+      overflow: hidden;
+    }
+
+    &-fill {
+      height: 100%;
+      border-radius: 50px;
+      background: linear-gradient(90deg, $primary 0%, $primary-dark 100%);
+
+      &--full { background: linear-gradient(90deg, #27AE60 0%, #1e8a4a 100%); }
+      &--zero { background: #E8ECF0; }
+    }
+
+    &-pct {
+      font-weight: 700;
+      color: $dark;
+      font-size: 13px;
+      flex-shrink: 0;
+      min-width: 28px;
+      text-align: right;
+    }
+  }
+}
+
+// ═══════════════════════════════════════
+// ADD CARD
+// ═══════════════════════════════════════
+.trip-card-add {
+  background: $white;
+  border-radius: $radius-xl;
+  border: 2px dashed $border;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  cursor: pointer;
+  padding: 32px 28px;
+  text-align: center;
+  transition: border-color .2s, background .2s;
+
+  &:hover {
+    border-color: $primary;
+    background: $primary-light;
+    .trip-card-add__circle { border-color: $primary; color: $primary; }
+    .trip-card-add__title  { color: $primary; }
+  }
+
+  &__circle {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    border: 1.5px solid $border;
+    color: $gray-light;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color .2s, color .2s;
+    svg { width: 24px; height: 24px; }
+  }
+
+  &__title {
+    font-size: 16px;
+    font-weight: 700;
+    color: $dark;
+    transition: color .2s;
+  }
+
+  &__sub {
+    font-size: 13px;
+    color: $gray;
+    line-height: 1.6;
+    max-width: 170px;
+  }
+}
+
+// ═══════════════════════════════════════
+// FOOTER
+// ═══════════════════════════════════════
+.footer {
+  background: #0f2a3a;
+  padding: 64px 0 40px;
+  text-align: center;
+  margin-top: 72px;
+
+  &__logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__logo-icon {
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    background: rgba($white, .07);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+  }
+
+  &__logo-text {
+    font-size: 22px;
+    font-weight: 700;
+    color: $white;
+    letter-spacing: -.3px;
+  }
+
+  &__tagline {
+    font-size: 12px;
+    color: rgba($white, .35);
+    letter-spacing: .6px;
+  }
+
+  &__copy {
+    margin-top: 36px;
+    font-size: 13px;
+    color: rgba($white, .28);
+  }
+}
+
+// ═══════════════════════════════════════
+// Responsive
+// ═══════════════════════════════════════
+@media (max-width: 900px) {
+  .stats__grid { grid-template-columns: repeat(2, 1fr); }
+  .trips__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 580px) {
+  .container { padding: 0 16px; }
+  .toolbar__search { width: 100%; }
+  .toolbar__inner { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .toolbar__tabs  { flex-wrap: wrap; }
+  .stats__grid    { grid-template-columns: repeat(2, 1fr); }
+  .trips__grid    { grid-template-columns: 1fr; }
+  .trip-card-add  { min-height: 200px; }
+}

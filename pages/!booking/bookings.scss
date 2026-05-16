@@ -1,0 +1,230 @@
+// ============================================================
+// БезМеж — Bookings Page SCSS
+// ============================================================
+
+$primary:       #40B3E0;
+$primary-dark:  #2a9cc8;
+$primary-light: #e8f6fc;
+$dark:          #1A1A1A;
+$gray:          #757575;
+$gray-light:    #A0A0A0;
+$bg:            #F5F7F9;
+$white:         #FFFFFF;
+$border:        #D9D9D9;
+$input-bg:      #F7F8FA;
+$green:         #27AE60;
+$green-light:   #D1FAE5;
+$green-dark:    #065F46;
+$red:           #EF4444;
+$red-light:     #FEE2E2;
+$amber:         #F59E0B;
+$amber-light:   #FEF3C7;
+
+$radius-sm:     8px;
+$radius-md:     12px;
+$radius-lg:     16px;
+$radius-xl:     20px;
+$shadow-card:   0 2px 12px rgba(0,0,0,.07);
+$shadow-md:     0 6px 24px rgba(0,0,0,.10);
+
+$font: 'Inter', sans-serif;
+
+// Category colours
+$cat-colors: (
+  accommodation: (#8B5CF6, #EDE9FE),
+  transport:     (#0EA5E9, #E0F2FE),
+  food:          (#F97316, #FFEDD5),
+  leisure:       (#14B8A6, #CCFBF1),
+  shopping:      (#F59E0B, #FEF3C7),
+  park:          (#27AE60, #D1FAE5),
+  beach:         (#40B3E0, #e8f6fc),
+  other:         (#6B7280, #F3F4F6),
+);
+
+// ─── Reset ───────────────────────────────────────────────────
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: $font; background: $bg; color: $dark;
+  font-size: 16px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh; display: flex; flex-direction: column;
+}
+img { display: block; max-width: 100%; }
+a   { text-decoration: none; color: inherit; }
+
+.container { max-width: 820px; margin: 0 auto; padding: 0 24px; width: 100%; }
+
+// ═══ NAV ═══════════════════════════════════════════════════════
+.nav {
+  background: $white; border-bottom: 1px solid rgba($border,.5);
+  position: sticky; top: 0; z-index: 100;
+  &__inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; height: 60px; gap: 8px; }
+  &__logo { display: flex; align-items: center; gap: 8px; flex-shrink: 0; text-decoration: none; margin-right: 16px; &-icon { width: 32px; height: 32px; background: $primary; border-radius: $radius-sm; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; color: $white; } &-text { font-size: 16px; font-weight: 700; color: $primary; letter-spacing: -.2px; } }
+  &__links { display: flex; align-items: center; gap: 4px; flex: 1; }
+  &__link { font-size: 14px; font-weight: 500; color: $dark; padding: 7px 14px; border-radius: $radius-md; transition: color .18s, background .18s; white-space: nowrap; &:hover { color: $primary; background: $primary-light; } &--active { background: $primary; color: $white; } }
+  &__search { position: relative; flex-shrink: 0; &-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: $gray-light; pointer-events: none; svg { width: 14px; height: 14px; } } &-input { background: $bg; border: 1.5px solid $border; border-radius: 50px; padding: 8px 14px 8px 32px; font-family: $font; font-size: 13.5px; color: $dark; outline: none; width: 180px; transition: border-color .2s, box-shadow .2s; &::placeholder { color: $gray-light; } &:focus { border-color: $primary; box-shadow: 0 0 0 3px rgba($primary,.10); } } }
+  &__add-btn { display: inline-flex; align-items: center; background: $primary; color: $white; border: none; border-radius: 50px; padding: 8px 18px; font-family: $font; font-size: 13.5px; font-weight: 600; cursor: pointer; white-space: nowrap; box-shadow: 0 3px 12px rgba($primary,.28); transition: background .2s, transform .15s; &:hover { background: $primary-dark; transform: translateY(-1px); } }
+  &__divider { width: 1px; height: 33px; background: #757575; margin: 0 6px; flex-shrink: 0; opacity: .6; }
+  &__avatar-wrap { position: relative; flex-shrink: 0; }
+  &__avatar { width: 40px; height: 40px; border-radius: 50%; background: $primary; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px; font-weight: 700; color: $white; user-select: none; }
+  &__avatar-online { position: absolute; top: 0; right: 0; width: 10px; height: 10px; border-radius: 50%; background: #4BF332; border: 2px solid $white; pointer-events: none; }
+}
+
+.back-link { display: inline-flex; align-items: center; gap: 5px; font-size: 13.5px; font-weight: 500; color: $gray; padding: 16px 0 0; transition: color .18s; svg { width: 15px; height: 15px; } &:hover { color: $primary; } }
+.page { flex: 1; padding: 12px 0 72px; }
+
+// ═══ HERO ═══════════════════════════════════════════════════════
+.hero-banner {
+  position: relative; border-radius: $radius-xl; overflow: hidden; height: 320px; margin-top: 12px;
+  &__img { width: 100%; height: 100%; object-fit: cover; }
+  &::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,.30) 45%, transparent 100%); pointer-events: none; }
+  &__content { position: absolute; bottom: 28px; left: 28px; right: 28px; z-index: 2; }
+  &__badge { display: inline-block; background: $green-light; color: $green-dark; font-size: 11px; font-weight: 700; padding: 3px 12px; border-radius: 50px; letter-spacing: .3px; margin-bottom: 10px; }
+  &__title { font-size: clamp(24px,4vw,36px); font-weight: 800; color: $white; letter-spacing: -.5px; line-height: 1.2; margin-bottom: 6px; }
+  &__location { font-size: 14px; color: rgba($white,.85); }
+}
+
+// ═══ STATS ══════════════════════════════════════════════════════
+.stats {
+  margin-top: 20px;
+  &__grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+  &__card { background: $white; border-radius: $radius-lg; border: 1px solid $border; padding: 16px 18px; display: flex; align-items: center; gap: 12px; box-shadow: $shadow-card; }
+  &__icon { width: 36px; height: 36px; border-radius: $radius-sm; background: $primary-light; display: flex; align-items: center; justify-content: center; flex-shrink: 0; svg { width: 19px; height: 19px; color: $primary; } }
+  &__label { font-size: 10px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: $gray-light; margin-bottom: 2px; }
+  &__value { font-size: 20px; font-weight: 800; color: $dark; letter-spacing: -.4px; line-height: 1; }
+}
+
+// ═══ TAB BAR ════════════════════════════════════════════════════
+.tab-bar {
+  background: $white; border-radius: $radius-lg; border: 1px solid $border; padding: 6px; margin-top: 20px; display: flex; align-items: center; gap: 2px; box-shadow: $shadow-card; overflow-x: auto;
+  &__tab { font-family: $font; font-size: 14px; font-weight: 500; color: $gray; background: none; border: none; padding: 8px 18px; border-radius: $radius-md; cursor: pointer; white-space: nowrap; transition: background .18s, color .18s; &:hover { background: $bg; color: $dark; } &--active { background: $primary; color: $white; font-weight: 600; } }
+}
+
+// ═══ BOOKINGS CARD ══════════════════════════════════════════════
+.bookings-card { background: $white; border-radius: $radius-lg; border: 1px solid $border; padding: 28px 28px 24px; margin-top: 20px; box-shadow: $shadow-card; }
+
+.bookings-header {
+  display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; gap: 12px;
+  &__left { }
+  &__title { font-size: 18px; font-weight: 800; color: $dark; letter-spacing: -.3px; margin-bottom: 3px; }
+  &__sub { font-size: 13px; color: $gray-light; }
+  &__add-btn { display: inline-flex; align-items: center; gap: 7px; background: $primary; color: $white; border: none; border-radius: $radius-md; padding: 11px 20px; font-family: $font; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; box-shadow: 0 3px 14px rgba($primary,.30); transition: background .2s, transform .15s, box-shadow .2s; flex-shrink: 0; &:hover { background: $primary-dark; transform: translateY(-1px); box-shadow: 0 5px 18px rgba($primary,.38); } svg { width: 14px; height: 14px; } }
+}
+
+// ─── Category picker modal/panel ──────────────────────────────
+.cat-picker {
+  background: $bg; border: 1.5px solid $border; border-radius: $radius-lg;
+  padding: 20px; margin-bottom: 20px;
+  display: none;
+  &.visible { display: block; }
+  &__title { font-size: 13px; font-weight: 700; color: $gray; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 14px; }
+  &__grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+  &__item {
+    display: flex; flex-direction: column; align-items: center; gap: 7px;
+    background: $white; border: 1.5px solid $border; border-radius: $radius-md;
+    padding: 14px 8px; cursor: pointer; text-align: center;
+    transition: border-color .18s, background .18s, transform .15s, box-shadow .18s;
+    &:hover { border-color: var(--cat-color, $primary); background: var(--cat-bg, $primary-light); transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,.08); }
+    &.selected { border-color: var(--cat-color, $primary); background: var(--cat-bg, $primary-light); box-shadow: 0 0 0 3px rgba(0,0,0,.06); }
+    &__icon { font-size: 22px; line-height: 1; }
+    &__label { font-size: 12px; font-weight: 600; color: $dark; line-height: 1.3; }
+  }
+}
+
+// ─── Booking form (expanded per category) ─────────────────────
+.booking-form {
+  background: $bg; border: 1.5px solid $border; border-radius: $radius-lg;
+  overflow: hidden; margin-bottom: 20px;
+  max-height: 0; opacity: 0;
+  transition: max-height .4s cubic-bezier(.4,0,.2,1), opacity .3s ease, padding .3s ease;
+  &.visible { max-height: 1200px; opacity: 1; padding: 24px; }
+  &__header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+  &__icon { font-size: 20px; }
+  &__title { font-size: 15px; font-weight: 700; color: $dark; }
+  &__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  &__grid--1col { grid-template-columns: 1fr; }
+  &__grid--3col { grid-template-columns: 1fr 1fr 1fr; }
+  &__actions { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 16px; border-top: 1px solid $border; }
+  &__cancel { font-family: $font; font-size: 14px; font-weight: 500; color: $gray; background: $white; border: 1.5px solid $border; border-radius: $radius-md; padding: 10px 20px; cursor: pointer; transition: border-color .18s, color .18s; &:hover { border-color: $gray; } }
+  &__submit { font-family: $font; font-size: 14px; font-weight: 600; color: $white; background: $primary; border: none; border-radius: $radius-md; padding: 10px 24px; cursor: pointer; box-shadow: 0 3px 12px rgba($primary,.28); transition: background .2s, transform .15s; &:hover { background: $primary-dark; transform: translateY(-1px); } }
+}
+
+// ─── Form field ────────────────────────────────────────────────
+.field {
+  display: flex; flex-direction: column; gap: 5px;
+  &__label { font-size: 12.5px; font-weight: 600; color: $dark; }
+  &__input, &__select, &__textarea {
+    background: $white; border: 1.5px solid $border; border-radius: $radius-md;
+    padding: 10px 13px; font-family: $font; font-size: 13.5px; color: $dark;
+    outline: none; width: 100%; transition: border-color .2s, box-shadow .2s;
+    &::placeholder { color: $gray-light; }
+    &:focus { border-color: $primary; box-shadow: 0 0 0 3px rgba($primary,.10); }
+  }
+  &__select { appearance: none; -webkit-appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%23A0A0A0' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; background-color: $white; padding-right: 30px; }
+  &__textarea { resize: vertical; min-height: 72px; }
+}
+
+// ─── Booking list ──────────────────────────────────────────────
+.bookings-list { display: flex; flex-direction: column; gap: 10px; }
+
+.booking-item {
+  display: flex; align-items: center; gap: 12px;
+  background: $bg; border: 1.5px solid $border; border-radius: $radius-md;
+  padding: 14px 16px; cursor: pointer;
+  transition: border-color .2s, background .2s, opacity .35s, transform .35s, max-height .4s, padding .35s, margin .35s;
+  max-height: 120px; overflow: hidden;
+  &:hover { border-color: lighten($primary,18%); background: #f0faff; }
+
+  &__icon-wrap {
+    width: 38px; height: 38px; border-radius: $radius-sm; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+  }
+
+  &__info { flex: 1; min-width: 0; }
+  &__title { font-size: 14px; font-weight: 700; color: $dark; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  &__meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  &__cat { font-size: 11px; font-weight: 600; padding: 1px 8px; border-radius: 50px; white-space: nowrap; }
+  &__date { font-size: 12px; color: $gray-light; display: flex; align-items: center; gap: 3px; svg { width: 11px; height: 11px; } }
+  &__price { font-size: 12px; font-weight: 600; color: $dark; }
+
+  &__actions { display: flex; align-items: center; gap: 3px; opacity: 0; transition: opacity .18s; flex-shrink: 0; }
+  &:hover &__actions { opacity: 1; }
+  &__btn { width: 28px; height: 28px; border-radius: 7px; background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: $gray-light; transition: background .18s, color .18s; svg { width: 13px; height: 13px; } &--edit:hover { background: $primary-light; color: $primary; } &--delete:hover { background: $red-light; color: $red; } &--restore:hover { background: $green-light; color: $green; } }
+
+  &--removing { opacity: 0; max-height: 0; padding: 0; border-width: 0; transform: translateX(16px); pointer-events: none; margin: 0; }
+}
+
+// ─── Trash ─────────────────────────────────────────────────────
+.bookings-trash { margin-top: 20px; padding-top: 16px; border-top: 1px solid $border; &__toggle { display: flex; align-items: center; gap: 6px; font-family: $font; font-size: 13px; font-weight: 500; color: $gray-light; background: none; border: none; cursor: pointer; padding: 0; transition: color .18s; svg { width: 13px; height: 13px; transition: transform .22s; } &:hover { color: $gray; } &.open svg { transform: rotate(90deg); } } &__list { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; } }
+
+// ─── Empty state ────────────────────────────────────────────────
+.bookings-empty { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 48px 20px; text-align: center; &__icon { font-size: 40px; } &__title { font-size: 15px; font-weight: 700; color: $dark; } &__sub { font-size: 13.5px; color: $gray-light; line-height: 1.55; max-width: 280px; } }
+
+// ═══ FOOTER ═════════════════════════════════════════════════════
+.footer {
+  background: #0f2a3a; padding: 56px 0 36px; text-align: center; margin-top: auto;
+  &__logo { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  &__logo-icon { width: 64px; height: 64px; border-radius: 50%; background: rgba($white,.07); display: flex; align-items: center; justify-content: center; margin: 0 auto; }
+  &__logo-text  { font-size: 20px; font-weight: 700; color: $white; letter-spacing: -.3px; }
+  &__tagline    { font-size: 12px; color: rgba($white,.36); letter-spacing: .6px; }
+  &__copy       { margin-top: 32px; font-size: 13px; color: rgba($white,.28); }
+}
+
+// ═══ RESPONSIVE ═════════════════════════════════════════════════
+@media (max-width: 780px) {
+  .stats__grid { grid-template-columns: repeat(2,1fr); }
+  .hero-banner { height: 240px; }
+  .cat-picker__grid { grid-template-columns: repeat(2,1fr); }
+  .booking-form__grid { grid-template-columns: 1fr; }
+  .booking-form__grid--3col { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 520px) {
+  .container { padding: 0 16px; }
+  .nav__search { display: none; }
+  .hero-banner { height: 200px; }
+  .hero-banner__title { font-size: 22px; }
+  .bookings-card { padding: 20px 16px 18px; }
+  .cat-picker__grid { grid-template-columns: repeat(2,1fr); }
+  .booking-form__grid--3col { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>БезМеж — Подорожуй без меж</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+/* ============================================================
+   БезМеж — Landing Page · Fully Self-Contained
+   Design system: Inter · #40B3E0 · #F5F7F9 · 20px radius
+   ============================================================ */
+:root {
+  --primary:        #40B3E0;
+  --primary-dark:   #2a9cc8;
+  --primary-light:  #e8f6fc;
+  --dark:           #1A1A1A;
+  --gray:           #757575;
+  --gray-light:     #A0A0A0;
+  --bg:             #F5F7F9;
+  --white:          #FFFFFF;
+  --border:         #D9D9D9;
+  --green:          #27AE60;
+  --green-light:    #D1FAE5;
+  --green-dark:     #065F46;
+  --radius-sm:      8px;
+  --radius-md:      12px;
+  --radius-lg:      16px;
+  --radius-xl:      20px;
+  --radius-2xl:     28px;
+  --shadow-sm:      0 2px 8px rgba(0,0,0,.06);
+  --shadow-card:    0 4px 24px rgba(0,0,0,.08);
+  --shadow-md:      0 8px 32px rgba(0,0,0,.12);
+  --shadow-lg:      0 16px 48px rgba(0,0,0,.18);
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--white);
+  color: var(--dark);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  width: 100%;
+}
+
+/* ════════════════════════════════════════
+   NAV  — unchanged from all other pages
+════════════════════════════════════════ */
+.nav {
+  background: var(--white);
+  border-bottom: 1px solid rgba(217,217,217,.5);
+  position: sticky; top: 0; z-index: 200;
+}
+.nav__inner {
+  max-width: 1100px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; height: 60px; gap: 8px;
+}
+.nav__logo { display: flex; align-items: center; gap: 8px; flex-shrink: 0; text-decoration: none; margin-right: 16px; }
+.nav__logo-icon { width: 32px; height: 32px; background: var(--primary); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; color: #fff; }
+.nav__logo-text { font-size: 16px; font-weight: 700; color: var(--primary); letter-spacing: -.2px; }
+.nav__links { display: flex; align-items: center; gap: 4px; flex: 1; }
+.nav__link { font-size: 14px; font-weight: 500; color: var(--dark); padding: 7px 14px; border-radius: var(--radius-md); transition: color .18s, background .18s; white-space: nowrap; }
+.nav__link:hover { color: var(--primary); background: var(--primary-light); }
+.nav__link--active { background: var(--primary); color: var(--white); }
+.nav__search { position: relative; flex-shrink: 0; }
+.nav__search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--gray-light); pointer-events: none; }
+.nav__search-icon svg { width: 14px; height: 14px; }
+.nav__search-input { background: var(--bg); border: 1.5px solid var(--border); border-radius: 50px; padding: 8px 14px 8px 32px; font-family: 'Inter',sans-serif; font-size: 13.5px; color: var(--dark); outline: none; width: 180px; transition: border-color .2s; }
+.nav__search-input::placeholder { color: var(--gray-light); }
+.nav__search-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(64,179,224,.10); }
+.nav__add-btn { display: inline-flex; align-items: center; background: var(--primary); color: #fff; border: none; border-radius: 50px; padding: 8px 18px; font-family: 'Inter',sans-serif; font-size: 13.5px; font-weight: 600; cursor: pointer; white-space: nowrap; box-shadow: 0 3px 12px rgba(64,179,224,.28); transition: background .2s, transform .15s; }
+.nav__add-btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
+.nav__divider { width: 1px; height: 33px; background: #757575; margin: 0 6px; flex-shrink: 0; opacity: .6; }
+.nav__avatar-wrap { position: relative; flex-shrink: 0; }
+.nav__avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px; font-weight: 700; color: #fff; user-select: none; }
+.nav__avatar-online { position: absolute; top: 0; right: 0; width: 10px; height: 10px; border-radius: 50%; background: #4BF332; border: 2px solid #fff; pointer-events: none; }
+
+/* ════════════════════════════════════════
+   HERO — cinematic full-height
+════════════════════════════════════════ */
+.hero {
+  position: relative;
+  min-height: 92vh;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Background image */
+.hero__bg {
+  position: absolute; inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1800&q=85');
+  background-size: cover;
+  background-position: center 40%;
+  background-repeat: no-repeat;
+  transform: scale(1.04);
+  transition: transform 8s ease;
+}
+.hero__bg--parallax { transform: scale(1); }
+
+/* Dark gradient overlay */
+.hero__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10,20,40,.55) 0%,
+    rgba(10,20,40,.35) 40%,
+    rgba(240,248,255,.92) 100%
+  );
+}
+
+/* Bottom fade for soft transition to next section */
+.hero__fade {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 160px;
+  background: linear-gradient(to bottom, transparent, var(--white));
+  pointer-events: none;
+}
+
+.hero__content {
+  position: relative; z-index: 2;
+  max-width: 780px; padding: 0 24px;
+}
+
+/* Small pill label above headline */
+.hero__eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(64,179,224,.18);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(64,179,224,.4);
+  border-radius: 50px;
+  padding: 6px 16px;
+  font-size: 12.5px; font-weight: 600;
+  color: rgba(255,255,255,.9);
+  letter-spacing: .4px;
+  margin-bottom: 24px;
+}
+.hero__eyebrow svg { width: 13px; height: 13px; }
+
+.hero__headline {
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -2px;
+  color: #fff;
+  margin-bottom: 0;
+}
+
+.hero__headline-accent {
+  color: var(--primary);
+  display: block;
+}
+
+.hero__sub {
+  font-size: clamp(15px, 2vw, 19px);
+  color: rgba(255,255,255,.82);
+  line-height: 1.65;
+  max-width: 560px;
+  margin: 22px auto 36px;
+  font-weight: 400;
+}
+
+/* CTA buttons */
+.hero__ctas { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--white);
+  color: var(--dark);
+  font-family: 'Inter',sans-serif; font-size: 15px; font-weight: 700;
+  border: none; border-radius: 50px;
+  padding: 14px 32px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,0,0,.18);
+  transition: transform .2s, box-shadow .2s;
+  text-decoration: none;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,.24); }
+.btn-primary svg { width: 16px; height: 16px; }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,.12);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-family: 'Inter',sans-serif; font-size: 15px; font-weight: 600;
+  border: 1.5px solid rgba(255,255,255,.35);
+  border-radius: 50px;
+  padding: 13px 28px;
+  cursor: pointer;
+  transition: background .2s, transform .2s;
+  text-decoration: none;
+}
+.btn-ghost:hover { background: rgba(255,255,255,.22); transform: translateY(-2px); }
+.btn-ghost svg { width: 15px; height: 15px; }
+
+/* Scroll indicator */
+.hero__scroll {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  z-index: 3;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  color: rgba(255,255,255,.55); font-size: 11px; font-weight: 500; letter-spacing: .5px;
+  animation: scrollBounce 2s infinite;
+}
+.hero__scroll-ring {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,.35);
+  display: flex; align-items: center; justify-content: center;
+}
+.hero__scroll-ring svg { width: 14px; height: 14px; }
+@keyframes scrollBounce { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(6px);} }
+
+/* Stat strip inside hero bottom */
+.hero__stats {
+  position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%);
+  z-index: 3;
+  display: flex; align-items: center; gap: 0;
+  background: rgba(255,255,255,.12); backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: var(--radius-xl);
+  padding: 14px 28px;
+  white-space: nowrap;
+}
+.hero__stat { padding: 0 24px; text-align: center; }
+.hero__stat + .hero__stat { border-left: 1px solid rgba(255,255,255,.25); }
+.hero__stat-val { font-size: 20px; font-weight: 800; color: #fff; line-height: 1; margin-bottom: 3px; }
+.hero__stat-label { font-size: 11px; color: rgba(255,255,255,.65); font-weight: 500; }
+
+/* ════════════════════════════════════════
+   FEATURES SECTION
+════════════════════════════════════════ */
+.features {
+  padding: 96px 0 80px;
+  background: var(--white);
+}
+.section-header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+.section-label {
+  display: inline-block;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 1.4px; text-transform: uppercase;
+  color: var(--primary);
+  background: var(--primary-light);
+  border-radius: 50px;
+  padding: 5px 14px;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 800; color: var(--dark);
+  letter-spacing: -1px; line-height: 1.15;
+  margin-bottom: 14px;
+}
+.section-sub {
+  font-size: 17px; color: var(--gray);
+  max-width: 520px; margin: 0 auto;
+  line-height: 1.65;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.feature-card {
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-2xl);
+  padding: 32px 28px;
+  transition: box-shadow .25s, transform .25s, background .22s;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+.feature-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+  opacity: 0;
+  transition: opacity .25s;
+  border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+}
+.feature-card:hover { box-shadow: var(--shadow-md); transform: translateY(-5px); background: var(--white); }
+.feature-card:hover::before { opacity: 1; }
+
+.feature-card__icon {
+  width: 52px; height: 52px; border-radius: var(--radius-md);
+  background: var(--primary-light);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
+  transition: background .22s, transform .22s;
+}
+.feature-card:hover .feature-card__icon { background: var(--primary); transform: scale(1.06); }
+.feature-card__icon svg { width: 24px; height: 24px; color: var(--primary); transition: color .22s; }
+.feature-card:hover .feature-card__icon svg { color: #fff; }
+
+.feature-card__title {
+  font-size: 17px; font-weight: 700; color: var(--dark);
+  letter-spacing: -.3px; margin-bottom: 10px;
+}
+.feature-card__desc {
+  font-size: 14px; color: var(--gray);
+  line-height: 1.65;
+}
+.feature-card__tag {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 11.5px; font-weight: 600;
+  color: var(--primary);
+  background: var(--primary-light);
+  border-radius: 50px; padding: 4px 12px;
+}
+
+/* ════════════════════════════════════════
+   EXPLORE SECTION — photo grid
+════════════════════════════════════════ */
+.explore {
+  padding: 80px 0 96px;
+  background: var(--bg);
+}
+
+/* 3-column × 2-row masonry-inspired grid */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 380px 280px;
+  gap: 16px;
+}
+
+.photo-card {
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
+.photo-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform .55s cubic-bezier(.4,0,.2,1), filter .35s;
+  display: block;
+}
+.photo-card:hover img { transform: scale(1.07); filter: brightness(.88); }
+
+/* Hover overlay with destination name */
+.photo-card__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.62) 0%, transparent 55%);
+  border-radius: var(--radius-2xl);
+  opacity: 0;
+  transition: opacity .3s;
+  display: flex; align-items: flex-end;
+  padding: 22px 22px;
+}
+.photo-card:hover .photo-card__overlay { opacity: 1; }
+.photo-card__label { font-size: 15px; font-weight: 700; color: #fff; }
+.photo-card__country { font-size: 12px; color: rgba(255,255,255,.75); margin-top: 2px; }
+
+/* ════════════════════════════════════════
+   CTA BANNER — immersive mid-page
+════════════════════════════════════════ */
+.cta-banner {
+  position: relative;
+  min-height: 400px;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+.cta-banner__bg {
+  position: absolute; inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1600&q=80');
+  background-size: cover; background-position: center;
+}
+.cta-banner__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(26,26,26,.78) 0%, rgba(42,156,200,.68) 100%);
+}
+.cta-banner__content { position: relative; z-index: 2; max-width: 600px; padding: 80px 24px; }
+.cta-banner__title { font-size: clamp(26px,4vw,44px); font-weight: 800; color: #fff; letter-spacing: -1px; line-height: 1.15; margin-bottom: 14px; }
+.cta-banner__sub { font-size: 16px; color: rgba(255,255,255,.8); margin-bottom: 32px; line-height: 1.6; }
+.cta-banner__email-row {
+  display: flex; gap: 10px; max-width: 440px; margin: 0 auto;
+}
+.cta-banner__input {
+  flex: 1; background: rgba(255,255,255,.14); backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(255,255,255,.3);
+  border-radius: 50px; padding: 13px 20px;
+  font-family: 'Inter',sans-serif; font-size: 14px; color: #fff;
+  outline: none;
+  transition: border-color .2s, background .2s;
+}
+.cta-banner__input::placeholder { color: rgba(255,255,255,.55); }
+.cta-banner__input:focus { border-color: var(--primary); background: rgba(255,255,255,.20); }
+.cta-banner__btn {
+  background: var(--primary); color: #fff; border: none;
+  border-radius: 50px; padding: 13px 24px;
+  font-family: 'Inter',sans-serif; font-size: 14px; font-weight: 700;
+  cursor: pointer; white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(64,179,224,.4);
+  transition: background .2s, transform .18s;
+}
+.cta-banner__btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+/* ════════════════════════════════════════
+   REVIEWS SECTION
+════════════════════════════════════════ */
+.reviews {
+  padding: 96px 0 80px;
+  background: var(--white);
+}
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 52px;
+}
+
+.review-card {
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-2xl);
+  padding: 32px 28px;
+  transition: box-shadow .25s, transform .25s;
+  position: relative;
+}
+.review-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); }
+
+/* Large quote mark */
+.review-card::before {
+  content: '"';
+  position: absolute; top: 16px; right: 22px;
+  font-size: 80px; line-height: 1;
+  font-family: Georgia, serif;
+  color: var(--primary);
+  opacity: .12;
+}
+
+.review-card__stars {
+  display: flex; gap: 3px; margin-bottom: 16px;
+}
+.review-card__star { color: #F59E0B; font-size: 14px; }
+
+.review-card__quote {
+  font-size: 15px; color: var(--dark);
+  line-height: 1.75; margin-bottom: 24px;
+  font-weight: 400;
+}
+
+.review-card__author {
+  display: flex; align-items: center; gap: 12px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.review-card__avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  object-fit: cover; flex-shrink: 0;
+  background: var(--primary-light);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 700; color: var(--primary);
+}
+.review-card__name { font-size: 14px; font-weight: 700; color: var(--dark); margin-bottom: 1px; }
+.review-card__country { font-size: 12px; color: var(--gray-light); }
+
+/* ════════════════════════════════════════
+   FOOTER — unchanged
+════════════════════════════════════════ */
+.footer {
+  background: #0f2a3a;
+  padding: 64px 0 40px;
+  text-align: center;
+}
+.footer__logo-wrap {
+  display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 32px;
+}
+.footer__logo-icon {
+  width: 68px; height: 68px; border-radius: 50%;
+  background: rgba(255,255,255,.07);
+  display: flex; align-items: center; justify-content: center; margin: 0 auto;
+}
+.footer__logo-text { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: -.3px; }
+.footer__tagline { font-size: 12px; color: rgba(255,255,255,.38); letter-spacing: .6px; }
+.footer__nav {
+  display: flex; justify-content: center; gap: 28px;
+  margin-bottom: 28px; flex-wrap: wrap;
+}
+.footer__link {
+  font-size: 13px; color: rgba(255,255,255,.5);
+  transition: color .18s;
+}
+.footer__link:hover { color: rgba(255,255,255,.85); }
+.footer__copy { font-size: 13px; color: rgba(255,255,255,.28); }
+
+/* ════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .photo-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: auto; }
+  .reviews-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero__stats { display: none; }
+}
+@media (max-width: 640px) {
+  .container { padding: 0 16px; }
+  .nav__search { display: none; }
+  .features-grid { grid-template-columns: 1fr; }
+  .photo-grid { grid-template-columns: 1fr; }
+  .reviews-grid { grid-template-columns: 1fr; }
+  .cta-banner__email-row { flex-direction: column; }
+  .hero__ctas { flex-direction: column; align-items: center; }
+  .btn-primary, .btn-ghost { width: 100%; max-width: 300px; justify-content: center; }
+}
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     NAV — identical to all project pages
+══════════════════════════════════════ -->
+<header class="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">
+      <div class="nav__logo-icon">V</div>
+      <span class="nav__logo-text">Voyage Planner</span>
+    </a>
+    <div class="nav__links">
+      <a href="my-trips.html" class="nav__link">Мої поїздки</a>
+      <a href="statistics.html" class="nav__link">Статистика</a>
+    </div>
+    <div class="nav__search">
+      <span class="nav__search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+      <input class="nav__search-input" type="search" placeholder="Пошук подорожей..." />
+    </div>
+    <button class="nav__add-btn" onclick="location.href='add-travel.html'">+ Нова подорож</button>
+    <div class="nav__divider"></div>
+    <div class="nav__avatar-wrap">
+      <div class="nav__avatar">АВ</div>
+      <span class="nav__avatar-online"></span>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════
+     HERO — Cinematic full-height
+══════════════════════════════════════ -->
+<section class="hero" id="home">
+  <!-- Background mountain photo -->
+  <div class="hero__bg" id="heroBg"></div>
+  <!-- Gradient overlay -->
+  <div class="hero__overlay"></div>
+  <!-- Bottom fade to white -->
+  <div class="hero__fade"></div>
+
+  <!-- Content -->
+  <div class="hero__content">
+    <div class="hero__eyebrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Ласкаво просимо до БезМеж
+    </div>
+
+    <h1 class="hero__headline">
+      Ваша подорож,
+      <span class="hero__headline-accent">ідеально спланована</span>
+    </h1>
+
+    <p class="hero__sub">
+      Трансформуйте спосіб своїх мандрів з елегантною платформою, створеною для сучасних мандрівників. Плануйте, відстежуйте та зберігайте кожен момент своїх пригод.
+    </p>
+
+    <div class="hero__ctas">
+      <a href="add-travel.html" class="btn-primary">
+        Почати планування
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="my-trips.html" class="btn-ghost">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="10 15 15 12 10 9 10 15"/></svg>
+        Переглянути поїздки
+      </a>
+    </div>
+  </div>
+
+  <!-- Floating stats bar -->
+  <div class="hero__stats">
+    <div class="hero__stat">
+      <div class="hero__stat-val">12 000+</div>
+      <div class="hero__stat-label">Мандрівників</div>
+    </div>
+    <div class="hero__stat">
+      <div class="hero__stat-val">86</div>
+      <div class="hero__stat-label">Країн</div>
+    </div>
+    <div class="hero__stat">
+      <div class="hero__stat-val">340 000+</div>
+      <div class="hero__stat-label">Місць відвідано</div>
+    </div>
+    <div class="hero__stat">
+      <div class="hero__stat-val">4.9 ★</div>
+      <div class="hero__stat-label">Рейтинг</div>
+    </div>
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="hero__scroll">
+    <div class="hero__scroll-ring">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FEATURES SECTION
+══════════════════════════════════════ -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Можливості</div>
+      <h2 class="section-title">Все, що потрібно для<br/>ідеальної подорожі</h2>
+      <p class="section-sub">Від першої ідеї до фінальної фотографії — БезМеж супроводжує кожен крок вашого шляху</p>
+    </div>
+
+    <div class="features-grid">
+
+      <!-- Trip Planning -->
+      <div class="feature-card">
+        <div class="feature-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div class="feature-card__title">Планування поїздок</div>
+        <div class="feature-card__desc">Створюйте детальні маршрути, розподіляйте бюджет та організовуйте дні подорожі в зручному інтерфейсі.</div>
+        <span class="feature-card__tag">→ Мої поїздки</span>
+      </div>
+
+      <!-- Route Tracking -->
+      <div class="feature-card">
+        <div class="feature-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        </div>
+        <div class="feature-card__title">Відстеження маршруту</div>
+        <div class="feature-card__desc">Відмічайте відвідані місця, додавайте нотатки до кожної точки та переглядайте прогрес у реальному часі.</div>
+        <span class="feature-card__tag">→ Місця</span>
+      </div>
+
+      <!-- Bookings -->
+      <div class="feature-card">
+        <div class="feature-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="feature-card__title">Бронювання та місця</div>
+        <div class="feature-card__desc">Зберігайте готелі, ресторани, тури та транспорт в одному місці. Жодного хаосу у вкладках браузера.</div>
+        <span class="feature-card__tag">→ Бронювання</span>
+      </div>
+
+      <!-- Statistics -->
+      <div class="feature-card">
+        <div class="feature-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
+        </div>
+        <div class="feature-card__title">Статистика подорожей</div>
+        <div class="feature-card__desc">Аналізуйте витрати, найпопулярніші країни, ефективність виконання планів та загальний час у дорозі.</div>
+        <span class="feature-card__tag">→ Статистика</span>
+      </div>
+
+      <!-- Photos & Memories -->
+      <div class="feature-card">
+        <div class="feature-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3" ry="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <div class="feature-card__title">Фото та спогади</div>
+        <div class="feature-card__desc">Галерея-масонрі для всіх ваших подорожніх фото з категоріями, лайтбоксом та зручним управлінням.</div>
+        <span class="feature-card__tag">→ Фото</span>
+      </div>
+
+      <!-- Travel Journal -->
+      <div class="feature-card">
+        <div class="feature-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <div class="feature-card__title">Подорожній щоденник</div>
+        <div class="feature-card__desc">Записуйте думки, емоції та відкриття. Автозбереження, редагування та відновлення нотаток у будь-який момент.</div>
+        <span class="feature-card__tag">→ Нотатки</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     EXPLORE THE WORLD — Photo Grid
+══════════════════════════════════════ -->
+<section class="explore" id="explore">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Галерея</div>
+      <h2 class="section-title">Досліджуй світ</h2>
+      <p class="section-sub">Від незайманих пляжів до величних гір — ваша наступна пригода вже чекає</p>
+    </div>
+
+    <div class="photo-grid">
+
+      <!-- Row 1 -->
+      <div class="photo-card">
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=700&q=80" alt="Тропічний пляж" loading="lazy" />
+        <div class="photo-card__overlay">
+          <div>
+            <div class="photo-card__label">Мальдіви</div>
+            <div class="photo-card__country">🏝️ Океанія</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="photo-card">
+        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=700&q=80" alt="Гори на заході сонця" loading="lazy" />
+        <div class="photo-card__overlay">
+          <div>
+            <div class="photo-card__label">Доломіти</div>
+            <div class="photo-card__country">⛰️ Італія</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="photo-card">
+        <img src="https://images.unsplash.com/photo-1514565131-fce0801e6370?w=700&q=80" alt="Місто на річці" loading="lazy" />
+        <div class="photo-card__overlay">
+          <div>
+            <div class="photo-card__label">Будапешт</div>
+            <div class="photo-card__country">🏙️ Угорщина</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="photo-card">
+        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=700&q=80" alt="Зелені гори" loading="lazy" />
+        <div class="photo-card__overlay">
+          <div>
+            <div class="photo-card__label">Аляска</div>
+            <div class="photo-card__country">🏔️ США</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="photo-card">
+        <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=700&q=80" alt="Пальми на пляжі" loading="lazy" />
+        <div class="photo-card__overlay">
+          <div>
+            <div class="photo-card__label">Балі</div>
+            <div class="photo-card__country">🌴 Індонезія</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="photo-card">
+        <img src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=700&q=80" alt="Ейфелева вежа" loading="lazy" />
+        <div class="photo-card__overlay">
+          <div>
+            <div class="photo-card__label">Париж</div>
+            <div class="photo-card__country">🗼 Франція</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     CTA BANNER — Email signup
+══════════════════════════════════════ -->
+<section class="cta-banner" id="start">
+  <div class="cta-banner__bg"></div>
+  <div class="cta-banner__overlay"></div>
+  <div class="cta-banner__content">
+    <h2 class="cta-banner__title">Почніть свою подорож сьогодні</h2>
+    <p class="cta-banner__sub">Приєднуйтесь до 12 000+ мандрівників, які вже планують свої пригоди разом з БезМеж</p>
+    <div class="cta-banner__email-row">
+      <input class="cta-banner__input" type="email" placeholder="Ваш email..." />
+      <button class="cta-banner__btn" onclick="handleSignup()">Спробувати безкоштовно →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     REVIEWS SECTION
+══════════════════════════════════════ -->
+<section class="reviews" id="reviews">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Відгуки</div>
+      <h2 class="section-title">Що кажуть мандрівники</h2>
+      <p class="section-sub">Реальні відгуки від реальних людей, які вже подорожують з нами</p>
+    </div>
+
+    <div class="reviews-grid">
+
+      <div class="review-card">
+        <div class="review-card__stars">
+          <span class="review-card__star">★</span><span class="review-card__star">★</span>
+          <span class="review-card__star">★</span><span class="review-card__star">★</span>
+          <span class="review-card__star">★</span>
+        </div>
+        <p class="review-card__quote">«БезМеж повністю змінила те, як я організовую подорожі. Раніше мав 10 відкритих вкладок — тепер усе в одному місці. Інтерфейс просто бездоганний.»</p>
+        <div class="review-card__author">
+          <div class="review-card__avatar">О</div>
+          <div>
+            <div class="review-card__name">Олена Коваль</div>
+            <div class="review-card__country">🇺🇦 Київ, Україна</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-card__stars">
+          <span class="review-card__star">★</span><span class="review-card__star">★</span>
+          <span class="review-card__star">★</span><span class="review-card__star">★</span>
+          <span class="review-card__star">★</span>
+        </div>
+        <p class="review-card__quote">«Я відвідав 23 країни за 2 роки і жодного разу не загубився в хаосі бронювань. Статистика подорожей — це взагалі окреме задоволення.»</p>
+        <div class="review-card__author">
+          <div class="review-card__avatar">М</div>
+          <div>
+            <div class="review-card__name">Максим Дорошенко</div>
+            <div class="review-card__country">🇺🇦 Львів, Україна</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-card__stars">
+          <span class="review-card__star">★</span><span class="review-card__star">★</span>
+          <span class="review-card__star">★</span><span class="review-card__star">★</span>
+          <span class="review-card__star">★</span>
+        </div>
+        <p class="review-card__quote">«Галерея фото — просто шедевр. Мої спогади з Балі та Греції тепер живуть у прекрасному лайтбоксі. Рекомендую всім, хто любить подорожувати.»</p>
+        <div class="review-card__author">
+          <div class="review-card__avatar">С</div>
+          <div>
+            <div class="review-card__name">Соломія Яремченко</div>
+            <div class="review-card__country">🇺🇦 Одеса, Україна</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-card__stars">
+          <span class="review-card__star">★</span><span class="review-card__star">★</span>
+          <span class="review-card__star">★</span><span class="review-card__star">★</span>
+          <span class="review-card__star">★</span>
+        </div>
+        <p class="review-card__quote">«Список справ для кожної поїздки — рятівник! Ніколи більше не забуваю паспорт, страховку чи зарядник. Система нагадувань працює ідеально.»</p>
+        <div class="review-card__author">
+          <div class="review-card__avatar">А</div>
+          <div>
+            <div class="review-card__name">Андрій Бойко</div>
+            <div class="review-card__country">🇺🇦 Харків, Україна</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-card__stars">
+          <span class="review-card__star">★</span><span class="review-card__star">★</span>
+          <span class="review-card__star">★</span><span class="review-card__star">★</span>
+          <span class="review-card__star">★</span>
+        </div>
+        <p class="review-card__quote">«Подорожній щоденник — це любов з першого погляду. Записую враження просто в телефоні, а потім перечитую і ніби знову переживаю кожну мить.»</p>
+        <div class="review-card__author">
+          <div class="review-card__avatar">І</div>
+          <div>
+            <div class="review-card__name">Ірина Савченко</div>
+            <div class="review-card__country">🇺🇦 Дніпро, Україна</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-card__stars">
+          <span class="review-card__star">★</span><span class="review-card__star">★</span>
+          <span class="review-card__star">★</span><span class="review-card__star">★</span>
+          <span class="review-card__star">★</span>
+        </div>
+        <p class="review-card__quote">«Аналітика витрат допомогла зрозуміти, що я витрачаю забагато на проживання. Завдяки БезМеж наступна поїздка коштуватиме на 30% менше.»</p>
+        <div class="review-card__author">
+          <div class="review-card__avatar">В</div>
+          <div>
+            <div class="review-card__name">Вікторія Лисенко</div>
+            <div class="review-card__country">🇺🇦 Запоріжжя, Україна</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FOOTER — unchanged
+══════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__logo-wrap">
+      <div class="footer__logo-icon">
+        <svg width="36" height="36" viewBox="0 0 42 42" fill="none" aria-hidden="true">
+          <circle cx="21" cy="21" r="19.5" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+          <path d="M10 30 C13 21, 17 18, 21 11 C25 18, 29 21, 32 30" stroke="rgba(255,255,255,.75)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <circle cx="21" cy="11" r="2.2" fill="rgba(255,255,255,.85)"/>
+          <path d="M30 9.5 L33.5 8 L32 11.5" stroke="rgba(255,255,255,.7)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="footer__logo-text">БезМеж</div>
+      <div class="footer__tagline">подорожі без меж</div>
+    </div>
+
+    <div class="footer__nav">
+      <a href="my-trips.html"  class="footer__link">Мої поїздки</a>
+      <a href="statistics.html" class="footer__link">Статистика</a>
+      <a href="add-travel.html" class="footer__link">Нова подорож</a>
+      <a href="#features"       class="footer__link">Можливості</a>
+      <a href="#reviews"        class="footer__link">Відгуки</a>
+    </div>
+
+    <p class="footer__copy">© 2025 БезМеж. Створено з турботою для допитливих мандрівників</p>
+  </div>
+</footer>
+
+<script>
+// Subtle parallax on hero bg
+const heroBg = document.getElementById('heroBg');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  if (heroBg) heroBg.style.transform = `scale(1.04) translateY(${y * 0.25}px)`;
+}, { passive: true });
+
+// Trigger parallax class for initial bg scale
+setTimeout(() => { if(heroBg) heroBg.classList.add('hero__bg--parallax'); }, 100);
+
+// Email signup handler
+function handleSignup() {
+  const input = document.querySelector('.cta-banner__input');
+  const val = input ? input.value.trim() : '';
+  if (!val || !val.includes('@')) {
+    if (input) { input.style.borderColor = '#EF4444'; input.focus(); }
+    return;
+  }
+  if (input) input.style.borderColor = '#27AE60';
+  const btn = document.querySelector('.cta-banner__btn');
+  if (btn) btn.textContent = '✓ Дякуємо!';
+}
+
+// Animate feature cards on scroll (IntersectionObserver)
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(el => {
+    if (el.isIntersecting) {
+      el.target.style.opacity = '1';
+      el.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.feature-card, .review-card, .photo-card').forEach((el, i) => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(24px)';
+  el.style.transition = `opacity .5s ease ${i * 60}ms, transform .5s ease ${i * 60}ms`;
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>

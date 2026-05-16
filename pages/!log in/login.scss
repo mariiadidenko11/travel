@@ -1,0 +1,265 @@
+// ============================================================
+// БезМеж — Login Page SCSS
+// Extends the shared design system (same variables as home & register)
+// ============================================================
+
+// ─── Shared Variables ────────────────────────────────────────
+$primary:      #40B3E0;
+$primary-dark: #2a9cc8;
+$dark:         #1A1A1A;
+$gray:         #757575;
+$gray-light:   #A0A0A0;
+$bg:           #F5F7F9;
+$white:        #FFFFFF;
+$border:       #D9D9D9;
+$input-bg:     #F2F4F6;
+
+$radius-md:    16px;
+$radius-lg:    20px;
+$radius-xl:    28px;
+
+$shadow-card:  0 8px 48px rgba(0,0,0,.10), 0 2px 12px rgba(0,0,0,.06);
+
+$font: 'Inter', sans-serif;
+
+// ─── Reset ───────────────────────────────────────────────────
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: $font;
+  background: $bg;
+  color: $dark;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+}
+
+// ─── Auth wrapper ─────────────────────────────────────────────
+.auth {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  // ── Card ─────────────────────────────────────────────────
+  &__card {
+    width: 100%;
+    background: $white;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-card;
+    padding: 48px 44px 44px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  // ── Logo ─────────────────────────────────────────────────
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 32px;
+    text-decoration: none;
+  }
+
+  &__logo-icon { width: 42px; height: 42px; flex-shrink: 0; }
+
+  &__logo-text {
+    font-size: 26px;
+    font-weight: 700;
+    color: $primary;
+    letter-spacing: -.4px;
+  }
+
+  // ── Heading ──────────────────────────────────────────────
+  &__heading {
+    font-size: 22px;
+    font-weight: 800;
+    color: $dark;
+    text-align: center;
+    margin-bottom: 6px;
+    letter-spacing: -.3px;
+  }
+
+  &__sub {
+    font-size: 15px;
+    color: $gray;
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  // ── Form ─────────────────────────────────────────────────
+  &__form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  // ── Field ────────────────────────────────────────────────
+  &__field {
+    position: relative;
+    width: 100%;
+  }
+
+  &__input {
+    width: 100%;
+    background: $input-bg;
+    border: 1.5px solid transparent;
+    border-radius: $radius-md;
+    padding: 15px 18px;
+    font-family: $font;
+    font-size: 15px;
+    color: $dark;
+    outline: none;
+    transition: border-color .2s, background .2s, box-shadow .2s;
+
+    &::placeholder {
+      color: $gray-light;
+      font-weight: 400;
+    }
+    &:hover   { background: #edf0f3; }
+    &:focus   {
+      background: $white;
+      border-color: $primary;
+      box-shadow: 0 0 0 4px rgba($primary, .12);
+    }
+    &--password { padding-right: 48px; }
+  }
+
+  // ── Eye toggle ────────────────────────────────────────────
+  &__eye {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: $gray-light;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    transition: color .18s;
+    &:hover { color: $primary; }
+    svg { width: 18px; height: 18px; }
+  }
+
+  // ── Row: remember + forgot ────────────────────────────────
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2px;
+  }
+
+  // ── Remember me ──────────────────────────────────────────
+  &__remember {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  &__remember-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border: 1.5px solid $border;
+    border-radius: 6px;
+    background: $white;
+    cursor: pointer;
+    position: relative;
+    transition: border-color .18s, background .18s;
+
+    &:checked {
+      background: $primary;
+      border-color: $primary;
+      &::after {
+        content: '';
+        position: absolute;
+        top: 3px; left: 6px;
+        width: 5px; height: 9px;
+        border: 2px solid $white;
+        border-top: none;
+        border-left: none;
+        transform: rotate(45deg);
+      }
+    }
+    &:focus-visible {
+      box-shadow: 0 0 0 3px rgba($primary, .22);
+      outline: none;
+    }
+  }
+
+  &__remember-label { font-size: 14px; color: $gray; }
+
+  // ── Forgot password ──────────────────────────────────────
+  &__forgot {
+    font-size: 14px;
+    font-weight: 500;
+    color: $primary;
+    text-decoration: none;
+    transition: opacity .18s;
+    &:hover { opacity: .75; text-decoration: underline; }
+  }
+
+  // ── Submit ───────────────────────────────────────────────
+  &__submit {
+    width: 100%;
+    background: $primary;
+    color: $white;
+    border: none;
+    border-radius: $radius-md;
+    padding: 16px;
+    font-family: $font;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s, transform .18s, box-shadow .2s;
+    margin-top: 6px;
+    box-shadow: 0 4px 20px rgba($primary, .35);
+    letter-spacing: .1px;
+
+    &:hover {
+      background: $primary-dark;
+      box-shadow: 0 6px 24px rgba($primary, .45);
+      transform: translateY(-1px);
+    }
+    &:active { transform: translateY(0); }
+  }
+
+  // ── Footer text ──────────────────────────────────────────
+  &__footer-text {
+    margin-top: 24px;
+    font-size: 14px;
+    color: $gray;
+    text-align: center;
+
+    a {
+      color: $primary;
+      font-weight: 600;
+      text-decoration: none;
+      &:hover { text-decoration: underline; }
+    }
+  }
+}
+
+// ─── Responsive ──────────────────────────────────────────────
+@media (max-width: 520px) {
+  .auth__card {
+    padding: 36px 24px 32px;
+    border-radius: $radius-lg;
+  }
+  .auth__logo-text { font-size: 22px; }
+}

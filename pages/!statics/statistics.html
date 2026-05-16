@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>БезМеж — Статистика</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+/* ============================================================
+   БезМеж — Statistics Page · Fully Self-Contained
+   Design system: Inter · #40B3E0 · #F5F7F9 · 20px radius
+   ============================================================ */
+:root {
+  --primary:#40B3E0; --primary-dark:#2a9cc8; --primary-light:#e8f6fc;
+  --dark:#1A1A1A; --gray:#757575; --gray-light:#A0A0A0;
+  --bg:#F5F7F9; --white:#FFFFFF; --border:#D9D9D9;
+  --green:#27AE60; --green-light:#D1FAE5; --green-dark:#065F46;
+  --red:#EF4444; --amber:#F59E0B; --amber-light:#FEF3C7;
+  --purple:#8B5CF6; --purple-light:#EDE9FE;
+  --teal:#14B8A6; --orange:#F97316; --rose:#F43F5E;
+
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px;
+  --shadow-card:0 2px 12px rgba(0,0,0,.07);
+  --shadow-md:0 6px 24px rgba(0,0,0,.10);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--dark);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;}
+img{display:block;max-width:100%;}
+a{text-decoration:none;color:inherit;}
+.container{max-width:1100px;margin:0 auto;padding:0 24px;width:100%;}
+
+/* ═══ NAV ═══════════════════════════════════════════════════ */
+.nav{background:var(--white);border-bottom:1px solid rgba(217,217,217,.5);position:sticky;top:0;z-index:100;}
+.nav__inner{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;align-items:center;height:60px;gap:8px;}
+.nav__logo{display:flex;align-items:center;gap:8px;flex-shrink:0;text-decoration:none;margin-right:16px;}
+.nav__logo-icon{width:32px;height:32px;background:var(--primary);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;}
+.nav__logo-text{font-size:16px;font-weight:700;color:var(--primary);letter-spacing:-.2px;}
+.nav__links{display:flex;align-items:center;gap:4px;flex:1;}
+.nav__link{font-size:14px;font-weight:500;color:var(--dark);padding:7px 14px;border-radius:var(--radius-md);transition:color .18s,background .18s;white-space:nowrap;}
+.nav__link:hover{color:var(--primary);background:var(--primary-light);}
+.nav__link--active{background:var(--primary);color:var(--white);}
+.nav__search{position:relative;flex-shrink:0;}
+.nav__search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--gray-light);pointer-events:none;}
+.nav__search-icon svg{width:14px;height:14px;}
+.nav__search-input{background:var(--bg);border:1.5px solid var(--border);border-radius:50px;padding:8px 14px 8px 32px;font-family:'Inter',sans-serif;font-size:13.5px;color:var(--dark);outline:none;width:180px;transition:border-color .2s,box-shadow .2s;}
+.nav__search-input::placeholder{color:var(--gray-light);}
+.nav__search-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(64,179,224,.10);}
+.nav__add-btn{display:inline-flex;align-items:center;background:var(--primary);color:#fff;border:none;border-radius:50px;padding:8px 18px;font-family:'Inter',sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;white-space:nowrap;box-shadow:0 3px 12px rgba(64,179,224,.28);transition:background .2s,transform .15s;}
+.nav__add-btn:hover{background:var(--primary-dark);transform:translateY(-1px);}
+.nav__divider{width:1px;height:33px;background:#757575;margin:0 6px;flex-shrink:0;opacity:.6;}
+.nav__avatar-wrap{position:relative;flex-shrink:0;}
+.nav__avatar{width:40px;height:40px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;font-weight:700;color:#fff;user-select:none;}
+.nav__avatar-online{position:absolute;top:0;right:0;width:10px;height:10px;border-radius:50%;background:#4BF332;border:2px solid #fff;pointer-events:none;}
+
+/* ═══ PAGE ══════════════════════════════════════════════════ */
+.page{flex:1;padding:32px 0 72px;}
+
+/* ═══ PAGE HEADER ═══════════════════════════════════════════ */
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:16px;}
+.page-header__left{}
+.page-header__title{font-size:28px;font-weight:800;color:var(--dark);letter-spacing:-.5px;margin-bottom:4px;}
+.page-header__sub{font-size:14px;color:var(--gray-light);}
+.page-header__filters{display:flex;align-items:center;gap:8px;}
+.filter-btn{font-family:'Inter',sans-serif;font-size:13px;font-weight:500;color:var(--gray);background:var(--white);border:1.5px solid var(--border);border-radius:50px;padding:7px 16px;cursor:pointer;transition:all .18s;}
+.filter-btn:hover{border-color:var(--primary);color:var(--primary);}
+.filter-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+.filter-sort{display:flex;align-items:center;gap:6px;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;color:var(--gray);background:var(--white);border:1.5px solid var(--border);border-radius:50px;padding:7px 16px;cursor:pointer;}
+.filter-sort svg{width:13px;height:13px;}
+
+/* ═══ SECTION ════════════════════════════════════════════════ */
+.section{margin-bottom:28px;}
+.section-title{font-size:16px;font-weight:700;color:var(--dark);letter-spacing:-.2px;margin-bottom:4px;}
+.section-sub{font-size:12.5px;color:var(--gray-light);margin-bottom:16px;}
+
+/* ═══ STAT CARD (top row) ════════════════════════════════════ */
+.stat-cards{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:28px;}
+.stat-card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);padding:18px 18px 16px;box-shadow:var(--shadow-card);transition:box-shadow .2s,transform .2s;cursor:default;position:relative;}
+.stat-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.stat-card--highlight{background:var(--primary);border-color:var(--primary);}
+.stat-card--highlight .stat-card__label,.stat-card--highlight .stat-card__category,.stat-card--highlight .stat-card__sub{color:rgba(255,255,255,.75);}
+.stat-card--highlight .stat-card__value{color:#fff;}
+.stat-card__category{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--gray-light);margin-bottom:10px;}
+.stat-card__icon-row{display:flex;align-items:center;gap:7px;margin-bottom:8px;}
+.stat-card__icon{width:28px;height:28px;border-radius:var(--radius-sm);background:var(--primary-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.stat-card__icon svg{width:14px;height:14px;color:var(--primary);}
+.stat-card--highlight .stat-card__icon{background:rgba(255,255,255,.18);}
+.stat-card--highlight .stat-card__icon svg{color:#fff;}
+.stat-card__label{font-size:11.5px;color:var(--gray-light);margin-bottom:4px;}
+.stat-card__value{font-size:20px;font-weight:800;color:var(--dark);letter-spacing:-.4px;line-height:1.1;margin-bottom:4px;}
+.stat-card__sub{font-size:11px;color:var(--gray-light);}
+
+/* ═══ GRID 2-COL ═════════════════════════════════════════════ */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;}
+.grid-2--7030{grid-template-columns:minmax(0,1.8fr) minmax(0,1fr);}
+
+/* ═══ CARD ═══════════════════════════════════════════════════ */
+.card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);box-shadow:var(--shadow-card);}
+.card__body{padding:22px 22px 20px;}
+.card__title{font-size:15px;font-weight:700;color:var(--dark);letter-spacing:-.2px;margin-bottom:3px;}
+.card__sub{font-size:12px;color:var(--gray-light);margin-bottom:18px;}
+
+/* ═══ BUDGET CHART ══════════════════════════════════════════ */
+.budget-chart{display:flex;align-items:flex-end;gap:10px;height:200px;margin-top:8px;}
+.bar-group{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.bar-wrap{flex:1;width:100%;display:flex;align-items:flex-end;}
+.bar{width:100%;border-radius:6px 6px 0 0;transition:filter .2s;min-height:4px;}
+.bar:hover{filter:brightness(.88);}
+.bar--primary{background:var(--primary);}
+.bar--low{background:#b8e4f5;}
+.bar--high{background:var(--primary-dark);}
+.bar--mid{background:#5ec9e8;}
+.bar-label{font-size:11px;color:var(--gray-light);text-align:center;white-space:nowrap;}
+.chart-legend{display:flex;align-items:center;gap:14px;margin-top:12px;}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.legend-label{font-size:12px;color:var(--gray);display:flex;align-items:center;gap:5px;}
+.budget-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.budget-tags{display:flex;align-items:center;gap:8px;}
+.budget-tag{font-size:11px;font-weight:600;padding:3px 10px;border-radius:50px;white-space:nowrap;}
+.budget-tag--low{background:#e8f6fc;color:var(--primary-dark);}
+.budget-tag--high{background:#1A1A1A;color:#fff;}
+
+/* Y-axis labels */
+.chart-wrap{display:flex;gap:10px;}
+.chart-y{display:flex;flex-direction:column;justify-content:space-between;padding-bottom:24px;min-width:36px;}
+.chart-y span{font-size:10px;color:var(--gray-light);text-align:right;}
+
+/* ═══ MAP CARD ════════════════════════════════════════════════ */
+.map-card{background:linear-gradient(135deg,#dbeafe 0%,#e0f2fe 50%,#ede9fe 100%);border:1px solid #bfdbfe;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px 24px;min-height:280px;}
+.map-card__icon{width:44px;height:44px;border-radius:50%;background:rgba(64,179,224,.18);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+.map-card__icon svg{width:22px;height:22px;color:var(--primary);}
+.map-card__count{font-size:52px;font-weight:800;color:var(--primary-dark);letter-spacing:-2px;line-height:1;}
+.map-card__count-label{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--gray-light);margin-bottom:20px;}
+.map-card__divider{width:60px;height:1px;background:rgba(64,179,224,.3);margin:0 auto 16px;}
+.map-card__region-label{font-size:11px;color:var(--gray-light);margin-bottom:4px;}
+.map-card__region{font-size:18px;font-weight:800;color:var(--primary-dark);letter-spacing:-.3px;margin-bottom:20px;}
+.map-card__btn{font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;color:var(--primary);background:rgba(64,179,224,.15);border:1.5px solid rgba(64,179,224,.3);border-radius:50px;padding:8px 18px;cursor:pointer;transition:background .18s;}
+.map-card__btn:hover{background:rgba(64,179,224,.25);}
+
+/* Mini world map SVG dots */
+.map-dots{width:100%;max-width:280px;margin:0 auto 20px;opacity:.35;}
+
+/* ═══ COUNTRY INSIGHTS ════════════════════════════════════════ */
+.country-list{display:flex;flex-direction:column;gap:16px;}
+.country-item{}
+.country-item__header{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
+.country-item__left{display:flex;align-items:center;gap:10px;}
+.country-item__num{font-size:11px;font-weight:700;color:var(--gray-light);width:18px;}
+.country-item__name{font-size:14px;font-weight:700;color:var(--dark);}
+.country-item__spend{font-size:14px;font-weight:700;color:var(--primary-dark);}
+.country-item__bar-wrap{height:5px;background:#F0F0F0;border-radius:50px;overflow:hidden;margin-bottom:5px;}
+.country-item__bar{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--primary) 0%,var(--primary-dark) 100%);}
+.country-item__meta{display:flex;align-items:center;gap:14px;}
+.country-meta{font-size:11px;color:var(--gray-light);display:flex;align-items:center;gap:4px;}
+.country-meta svg{width:11px;height:11px;}
+
+/* ═══ ACTIVITY ════════════════════════════════════════════════ */
+.activity-list{display:flex;flex-direction:column;gap:16px;}
+.activity-item__header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.activity-item__name{font-size:13.5px;font-weight:500;color:var(--dark);}
+.activity-item__right{display:flex;align-items:center;gap:10px;}
+.activity-item__spots{font-size:12px;color:var(--gray-light);}
+.activity-item__pct{font-size:13px;font-weight:700;color:var(--primary-dark);}
+.activity-item__bar-wrap{height:6px;background:#F0F0F0;border-radius:50px;overflow:hidden;}
+.activity-item__bar{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--primary) 0%,var(--primary-dark) 100%);transition:width .6s cubic-bezier(.4,0,.2,1);}
+.activity-top{display:flex;align-items:center;justify-content:space-between;background:var(--primary-light);border-radius:var(--radius-md);padding:12px 16px;margin-top:16px;}
+.activity-top__left{display:flex;align-items:center;gap:8px;}
+.activity-top__icon{width:28px;height:28px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;}
+.activity-top__icon svg{width:13px;height:13px;color:#fff;}
+.activity-top__label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--primary-dark);margin-bottom:1px;}
+.activity-top__name{font-size:13px;font-weight:700;color:var(--dark);}
+.activity-top__badge{font-size:12px;font-weight:700;color:var(--green);}
+
+/* ═══ PLACES DONUT ════════════════════════════════════════════ */
+.places-grid{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center;}
+.donut-wrap{position:relative;width:120px;height:120px;flex-shrink:0;}
+.donut-wrap svg{width:120px;height:120px;}
+.donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.donut-center__num{font-size:18px;font-weight:800;color:var(--dark);line-height:1;}
+.donut-center__label{font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--gray-light);}
+.places-legend{display:flex;flex-direction:column;gap:8px;}
+.places-legend-top{margin-bottom:12px;}
+.places-legend-top__label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--gray-light);margin-bottom:2px;}
+.places-legend-top__name{display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:700;color:var(--dark);}
+.places-legend-top__name svg{width:14px;height:14px;color:var(--primary);}
+.legend-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.legend-dot-lg{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.legend-name{font-size:12.5px;color:var(--gray);flex:1;}
+.legend-count{font-size:12.5px;font-weight:600;color:var(--dark);}
+
+/* ═══ EFFICIENCY ══════════════════════════════════════════════ */
+.efficiency-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+.eff-card{display:flex;align-items:center;gap:14px;background:var(--bg);border-radius:var(--radius-md);padding:14px 16px;}
+.eff-score-ring{flex-shrink:0;position:relative;width:44px;height:44px;}
+.eff-score-ring svg{width:44px;height:44px;}
+.eff-score-value{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--dark);}
+.eff-card__name{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:2px;}
+.eff-card__sub{font-size:11.5px;color:var(--gray-light);}
+.eff-avg-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding-top:16px;border-top:1px solid var(--border);}
+.eff-avg__label{font-size:11px;color:var(--gray-light);margin-bottom:3px;}
+.eff-avg__val{font-size:22px;font-weight:800;color:var(--dark);}
+
+/* ═══ TRAVEL TIME ════════════════════════════════════════════ */
+.travel-time-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+.time-stat{}
+.time-stat__label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--gray-light);margin-bottom:4px;}
+.time-stat__val{font-size:22px;font-weight:800;color:var(--dark);letter-spacing:-.4px;line-height:1;margin-bottom:2px;}
+.time-stat__sub{font-size:11px;color:var(--gray-light);}
+.time-avg-bar-wrap{margin-bottom:10px;}
+.time-avg-label{font-size:12px;color:var(--gray);margin-bottom:6px;}
+.time-bar{height:5px;background:#F0F0F0;border-radius:50px;overflow:hidden;}
+.time-bar__fill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--primary) 0%,var(--primary-dark) 100%);width:52%;}
+.time-avg-val{font-size:13px;font-weight:700;color:var(--dark);margin-top:6px;}
+
+/* Sparkline mini */
+.sparkline{margin-top:12px;height:40px;}
+.sparkline svg{width:100%;height:40px;}
+
+/* ═══ BOOKINGS OVERVIEW ══════════════════════════════════════ */
+.bookings-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.booking-stat{display:flex;flex-direction:column;gap:4px;}
+.booking-stat__icon{width:32px;height:32px;border-radius:var(--radius-sm);background:var(--primary-light);display:flex;align-items:center;justify-content:center;margin-bottom:6px;}
+.booking-stat__icon svg{width:15px;height:15px;color:var(--primary);}
+.booking-stat__val{font-size:22px;font-weight:800;color:var(--dark);letter-spacing:-.4px;line-height:1;}
+.booking-stat__label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--gray-light);}
+.booking-most{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--border);}
+.booking-most__label{font-size:12px;color:var(--gray-light);}
+.booking-most__val{font-size:13px;font-weight:700;color:var(--dark);display:flex;align-items:center;gap:5px;}
+.booking-most__val svg{width:13px;height:13px;color:var(--primary);}
+
+/* ═══ SPENDING BREAKDOWN ════════════════════════════════════ */
+.spend-bar-track{height:14px;border-radius:50px;overflow:hidden;display:flex;margin-bottom:16px;}
+.spend-bar-seg{height:100%;transition:width .5s;}
+.spend-legend{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;margin-bottom:14px;}
+.spend-legend-item{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--gray);}
+.spend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.spend-pct{font-weight:700;color:var(--dark);margin-left:auto;}
+.spend-insight{display:flex;align-items:center;gap:8px;background:var(--primary-light);border-radius:var(--radius-md);padding:10px 14px;}
+.spend-insight__icon{width:26px;height:26px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.spend-insight__icon svg{width:12px;height:12px;color:#fff;}
+.spend-insight__label{font-size:12px;color:var(--gray-light);flex:1;}
+.spend-insight__badge{font-size:12px;font-weight:700;color:var(--green);white-space:nowrap;}
+
+/* ═══ TRAVEL IDENTITY ════════════════════════════════════════ */
+.identity-card{background:linear-gradient(135deg,#1e3a5f 0%,#0f2a3a 100%);border-radius:var(--radius-lg);padding:24px;margin-bottom:28px;}
+.identity-card__title{font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;}
+.identity-card__sub{font-size:12px;color:rgba(255,255,255,.5);margin-bottom:20px;}
+.identity-tags{display:flex;flex-wrap:wrap;gap:8px;}
+.identity-tag{font-size:12px;font-weight:600;padding:5px 13px;border-radius:50px;background:rgba(255,255,255,.10);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.15);}
+.identity-tag--primary{background:var(--primary);color:#fff;border-color:var(--primary);}
+
+/* ═══ BOTTOM 3-COL ═══════════════════════════════════════════ */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:28px;}
+
+/* ═══ FOOTER ════════════════════════════════════════════════ */
+.footer{background:#0f2a3a;padding:48px 0 28px;text-align:center;margin-top:auto;}
+.footer__logo{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:24px;}
+.footer__logo-icon{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;margin:0 auto;}
+.footer__logo-text{font-size:18px;font-weight:700;color:#fff;letter-spacing:-.3px;}
+.footer__tagline{font-size:11px;color:rgba(255,255,255,.36);letter-spacing:.6px;}
+.footer__copy{font-size:13px;color:rgba(255,255,255,.28);}
+
+/* ═══ RESPONSIVE ════════════════════════════════════════════ */
+@media(max-width:1000px){.stat-cards{grid-template-columns:repeat(3,1fr);}.grid-2,.grid-2--7030{grid-template-columns:1fr;}.grid-3{grid-template-columns:1fr 1fr;}}
+@media(max-width:640px){.container{padding:0 16px;}.stat-cards{grid-template-columns:repeat(2,1fr);}.nav__search{display:none;}.grid-3{grid-template-columns:1fr;}.efficiency-grid{grid-template-columns:1fr;}.travel-time-row{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAV ═════════════════════════════════════════════════ -->
+<header class="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">
+      <div class="nav__logo-icon">V</div>
+      <span class="nav__logo-text">Voyage Planner</span>
+    </a>
+    <div class="nav__links">
+      <a href="my-trips.html" class="nav__link">Мої поїздки</a>
+      <a href="statistics.html" class="nav__link nav__link--active">Статистика</a>
+    </div>
+    <div class="nav__search">
+      <span class="nav__search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+      <input class="nav__search-input" type="search" placeholder="Пошук подорожей..." />
+    </div>
+    <button class="nav__add-btn">+ Нова подорож</button>
+    <div class="nav__divider"></div>
+    <div class="nav__avatar-wrap">
+      <div class="nav__avatar">АВ</div>
+      <span class="nav__avatar-online"></span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ MAIN ════════════════════════════════════════════════ -->
+<main class="page">
+  <div class="container">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header__left">
+        <h1 class="page-header__title">Статистика</h1>
+        <p class="page-header__sub">Ваші подорожі у цифрах і деталях</p>
+      </div>
+      <div class="page-header__filters">
+        <button class="filter-btn active" onclick="setFilter(this)">Весь час</button>
+        <button class="filter-btn" onclick="setFilter(this)">Минулий рік</button>
+        <button class="filter-btn" onclick="setFilter(this)">6 місяців</button>
+        <button class="filter-sort">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+          Сортування
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ GLOBAL SUMMARY CARDS ═══ -->
+    <div class="stat-cards">
+
+      <div class="stat-card">
+        <div class="stat-card__category">Аналітика</div>
+        <div class="stat-card__icon-row">
+          <div class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        </div>
+        <div class="stat-card__label">Найбільші витрати</div>
+        <div class="stat-card__value">Японія</div>
+        <div class="stat-card__sub">Сер. $283/день</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card__category">Аналітика</div>
+        <div class="stat-card__icon-row">
+          <div class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
+        </div>
+        <div class="stat-card__label">Найбільше місць</div>
+        <div class="stat-card__value">Греція</div>
+        <div class="stat-card__sub">54 унікальні місця</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card__category">Аналітика</div>
+        <div class="stat-card__icon-row">
+          <div class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
+        </div>
+        <div class="stat-card__label">Часте повернення</div>
+        <div class="stat-card__value">Токіо</div>
+        <div class="stat-card__sub">3 поїздки цього року</div>
+      </div>
+
+      <div class="stat-card stat-card--highlight">
+        <div class="stat-card__category">Аналітика</div>
+        <div class="stat-card__icon-row">
+          <div class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        </div>
+        <div class="stat-card__label">Найкраща поїздка</div>
+        <div class="stat-card__value">Санторіні</div>
+        <div class="stat-card__sub">$4500 загалом</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card__category">Аналітика</div>
+        <div class="stat-card__icon-row">
+          <div class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        </div>
+        <div class="stat-card__label">Найактивніша</div>
+        <div class="stat-card__value">Балі</div>
+        <div class="stat-card__sub">82% виконання</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card__category">Аналітика</div>
+        <div class="stat-card__icon-row">
+          <div class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        </div>
+        <div class="stat-card__label">Всього днів</div>
+        <div class="stat-card__value">82 дні</div>
+        <div class="stat-card__sub">Across 14 trips</div>
+      </div>
+
+    </div>
+
+    <!-- ═══ TRAVEL IDENTITY ═══ -->
+    <div class="identity-card">
+      <div class="identity-card__title">🧭 Ваш профіль мандрівника</div>
+      <div class="identity-card__sub">Персоналізовані висновки на основі ваших подорожей</div>
+      <div class="identity-tags">
+        <span class="identity-tag identity-tag--primary">🏙️ Міський дослідник</span>
+        <span class="identity-tag">🍽️ Гастро-туристика</span>
+        <span class="identity-tag">📸 Фотограф-мандрівник</span>
+        <span class="identity-tag">🏨 Люблять готелі</span>
+        <span class="identity-tag">✈️ Часті перельоти</span>
+        <span class="identity-tag">🌅 Захід сонця hunter</span>
+        <span class="identity-tag">💡 Спонтанний плановик</span>
+      </div>
+    </div>
+
+    <!-- ═══ BUDGET ANALYTICS + MAP ═══ -->
+    <div class="grid-2 grid-2--7030">
+
+      <!-- Budget chart -->
+      <div class="card">
+        <div class="card__body">
+          <div class="budget-header-row">
+            <div>
+              <div class="card__title">Бюджетна аналітика</div>
+              <div class="card__sub" style="margin-bottom:0">Порівняння витрат по поїздках</div>
+            </div>
+            <div class="budget-tags">
+              <span class="budget-tag budget-tag--low">Мін: Балі</span>
+              <span class="budget-tag budget-tag--high">Макс: Токіо</span>
+            </div>
+          </div>
+
+          <div class="chart-wrap" style="margin-top:16px;">
+            <div class="chart-y">
+              <span>4500</span>
+              <span>3375</span>
+              <span>2250</span>
+              <span>1125</span>
+              <span>0</span>
+            </div>
+            <div style="flex:1;">
+              <div class="budget-chart" id="budgetChart">
+                <div class="bar-group">
+                  <div class="bar-wrap"><div class="bar bar--high" style="height:88%;" title="Токіо: $4200"></div></div>
+                  <div class="bar-label">Токіо, JP</div>
+                </div>
+                <div class="bar-group">
+                  <div class="bar-wrap"><div class="bar bar--mid" style="height:72%;" title="Амалфі: $3400"></div></div>
+                  <div class="bar-label">Амалфі, IT</div>
+                </div>
+                <div class="bar-group">
+                  <div class="bar-wrap"><div class="bar bar--low" style="height:26%;" title="Балі: $1200"></div></div>
+                  <div class="bar-label">Балі, ID</div>
+                </div>
+                <div class="bar-group">
+                  <div class="bar-wrap"><div class="bar bar--primary" style="height:55%;" title="Париж: $2600"></div></div>
+                  <div class="bar-label">Париж, FR</div>
+                </div>
+                <div class="bar-group">
+                  <div class="bar-wrap"><div class="bar bar--high" style="height:95%;" title="Санторіні: $4500"></div></div>
+                  <div class="bar-label">Санторіні</div>
+                </div>
+                <div class="bar-group">
+                  <div class="bar-wrap"><div class="bar bar--mid" style="height:42%;" title="Лісабон: $2000"></div></div>
+                  <div class="bar-label">Лісабон, PT</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map card -->
+      <div class="card map-card">
+        <div class="map-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div class="map-card__count">12</div>
+        <div class="map-card__count-label">Країн відвідано</div>
+        <div class="map-card__divider"></div>
+        <div class="map-card__region-label">Найпопулярніший регіон</div>
+        <div class="map-card__region">Західна Європа</div>
+        <button class="map-card__btn">Переглянути на карті →</button>
+      </div>
+
+    </div>
+
+    <!-- ═══ COUNTRY INSIGHTS + ACTIVITY ═══ -->
+    <div class="grid-2">
+
+      <!-- Country insights -->
+      <div class="card">
+        <div class="card__body">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+            <div class="card__title">Інсайти по країнах</div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--gray-light)" stroke-width="1.5" stroke-linecap="round" style="width:18px;height:18px;cursor:pointer;"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <div class="card__sub">Зведені показники по країнах</div>
+
+          <div class="country-list">
+            <div class="country-item">
+              <div class="country-item__header">
+                <div class="country-item__left"><span class="country-item__num">01</span><span class="country-item__name">Японія</span></div>
+                <span class="country-item__spend">$6 800</span>
+              </div>
+              <div class="country-item__bar-wrap"><div class="country-item__bar" style="width:100%"></div></div>
+              <div class="country-item__meta">
+                <span class="country-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>28 місць</span>
+                <span class="country-meta">☀️ 24 дні</span>
+                <span class="country-meta">✈️ 2 поїздки</span>
+              </div>
+            </div>
+            <div class="country-item">
+              <div class="country-item__header">
+                <div class="country-item__left"><span class="country-item__num">02</span><span class="country-item__name">Греція</span></div>
+                <span class="country-item__spend">$5 200</span>
+              </div>
+              <div class="country-item__bar-wrap"><div class="country-item__bar" style="width:76%"></div></div>
+              <div class="country-item__meta">
+                <span class="country-meta">📍 34 місця</span>
+                <span class="country-meta">☀️ 19 днів</span>
+                <span class="country-meta">✈️ 3 поїздки</span>
+              </div>
+            </div>
+            <div class="country-item">
+              <div class="country-item__header">
+                <div class="country-item__left"><span class="country-item__num">03</span><span class="country-item__name">Португалія</span></div>
+                <span class="country-item__spend">$2 100</span>
+              </div>
+              <div class="country-item__bar-wrap"><div class="country-item__bar" style="width:31%"></div></div>
+              <div class="country-item__meta">
+                <span class="country-meta">📍 14 місць</span>
+                <span class="country-meta">☀️ 10 днів</span>
+                <span class="country-meta">✈️ 1 поїздка</span>
+              </div>
+            </div>
+            <div class="country-item">
+              <div class="country-item__header">
+                <div class="country-item__left"><span class="country-item__num">04</span><span class="country-item__name">Індонезія</span></div>
+                <span class="country-item__spend">$1 500</span>
+              </div>
+              <div class="country-item__bar-wrap"><div class="country-item__bar" style="width:22%"></div></div>
+              <div class="country-item__meta">
+                <span class="country-meta">📍 19 місць</span>
+                <span class="country-meta">☀️ 21 день</span>
+                <span class="country-meta">✈️ 1 поїздка</span>
+              </div>
+            </div>
+            <div class="country-item">
+              <div class="country-item__header">
+                <div class="country-item__left"><span class="country-item__num">05</span><span class="country-item__name">Франція</span></div>
+                <span class="country-item__spend">$4 400</span>
+              </div>
+              <div class="country-item__bar-wrap"><div class="country-item__bar" style="width:65%"></div></div>
+              <div class="country-item__meta">
+                <span class="country-meta">📍 22 місця</span>
+                <span class="country-meta">☀️ 12 днів</span>
+                <span class="country-meta">✈️ 2 поїздки</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity overview -->
+      <div class="card">
+        <div class="card__body">
+          <div class="card__title">Огляд активності</div>
+          <div class="card__sub">Планові vs фактичні місця по поїздках</div>
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="activity-item__header">
+                <span class="activity-item__name">Санторіні</span>
+                <div class="activity-item__right">
+                  <span class="activity-item__spots">14/16 місць</span>
+                  <span class="activity-item__pct">87.5%</span>
+                </div>
+              </div>
+              <div class="activity-item__bar-wrap"><div class="activity-item__bar" style="width:87.5%"></div></div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-item__header">
+                <span class="activity-item__name">Токіо</span>
+                <div class="activity-item__right">
+                  <span class="activity-item__spots">28/30 місць</span>
+                  <span class="activity-item__pct">93.3%</span>
+                </div>
+              </div>
+              <div class="activity-item__bar-wrap"><div class="activity-item__bar" style="width:93.3%"></div></div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-item__header">
+                <span class="activity-item__name">Балі</span>
+                <div class="activity-item__right">
+                  <span class="activity-item__spots">12/20 місць</span>
+                  <span class="activity-item__pct">60%</span>
+                </div>
+              </div>
+              <div class="activity-item__bar-wrap"><div class="activity-item__bar" style="width:60%;background:linear-gradient(90deg,var(--amber) 0%,#d97706 100%)"></div></div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-item__header">
+                <span class="activity-item__name">Амалфі</span>
+                <div class="activity-item__right">
+                  <span class="activity-item__spots">8/8 місць</span>
+                  <span class="activity-item__pct">100%</span>
+                </div>
+              </div>
+              <div class="activity-item__bar-wrap"><div class="activity-item__bar" style="width:100%;background:linear-gradient(90deg,var(--green) 0%,#1e8a4a 100%)"></div></div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-item__header">
+                <span class="activity-item__name">Лісабон</span>
+                <div class="activity-item__right">
+                  <span class="activity-item__spots">11/14 місць</span>
+                  <span class="activity-item__pct">78.6%</span>
+                </div>
+              </div>
+              <div class="activity-item__bar-wrap"><div class="activity-item__bar" style="width:78.6%"></div></div>
+            </div>
+          </div>
+
+          <div class="activity-top">
+            <div class="activity-top__left">
+              <div class="activity-top__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+              </div>
+              <div>
+                <div class="activity-top__label">Топ виконавець</div>
+                <div class="activity-top__name">Амалфі</div>
+              </div>
+            </div>
+            <span class="activity-top__badge">100% ефективність</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══ PLACES + EFFICIENCY ═══ -->
+    <div class="grid-2">
+
+      <!-- Places analytics (donut) -->
+      <div class="card">
+        <div class="card__body">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px;">
+            <div>
+              <div class="card__title">Аналітика місць</div>
+              <div class="card__sub" style="margin-bottom:0">По категоріях</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--gray-light);margin-bottom:2px;">Всього місць</div>
+              <div style="font-size:24px;font-weight:800;color:var(--dark);letter-spacing:-.5px;">154</div>
+            </div>
+          </div>
+
+          <div class="places-grid" style="margin-top:20px;">
+            <div class="donut-wrap">
+              <svg viewBox="0 0 120 120">
+                <!-- Donut segments (strokeDasharray trick) -->
+                <!-- Total circumference at r=45: 2π×45≈282.7 -->
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#F0F0F0" stroke-width="16"/>
+                <!-- Restaurants 42/154=27.3% → 77.2 -->
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#F97316" stroke-width="16" stroke-dasharray="77.2 205.5" stroke-dashoffset="0" stroke-linecap="butt"/>
+                <!-- Beaches 18/154=11.7% → 33.1 -->
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#40B3E0" stroke-width="16" stroke-dasharray="33.1 249.6" stroke-dashoffset="-77.2" stroke-linecap="butt"/>
+                <!-- Museums 15/154=9.7% → 27.6 -->
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#1A1A1A" stroke-width="16" stroke-dasharray="27.6 255.1" stroke-dashoffset="-110.3" stroke-linecap="butt"/>
+                <!-- Nightlife 24/154=15.6% → 44.1 -->
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#8B5CF6" stroke-width="16" stroke-dasharray="44.1 238.6" stroke-dashoffset="-137.9" stroke-linecap="butt"/>
+                <!-- Nature 31/154=20.1% → 56.9 -->
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#27AE60" stroke-width="16" stroke-dasharray="56.9 225.8" stroke-dashoffset="-182" stroke-linecap="butt"/>
+                <!-- Other -->
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#F59E0B" stroke-width="16" stroke-dasharray="44" stroke-dashoffset="-238.9" stroke-linecap="butt"/>
+              </svg>
+              <div class="donut-center">
+                <div class="donut-center__num">154</div>
+                <div class="donut-center__label">Місця</div>
+              </div>
+            </div>
+
+            <div class="places-legend">
+              <div class="places-legend-top">
+                <div class="places-legend-top__label">Топ категорія</div>
+                <div class="places-legend-top__name">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+                  Ресторани
+                </div>
+              </div>
+              <div class="legend-row"><span class="legend-dot-lg" style="background:#F97316"></span><span class="legend-name">Ресторани</span><span class="legend-count">42</span></div>
+              <div class="legend-row"><span class="legend-dot-lg" style="background:#40B3E0"></span><span class="legend-name">Пляжі</span><span class="legend-count">18</span></div>
+              <div class="legend-row"><span class="legend-dot-lg" style="background:#1A1A1A"></span><span class="legend-name">Музеї</span><span class="legend-count">15</span></div>
+              <div class="legend-row"><span class="legend-dot-lg" style="background:#8B5CF6"></span><span class="legend-name">Нічне життя</span><span class="legend-count">24</span></div>
+              <div class="legend-row"><span class="legend-dot-lg" style="background:#27AE60"></span><span class="legend-name">Природа</span><span class="legend-count">31</span></div>
+              <div class="legend-row"><span class="legend-dot-lg" style="background:#F59E0B"></span><span class="legend-name">Інше</span><span class="legend-count">24</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Efficiency score -->
+      <div class="card">
+        <div class="card__body">
+          <div class="card__title">Ефективність</div>
+          <div class="card__sub">Виконання завдань і логістика</div>
+
+          <div class="efficiency-grid">
+            <div class="eff-card">
+              <div class="eff-score-ring">
+                <svg viewBox="0 0 44 44">
+                  <circle cx="22" cy="22" r="18" fill="none" stroke="#F0F0F0" stroke-width="4"/>
+                  <circle cx="22" cy="22" r="18" fill="none" stroke="#27AE60" stroke-width="4"
+                    stroke-dasharray="113.1" stroke-dashoffset="0" stroke-linecap="round"
+                    transform="rotate(-90 22 22)"/>
+                </svg>
+                <div class="eff-score-value">98</div>
+              </div>
+              <div>
+                <div class="eff-card__name">Амалфі</div>
+                <div class="eff-card__sub">100% виконано</div>
+              </div>
+            </div>
+            <div class="eff-card">
+              <div class="eff-score-ring">
+                <svg viewBox="0 0 44 44">
+                  <circle cx="22" cy="22" r="18" fill="none" stroke="#F0F0F0" stroke-width="4"/>
+                  <circle cx="22" cy="22" r="18" fill="none" stroke="var(--primary)" stroke-width="4"
+                    stroke-dasharray="104" stroke-dashoffset="9" stroke-linecap="round"
+                    transform="rotate(-90 22 22)"/>
+                </svg>
+                <div class="eff-score-value">92</div>
+              </div>
+              <div>
+                <div class="eff-card__name">Токіо</div>
+                <div class="eff-card__sub">95% виконано</div>
+              </div>
+            </div>
+            <div class="eff-card">
+              <div class="eff-score-ring">
+                <svg viewBox="0 0 44 44">
+                  <circle cx="22" cy="22" r="18" fill="none" stroke="#F0F0F0" stroke-width="4"/>
+                  <circle cx="22" cy="22" r="18" fill="none" stroke="#F59E0B" stroke-width="4"
+                    stroke-dasharray="95" stroke-dashoffset="18" stroke-linecap="round"
+                    transform="rotate(-90 22 22)"/>
+                </svg>
+                <div class="eff-score-value">84</div>
+              </div>
+              <div>
+                <div class="eff-card__name">Санторіні</div>
+                <div class="eff-card__sub">88% виконано</div>
+              </div>
+            </div>
+            <div class="eff-card">
+              <div class="eff-score-ring">
+                <svg viewBox="0 0 44 44">
+                  <circle cx="22" cy="22" r="18" fill="none" stroke="#F0F0F0" stroke-width="4"/>
+                  <circle cx="22" cy="22" r="18" fill="none" stroke="var(--amber)" stroke-width="4"
+                    stroke-dasharray="77" stroke-dashoffset="36" stroke-linecap="round"
+                    transform="rotate(-90 22 22)"/>
+                </svg>
+                <div class="eff-score-value">68</div>
+              </div>
+              <div>
+                <div class="eff-card__name">Балі</div>
+                <div class="eff-card__sub">72% виконано</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="eff-avg-row">
+            <div class="eff-avg">
+              <div class="eff-avg__label">Середній бал</div>
+              <div class="eff-avg__val">85.5</div>
+            </div>
+            <div class="eff-avg">
+              <div class="eff-avg__label">Стабільність</div>
+              <div class="eff-avg__val" style="font-size:18px;">Висока ✓</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══ TRAVEL TIME + BOOKINGS + SPENDING ═══ -->
+    <div class="grid-3">
+
+      <!-- Travel Time -->
+      <div class="card">
+        <div class="card__body">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span class="card__title" style="margin:0;">Час у дорозі</span>
+          </div>
+          <div class="card__sub">Тривалість поїздок</div>
+
+          <div class="travel-time-row">
+            <div class="time-stat">
+              <div class="time-stat__label">Найдовша</div>
+              <div class="time-stat__val">14 Днів</div>
+              <div class="time-stat__sub">Токіо, JP</div>
+            </div>
+            <div class="time-stat">
+              <div class="time-stat__label">Найкоротша</div>
+              <div class="time-stat__val">3 Дні</div>
+              <div class="time-stat__sub">Лісабон, PT</div>
+            </div>
+          </div>
+
+          <div class="time-avg-bar-wrap">
+            <div class="time-avg-label">Середня тривалість поїздки</div>
+            <div class="time-bar"><div class="time-bar__fill"></div></div>
+            <div class="time-avg-val">7.2 Дні</div>
+          </div>
+
+          <div class="sparkline">
+            <svg viewBox="0 0 200 40" preserveAspectRatio="none">
+              <polyline fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                points="0,32 33,20 66,28 100,8 133,16 166,24 200,12"/>
+              <polyline fill="rgba(64,179,224,.1)" stroke="none"
+                points="0,40 0,32 33,20 66,28 100,8 133,16 166,24 200,12 200,40"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bookings Overview -->
+      <div class="card">
+        <div class="card__body">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span class="card__title" style="margin:0;">Огляд бронювань</span>
+          </div>
+          <div class="card__sub">По категоріях</div>
+
+          <div class="bookings-grid">
+            <div class="booking-stat">
+              <div class="booking-stat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+              <div class="booking-stat__val">18</div>
+              <div class="booking-stat__label">Проживання</div>
+            </div>
+            <div class="booking-stat">
+              <div class="booking-stat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.63 3.5 2 2 0 0 1 3.6 1.32h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6"/></svg></div>
+              <div class="booking-stat__val">12</div>
+              <div class="booking-stat__label">Транспорт</div>
+            </div>
+            <div class="booking-stat">
+              <div class="booking-stat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
+              <div class="booking-stat__val">45</div>
+              <div class="booking-stat__label">Ресторани</div>
+            </div>
+            <div class="booking-stat">
+              <div class="booking-stat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+              <div class="booking-stat__val">32</div>
+              <div class="booking-stat__label">Активності</div>
+            </div>
+          </div>
+
+          <div class="booking-most">
+            <span class="booking-most__label">Найчастіша категорія</span>
+            <span class="booking-most__val">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>
+              Харчування
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spending Breakdown -->
+      <div class="card">
+        <div class="card__body">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <span class="card__title" style="margin:0;">Розбивка витрат</span>
+          </div>
+          <div class="card__sub">По категоріях</div>
+
+          <!-- Stacked bar -->
+          <div class="spend-bar-track">
+            <div class="spend-bar-seg" style="width:45%;background:var(--primary-dark);"></div>
+            <div class="spend-bar-seg" style="width:25%;background:var(--primary);"></div>
+            <div class="spend-bar-seg" style="width:20%;background:var(--amber);"></div>
+            <div class="spend-bar-seg" style="width:10%;background:var(--green);"></div>
+          </div>
+
+          <div class="spend-legend">
+            <div class="spend-legend-item">
+              <span class="spend-dot" style="background:var(--primary-dark);"></span>
+              <span>Проживання</span>
+              <span class="spend-pct">45%</span>
+            </div>
+            <div class="spend-legend-item">
+              <span class="spend-dot" style="background:var(--primary);"></span>
+              <span>Транспорт</span>
+              <span class="spend-pct">25%</span>
+            </div>
+            <div class="spend-legend-item">
+              <span class="spend-dot" style="background:var(--amber);"></span>
+              <span>Харчування</span>
+              <span class="spend-pct">20%</span>
+            </div>
+            <div class="spend-legend-item">
+              <span class="spend-dot" style="background:var(--green);"></span>
+              <span>Розваги</span>
+              <span class="spend-pct">10%</span>
+            </div>
+          </div>
+
+          <div class="spend-insight">
+            <div class="spend-insight__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <span class="spend-insight__label">Витрати на розваги</span>
+            <span class="spend-insight__badge">↓ Зменшились на 5%</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</main>
+
+<!-- ═══ FOOTER ══════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__logo">
+      <div class="footer__logo-icon">
+        <svg width="32" height="32" viewBox="0 0 42 42" fill="none">
+          <circle cx="21" cy="21" r="19.5" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+          <path d="M10 30 C13 21, 17 18, 21 11 C25 18, 29 21, 32 30" stroke="rgba(255,255,255,.75)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <circle cx="21" cy="11" r="2.2" fill="rgba(255,255,255,.85)"/>
+        </svg>
+      </div>
+      <div class="footer__logo-text">БезМеж</div>
+      <div class="footer__tagline">подорожі без меж</div>
+    </div>
+    <p class="footer__copy">© 2025 БезМеж. Всі дані подорожей зашифровані та захищені.</p>
+  </div>
+</footer>
+
+<script>
+// Filter buttons
+function setFilter(btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// Animate bars on load
+window.addEventListener('load', () => {
+  document.querySelectorAll('.activity-item__bar, .country-item__bar').forEach(bar => {
+    const w = bar.style.width;
+    bar.style.width = '0';
+    setTimeout(() => { bar.style.transition = 'width .8s cubic-bezier(.4,0,.2,1)'; bar.style.width = w; }, 200);
+  });
+});
+</script>
+</body>
+</html>

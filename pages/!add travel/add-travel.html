@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>БезМеж — Створити нову подорож</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+/* ============================================================
+   БезМеж — Add Travel Page CSS
+   Shared design system — consistent with all pages
+   ============================================================ */
+
+/* ─── Design Tokens ─────────────────────────────────────────── */
+:root {
+  --primary:       #40B3E0;
+  --primary-dark:  #2a9cc8;
+  --primary-light: #e8f6fc;
+  --dark:          #1A1A1A;
+  --gray:          #757575;
+  --gray-light:    #A0A0A0;
+  --bg:            #F5F7F9;
+  --white:         #FFFFFF;
+  --border:        #D9D9D9;
+  --input-bg:      #F7F8FA;
+  --radius-sm:     8px;
+  --radius-md:     12px;
+  --radius-lg:     16px;
+  --radius-xl:     20px;
+  --shadow-sm:     0 2px 8px rgba(0,0,0,.06);
+  --shadow-card:   0 8px 40px rgba(0,0,0,.10);
+}
+
+/* ─── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--dark);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+img { display: block; max-width: 100%; }
+a   { text-decoration: none; color: inherit; }
+
+/* ─── Container ─────────────────────────────────────────────── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+  width: 100%;
+}
+
+/* ─── Form wrap (narrower centering) ────────────────────────── */
+.form-wrap {
+  max-width: 660px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ════════════════════════════════════════
+   NAV
+════════════════════════════════════════ */
+.nav {
+  background: var(--white);
+  border-bottom: 1px solid rgba(217,217,217,.5);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  gap: 12px;
+}
+.nav__logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+.nav__logo-icon { width: 32px; height: 32px; }
+.nav__logo-text { font-size: 17px; font-weight: 700; color: var(--dark); letter-spacing: -.3px; }
+.nav__actions   { display: flex; align-items: center; gap: 2px; }
+.nav__link {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--dark);
+  padding: 8px 14px;
+  border-radius: var(--radius-lg);
+  transition: color .18s, background .18s;
+}
+.nav__link:hover { color: var(--primary); background: var(--primary-light); }
+.nav__link--active { background: var(--primary); color: var(--white); }
+.nav__link--active:hover { background: var(--primary-dark); color: var(--white); }
+
+/* Figma Line 6 */
+.nav__divider {
+  width: 1px;
+  height: 33px;
+  background: #757575;
+  margin: 0 8px;
+  flex-shrink: 0;
+  opacity: .6;
+}
+/* Figma Ellipse 2 */
+.nav__avatar-wrap { position: relative; flex-shrink: 0; }
+.nav__avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: #40B3E0;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 15px; font-weight: 700; color: #fff;
+  letter-spacing: -.3px; user-select: none;
+}
+/* Figma Ellipse 3 */
+.nav__avatar-online {
+  position: absolute; top: 0; right: 0;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #4BF332;
+  border: 2px solid #fff;
+  pointer-events: none;
+}
+
+/* ════════════════════════════════════════
+   BACK LINK
+════════════════════════════════════════ */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gray);
+  padding: 20px 0 0;
+  transition: color .18s;
+}
+.back-link svg   { width: 16px; height: 16px; flex-shrink: 0; }
+.back-link:hover { color: var(--primary); }
+
+/* ════════════════════════════════════════
+   PAGE
+════════════════════════════════════════ */
+.page { flex: 1; padding: 32px 0 72px; }
+
+/* ════════════════════════════════════════
+   TRIP FORM CARD
+════════════════════════════════════════ */
+.trip-form {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  margin-top: 24px;
+}
+
+/* Blue header band */
+.trip-form__header {
+  background: var(--primary);
+  padding: 36px 40px 32px;
+}
+.trip-form__header-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -.4px;
+  margin-bottom: 6px;
+}
+.trip-form__header-sub {
+  font-size: 14px;
+  color: rgba(255,255,255,.85);
+}
+
+/* Form body */
+.trip-form__body {
+  padding: 36px 40px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* ════════════════════════════════════════
+   FORM SECTION
+════════════════════════════════════════ */
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.form-section__title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--gray-light);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.form-section__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.form-section__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.form-section__row--budget {
+  display: grid;
+  grid-template-columns: 1fr 100px;
+  gap: 14px;
+}
+
+/* ════════════════════════════════════════
+   FIELD
+════════════════════════════════════════ */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field__label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--dark);
+}
+.field__label--optional::after {
+  content: ' (необов\27 язково)';
+  font-weight: 400;
+  color: var(--gray-light);
+  font-size: 13px;
+}
+.field__input,
+.field__select {
+  width: 100%;
+  background: var(--input-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--dark);
+  outline: none;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.field__input::placeholder  { color: var(--gray-light); }
+.field__select::placeholder { color: var(--gray-light); }
+.field__input:hover,
+.field__select:hover  { background: #f0f2f5; }
+.field__input:focus,
+.field__select:focus  {
+  background: var(--white);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(64,179,224,.12);
+}
+.field__select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23A0A0A0' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-color: var(--input-bg);
+  padding-right: 36px;
+}
+.field__input--url {
+  color: var(--primary);
+}
+.field__input--url::placeholder { color: #90d4f0; }
+
+/* ════════════════════════════════════════
+   MOOD GRID — 3×2
+════════════════════════════════════════ */
+.mood-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.mood-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--input-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 12px 18px;
+  cursor: pointer;
+  transition: border-color .2s, background .2s, box-shadow .2s;
+  text-align: center;
+  user-select: none;
+}
+.mood-card__icon  { font-size: 28px; line-height: 1; }
+.mood-card__label { font-size: 13px; font-weight: 500; color: var(--dark); line-height: 1.3; }
+.mood-card:hover  { border-color: var(--primary); background: var(--primary-light); }
+.mood-card--active {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(64,179,224,.15);
+}
+.mood-card--active .mood-card__label { color: var(--primary); }
+
+/* ════════════════════════════════════════
+   GALLERY UPLOAD — premium drop zone
+════════════════════════════════════════ */
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.gallery__hint {
+  font-size: 13.5px;
+  color: var(--gray-light);
+  letter-spacing: .1px;
+}
+
+/* The drop zone itself */
+.gallery__zone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: var(--white);
+  border: 1.8px dashed var(--border);
+  border-radius: 18px;
+  padding: 48px 32px 40px;
+  cursor: pointer;
+  text-align: center;
+  transition:
+    border-color .25s ease,
+    background  .25s ease,
+    box-shadow  .25s ease,
+    transform   .2s  ease;
+  outline: none;
+}
+
+.gallery__zone:hover,
+.gallery__zone:focus-within,
+.gallery__zone--drag {
+  border-color: var(--primary);
+  background: linear-gradient(145deg, #f0faff 0%, #ffffff 100%);
+  box-shadow:
+    0 0 0 4px rgba(64,179,224,.10),
+    0 8px 32px rgba(64,179,224,.08);
+  transform: translateY(-2px);
+}
+
+/* Icon wrapper — soft circle */
+.gallery__icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background .25s ease, transform .2s ease;
+}
+
+.gallery__zone:hover .gallery__icon-wrap,
+.gallery__zone:focus-within .gallery__icon-wrap {
+  background: rgba(64,179,224,.20);
+  transform: scale(1.08);
+}
+
+.gallery__icon-wrap svg {
+  width: 28px;
+  height: 28px;
+  color: var(--primary);
+  transition: transform .2s ease;
+}
+
+.gallery__zone:hover .gallery__icon-wrap svg {
+  transform: translateY(-2px);
+}
+
+/* Text block */
+.gallery__zone-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.gallery__zone-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--dark);
+  letter-spacing: -.1px;
+}
+
+.gallery__zone-sub {
+  font-size: 13px;
+  color: var(--gray-light);
+  line-height: 1.5;
+}
+
+/* "Обрати файли" CTA inside zone */
+.gallery__zone-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--primary-light);
+  border: 1.5px solid rgba(64,179,224,.25);
+  border-radius: 50px;
+  padding: 8px 20px;
+  cursor: pointer;
+  transition: background .2s, border-color .2s, transform .15s;
+  margin-top: 4px;
+}
+
+.gallery__zone-btn:hover {
+  background: rgba(64,179,224,.20);
+  border-color: var(--primary);
+  transform: scale(1.03);
+}
+
+.gallery__zone-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Counter badge */
+.gallery__count {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gray-light);
+  background: var(--bg);
+  border-radius: 50px;
+  padding: 4px 12px;
+  transition: color .2s;
+}
+
+.gallery__count--filled {
+  color: var(--primary);
+  background: var(--primary-light);
+}
+
+.gallery__count svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Hidden real input */
+.gallery__input { display: none; }
+
+/* ════════════════════════════════════════
+   NOTES
+════════════════════════════════════════ */
+.notes-textarea {
+  width: 100%;
+  min-height: 120px;
+  background: var(--input-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--dark);
+  outline: none;
+  resize: vertical;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+.notes-textarea::placeholder { color: var(--gray-light); }
+.notes-textarea:hover  { background: #f0f2f5; }
+.notes-textarea:focus  {
+  background: var(--white);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(64,179,224,.12);
+}
+
+/* ════════════════════════════════════════
+   FORM ACTIONS
+════════════════════════════════════════ */
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+.form-actions__cancel {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--dark);
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 11px 22px;
+  cursor: pointer;
+  transition: border-color .18s, color .18s;
+}
+.form-actions__cancel:hover { border-color: var(--gray); color: var(--gray); }
+.form-actions__submit {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--primary);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 11px 28px;
+  cursor: pointer;
+  transition: background .2s, transform .18s, box-shadow .2s;
+  box-shadow: 0 4px 14px rgba(64,179,224,.30);
+}
+.form-actions__submit:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(64,179,224,.40);
+}
+.form-actions__submit:active { transform: translateY(0); }
+
+/* ════════════════════════════════════════
+   FOOTER
+════════════════════════════════════════ */
+.footer {
+  background: #0f2a3a;
+  padding: 56px 0 36px;
+  text-align: center;
+  margin-top: auto;
+}
+.footer__logo { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.footer__logo-icon {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.07);
+  display: flex; align-items: center; justify-content: center; margin: 0 auto;
+}
+.footer__logo-text  { font-size: 20px; font-weight: 700; color: #fff; letter-spacing: -.3px; }
+.footer__tagline    { font-size: 12px; color: rgba(255,255,255,.36); letter-spacing: .6px; }
+.footer__copy       { margin-top: 32px; font-size: 13px; color: rgba(255,255,255,.28); }
+
+/* ════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════ */
+@media (max-width: 720px) {
+  .trip-form__header       { padding: 28px 24px 24px; }
+  .trip-form__header-title { font-size: 22px; }
+  .trip-form__body         { padding: 28px 24px 24px; }
+  .form-section__row       { grid-template-columns: 1fr; }
+  .form-section__row--budget { grid-template-columns: 1fr 90px; }
+  .mood-grid               { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .container               { padding: 0 16px; }
+  .trip-form__header       { padding: 24px 20px 20px; }
+  .trip-form__body         { padding: 24px 20px 20px; }
+  .form-section__row--budget { grid-template-columns: 1fr; }
+  .mood-grid               { grid-template-columns: repeat(2, 1fr); }
+}
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     NAV
+════════════════════════════════════════ -->
+<header class="nav">
+  <div class="container">
+    <div class="nav__inner">
+
+      <a href="index.html" class="nav__logo" aria-label="БезМеж — головна">
+        <svg class="nav__logo-icon" viewBox="0 0 36 36" fill="none"
+             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="18" cy="18" r="16.5" stroke="#40B3E0" stroke-width="1.8"/>
+          <path d="M9 25 C12 17, 15.5 15, 18 10 C20.5 15, 24 17, 27 25"
+                stroke="#40B3E0" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <circle cx="18" cy="10" r="2.2" fill="#40B3E0"/>
+          <path d="M25.5 8.5 L28.5 7 L27 10"
+                stroke="#40B3E0" stroke-width="1.3"
+                stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <span class="nav__logo-text">БезМеж</span>
+      </a>
+
+      <nav class="nav__actions" aria-label="Навігація">
+        <a href="my-trips.html" class="nav__link nav__link--active">Мої поїздки</a>
+        <a href="#"             class="nav__link">Статистика</a>
+        <div class="nav__divider" aria-hidden="true"></div>
+        <div class="nav__avatar-wrap">
+          <div class="nav__avatar" role="img" aria-label="Профіль — онлайн">АВ</div>
+          <span class="nav__avatar-online" aria-label="Онлайн"></span>
+        </div>
+      </nav>
+
+    </div>
+  </div>
+</header>
+
+
+<!-- ════════════════════════════════════════
+     PAGE
+════════════════════════════════════════ -->
+<main class="page">
+  <div class="container">
+
+    <!-- Back link -->
+    <a href="my-trips.html" class="back-link" aria-label="Назад до подорожей">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      Назад до подорожей
+    </a>
+
+    <!-- Form card -->
+    <div class="form-wrap">
+      <div class="trip-form" role="main">
+
+        <!-- Blue header -->
+        <div class="trip-form__header">
+          <h1 class="trip-form__header-title">Створити нову подорож</h1>
+          <p  class="trip-form__header-sub">Почніть планувати свою наступну пригоду</p>
+        </div>
+
+        <!-- Form body -->
+        <div class="trip-form__body">
+          <form id="tripForm" novalidate>
+
+            <!-- ── SECTION 1: Basic info ──────────────────────── -->
+            <div class="form-section">
+              <h2 class="form-section__title">Основна інформація про подорож</h2>
+
+              <div class="form-section__fields">
+
+                <!-- Trip name -->
+                <div class="field">
+                  <label class="field__label" for="tripName">Назва подорожі</label>
+                  <input
+                    class="field__input"
+                    type="text"
+                    id="tripName"
+                    name="tripName"
+                    placeholder="напр., Літо в Лісабоні..."
+                    autocomplete="off"
+                  />
+                </div>
+
+                <!-- Destination -->
+                <div class="field">
+                  <label class="field__label" for="destination">Місце призначення (місто, країна)</label>
+                  <input
+                    class="field__input"
+                    type="text"
+                    id="destination"
+                    name="destination"
+                    placeholder="Париж, Франція"
+                    autocomplete="off"
+                  />
+                </div>
+
+                <!-- Dates row -->
+                <div class="form-section__row">
+                  <div class="field">
+                    <label class="field__label" for="dateStart">Початкова дата</label>
+                    <input
+                      class="field__input"
+                      type="text"
+                      id="dateStart"
+                      name="dateStart"
+                      placeholder="дд.мм.рр"
+                      autocomplete="off"
+                      onfocus="(this.type='date')"
+                      onblur="if(!this.value)this.type='text'"
+                    />
+                  </div>
+                  <div class="field">
+                    <label class="field__label" for="dateEnd">Кінцева дата</label>
+                    <input
+                      class="field__input"
+                      type="text"
+                      id="dateEnd"
+                      name="dateEnd"
+                      placeholder="дд.мм.рр"
+                      autocomplete="off"
+                      onfocus="(this.type='date')"
+                      onblur="if(!this.value)this.type='text'"
+                    />
+                  </div>
+                </div>
+
+                <!-- Budget row -->
+                <div class="field">
+                  <label class="field__label" for="budget">Бюджет</label>
+                  <div class="form-section__row--budget">
+                    <input
+                      class="field__input"
+                      type="number"
+                      id="budget"
+                      name="budget"
+                      placeholder="500"
+                      min="0"
+                    />
+                    <select class="field__select" name="currency" id="currency" aria-label="Валюта">
+                      <option value="USD" selected>USD</option>
+                      <option value="EUR">EUR</option>
+                      <option value="UAH">UAH</option>
+                      <option value="GBP">GBP</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Cover image URL (optional) -->
+                <div class="field">
+                  <label class="field__label field__label--optional" for="coverUrl">
+                    Посилання на обкладинку
+                  </label>
+                  <input
+                    class="field__input field__input--url"
+                    type="url"
+                    id="coverUrl"
+                    name="coverUrl"
+                    placeholder="https://example.com/photo.jpg"
+                    autocomplete="off"
+                  />
+                </div>
+
+              </div>
+            </div><!-- /form-section basic -->
+
+            <!-- ── SECTION 2: Mood ───────────────────────────── -->
+            <div class="form-section">
+              <h2 class="form-section__title">Настрій подорожі</h2>
+
+              <div class="mood-grid" role="group" aria-label="Виберіть настрій подорожі">
+
+                <div class="mood-card" role="button" tabindex="0"
+                     data-mood="beach" aria-pressed="false"
+                     onclick="toggleMood(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleMood(this)">
+                  <span class="mood-card__icon" aria-hidden="true">🏖️</span>
+                  <span class="mood-card__label">Відпочинок / Пляж</span>
+                </div>
+
+                <div class="mood-card" role="button" tabindex="0"
+                     data-mood="city" aria-pressed="false"
+                     onclick="toggleMood(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleMood(this)">
+                  <span class="mood-card__icon" aria-hidden="true">🏙️</span>
+                  <span class="mood-card__label">Прогулянки містом</span>
+                </div>
+
+                <div class="mood-card" role="button" tabindex="0"
+                     data-mood="night" aria-pressed="false"
+                     onclick="toggleMood(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleMood(this)">
+                  <span class="mood-card__icon" aria-hidden="true">🌙</span>
+                  <span class="mood-card__label">Нічне життя</span>
+                </div>
+
+                <div class="mood-card" role="button" tabindex="0"
+                     data-mood="work" aria-pressed="false"
+                     onclick="toggleMood(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleMood(this)">
+                  <span class="mood-card__icon" aria-hidden="true">💼</span>
+                  <span class="mood-card__label">Робоча поїздка</span>
+                </div>
+
+                <div class="mood-card" role="button" tabindex="0"
+                     data-mood="nature" aria-pressed="false"
+                     onclick="toggleMood(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleMood(this)">
+                  <span class="mood-card__icon" aria-hidden="true">🌿</span>
+                  <span class="mood-card__label">Відпочинок на природі</span>
+                </div>
+
+                <div class="mood-card" role="button" tabindex="0"
+                     data-mood="adventure" aria-pressed="false"
+                     onclick="toggleMood(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleMood(this)">
+                  <span class="mood-card__icon" aria-hidden="true">🧗</span>
+                  <span class="mood-card__label">Пригода</span>
+                </div>
+
+              </div>
+            </div><!-- /form-section mood -->
+
+            <!-- ── SECTION 3: Gallery ────────────────────────── -->
+            <div class="form-section">
+              <h2 class="form-section__title">Галерея спогадів</h2>
+
+              <div class="gallery">
+                <p class="gallery__hint">Завантажте до 10 фото для ваших спогадів про подорож</p>
+
+                <!-- Premium drop zone -->
+                <div class="gallery__zone"
+                     id="dropZone"
+                     tabindex="0"
+                     role="button"
+                     aria-label="Завантажити фото"
+                     onclick="document.getElementById('galleryInput').click()"
+                     onkeydown="if(event.key==='Enter'||event.key===' ')document.getElementById('galleryInput').click()">
+
+                  <!-- Photo icon in soft circle -->
+                  <div class="gallery__icon-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                      <!-- Image frame -->
+                      <rect x="3" y="3" width="18" height="18" rx="3" ry="3"/>
+                      <!-- Sun dot -->
+                      <circle cx="8.5" cy="8.5" r="1.5"/>
+                      <!-- Mountain landscape -->
+                      <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                  </div>
+
+                  <!-- Text -->
+                  <div class="gallery__zone-body">
+                    <span class="gallery__zone-title">Перетягніть фото сюди</span>
+                    <span class="gallery__zone-sub">або оберіть файли з пристрою<br/>PNG, JPG, WEBP · до 10 фото</span>
+                  </div>
+
+                  <!-- CTA pill button -->
+                  <button type="button" class="gallery__zone-btn"
+                          onclick="event.stopPropagation(); document.getElementById('galleryInput').click()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+                         aria-hidden="true">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                      <polyline points="17 8 12 3 7 8"/>
+                      <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    Обрати файли
+                  </button>
+
+                  <!-- Counter inside zone -->
+                  <div class="gallery__count" id="galleryCount">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         aria-hidden="true">
+                      <rect x="3" y="3" width="18" height="18" rx="3"/>
+                      <circle cx="8.5" cy="8.5" r="1.5"/>
+                      <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                    0 / 10 фото
+                  </div>
+
+                </div><!-- /gallery__zone -->
+
+                <input
+                  class="gallery__input"
+                  type="file"
+                  id="galleryInput"
+                  name="gallery"
+                  accept="image/*"
+                  multiple
+                />
+              </div>
+            </div><!-- /form-section gallery -->
+
+            <!-- ── SECTION 4: Notes ──────────────────────────── -->
+            <div class="form-section">
+              <h2 class="form-section__title">Нотатки</h2>
+
+              <textarea
+                class="notes-textarea"
+                id="notes"
+                name="notes"
+                placeholder="Ідеї, важливо переглянути, перші думки..."
+                rows="5"
+              ></textarea>
+            </div><!-- /form-section notes -->
+
+            <!-- ── Actions ───────────────────────────────────── -->
+            <div class="form-actions">
+              <button type="button" class="form-actions__cancel"
+                      onclick="history.back()">Скасувати</button>
+              <button type="submit" class="form-actions__submit">Створити подорож</button>
+            </div>
+
+          </form>
+        </div><!-- /trip-form__body -->
+      </div><!-- /trip-form -->
+    </div><!-- /form-wrap -->
+
+  </div>
+</main>
+
+
+<!-- ════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__logo">
+      <div class="footer__logo-icon">
+        <svg width="36" height="36" viewBox="0 0 42 42" fill="none"
+             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="21" cy="21" r="19.5" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+          <path d="M10 30 C13 21, 17 18, 21 11 C25 18, 29 21, 32 30"
+                stroke="rgba(255,255,255,.75)" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <circle cx="21" cy="11" r="2.2" fill="rgba(255,255,255,.85)"/>
+          <path d="M30 9.5 L33.5 8 L32 11.5"
+                stroke="rgba(255,255,255,.7)" stroke-width="1.4"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="footer__logo-text">БезМеж</div>
+      <div class="footer__tagline">подорожі без меж</div>
+    </div>
+    <p class="footer__copy">© 2025 БезМеж. Створено з турботою для допитливих мандрівників</p>
+  </div>
+</footer>
+
+<script>
+  // ── Mood card toggle ────────────────────────────────────────
+  function toggleMood(card) {
+    const isActive = card.classList.contains('mood-card--active');
+    // Allow multiple selection
+    card.classList.toggle('mood-card--active', !isActive);
+    card.setAttribute('aria-pressed', String(!isActive));
+  }
+
+  // ── Gallery — file counter + drag & drop ───────────────────
+  const galleryInput = document.getElementById('galleryInput');
+  const galleryCount = document.getElementById('galleryCount');
+  const dropZone     = document.getElementById('dropZone');
+
+  function updateCount(n) {
+    const clamped = Math.min(n, 10);
+    galleryCount.textContent = `${clamped} / 10 фото`;
+    if (clamped > 0) {
+      galleryCount.classList.add('gallery__count--filled');
+    } else {
+      galleryCount.classList.remove('gallery__count--filled');
+    }
+  }
+
+  galleryInput.addEventListener('change', function () {
+    updateCount(this.files.length);
+    if (this.files.length > 10) alert('Максимум 10 фото. Вибрано лише перші 10.');
+  });
+
+  // Drag events
+  ['dragenter','dragover'].forEach(evt => {
+    dropZone.addEventListener(evt, e => {
+      e.preventDefault();
+      dropZone.classList.add('gallery__zone--drag');
+    });
+  });
+  ['dragleave','dragend','drop'].forEach(evt => {
+    dropZone.addEventListener(evt, e => {
+      e.preventDefault();
+      dropZone.classList.remove('gallery__zone--drag');
+    });
+  });
+  dropZone.addEventListener('drop', e => {
+    const files = e.dataTransfer.files;
+    galleryInput.files = files; // not always possible; update count manually
+    updateCount(files.length);
+  });
+
+  // ── Form submit ─────────────────────────────────────────────
+  document.getElementById('tripForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const name = document.getElementById('tripName').value.trim();
+    const dest = document.getElementById('destination').value.trim();
+    if (!name || !dest) {
+      alert('Будь ласка, заповніть назву подорожі та місце призначення.');
+      return;
+    }
+    // Success — redirect to my-trips
+    window.location.href = 'my-trips.html';
+  });
+</script>
+
+</body>
+</html>

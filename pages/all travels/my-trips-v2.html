@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>БезМеж — Мої поїздки</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+/* ============================================================
+   БезМеж — Shared Design System Variables
+   ============================================================ */
+:root {
+  --primary:        #40B3E0;
+  --primary-dark:   #2a9cc8;
+  --primary-light:  #e8f6fc;
+  --dark:           #1A1A1A;
+  --gray:           #757575;
+  --gray-light:     #A0A0A0;
+  --bg:             #F5F7F9;
+  --white:          #FFFFFF;
+  --border:         #D9D9D9;
+  --star:           #F5C842;
+  --status-active:  #40B3E0;
+  --status-pending: #F5A623;
+  --status-done:    #E53E3E;
+  --radius-sm:      8px;
+  --radius-md:      16px;
+  --radius-lg:      20px;
+  --radius-xl:      24px;
+  --shadow-sm:      0 2px 8px rgba(0,0,0,.06);
+  --shadow-md:      0 6px 24px rgba(0,0,0,.10);
+  --shadow-card:    0 2px 12px rgba(0,0,0,.07);
+}
+
+/* ─── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--dark);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+img { display: block; max-width: 100%; }
+a   { text-decoration: none; color: inherit; }
+
+/* ─── Container ─────────────────────────────────────────────── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+  width: 100%;
+}
+
+/* ════════════════════════════════════════
+   NAV
+════════════════════════════════════════ */
+.nav {
+  background: var(--white);
+  border-bottom: 1px solid rgba(217,217,217,.5);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  gap: 12px;
+}
+.nav__logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+.nav__logo-icon  { width: 32px; height: 32px; }
+.nav__logo-text  { font-size: 17px; font-weight: 700; color: var(--dark); letter-spacing: -.3px; }
+.nav__actions    { display: flex; align-items: center; gap: 2px; }
+.nav__link {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--dark);
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  transition: color .18s, background .18s;
+}
+.nav__link:hover { color: var(--primary); background: var(--primary-light); }
+.nav__link--active { background: var(--primary); color: var(--white); }
+.nav__link--active:hover { background: var(--primary-dark); color: var(--white); }
+.nav__divider { width: 1px; height: 33px; background: #757575; margin: 0 8px; flex-shrink: 0; opacity: 0.6; }
+.nav__avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+.nav__avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: #40B3E0;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 15px; font-weight: 700; color: #fff;
+  letter-spacing: -.3px;
+  user-select: none;
+}
+.nav__avatar-online {
+  position: absolute;
+  top: 0px; right: 0px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #4BF332;
+  border: 2px solid #fff;
+  pointer-events: none;
+}
+
+/* ════════════════════════════════════════
+   TOOLBAR
+════════════════════════════════════════ */
+.toolbar { padding: 20px 0 0; }
+.toolbar__inner { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.toolbar__search { position: relative; width: 220px; flex-shrink: 0; }
+.toolbar__search-icon {
+  position: absolute; left: 13px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-light);
+  display: flex; pointer-events: none;
+}
+.toolbar__search-icon svg { width: 15px; height: 15px; }
+.toolbar__search-input {
+  width: 100%;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 10px 14px 10px 38px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px; color: var(--dark);
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.toolbar__search-input::placeholder { color: var(--gray-light); }
+.toolbar__search-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(64,179,224,.10);
+}
+.toolbar__tabs { display: flex; align-items: center; gap: 4px; }
+.toolbar__tab {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px; font-weight: 500;
+  color: var(--gray); background: none; border: none;
+  padding: 9px 16px; border-radius: var(--radius-md);
+  cursor: pointer; transition: background .18s, color .18s;
+}
+.toolbar__tab:hover { background: rgba(64,179,224,.08); color: var(--primary); }
+.toolbar__tab--active { background: var(--primary); color: var(--white); }
+.toolbar__tab--active:hover { background: var(--primary-dark); }
+
+/* ════════════════════════════════════════
+   STATS
+════════════════════════════════════════ */
+.stats { padding: 20px 0 0; }
+.stats__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.stats__card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  padding: 18px 20px;
+  display: flex; align-items: center; gap: 14px;
+  box-shadow: var(--shadow-sm);
+}
+.stats__icon {
+  width: 40px; height: 40px;
+  border-radius: var(--radius-sm);
+  background: var(--primary-light);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.stats__icon svg { width: 22px; height: 22px; color: var(--primary); }
+.stats__label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .9px; text-transform: uppercase;
+  color: var(--gray-light); margin-bottom: 3px;
+}
+.stats__value {
+  font-size: 24px; font-weight: 800;
+  color: var(--dark); letter-spacing: -.5px; line-height: 1;
+}
+
+/* ════════════════════════════════════════
+   TRIPS SECTION
+════════════════════════════════════════ */
+.trips { padding: 36px 0 0; flex: 1; }
+.trips__header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.trips__heading { font-size: 24px; font-weight: 800; color: var(--dark); letter-spacing: -.4px; margin-bottom: 4px; }
+.trips__sub { font-size: 14px; color: var(--gray); }
+.trips__add-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--primary); color: var(--white);
+  border: none; border-radius: var(--radius-md);
+  padding: 11px 20px;
+  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+  cursor: pointer; white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(64,179,224,.30);
+  transition: background .2s, transform .18s, box-shadow .2s;
+  flex-shrink: 0;
+}
+.trips__add-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(64,179,224,.40);
+}
+
+/* 3-column grid */
+.trips__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+/* ════════════════════════════════════════
+   TRIP CARD
+════════════════════════════════════════ */
+.trip-card {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow .22s, transform .22s;
+  display: flex; flex-direction: column;
+  cursor: pointer;
+}
+.trip-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); }
+
+/* Image */
+.trip-card__img-wrap { position: relative; height: 200px; overflow: hidden; flex-shrink: 0; }
+.trip-card__img { width: 100%; height: 100%; object-fit: cover; transition: transform .45s ease; }
+.trip-card:hover .trip-card__img { transform: scale(1.06); }
+
+/* Badge */
+.trip-card__badge {
+  position: absolute; top: 12px; right: 12px;
+  font-size: 10.5px; font-weight: 700;
+  padding: 4px 11px; border-radius: 50px; letter-spacing: .2px;
+}
+.trip-card__badge--active  { background: var(--status-active);  color: #fff; }
+.trip-card__badge--pending { background: var(--status-pending); color: #fff; }
+.trip-card__badge--done    { background: var(--status-done);    color: #fff; }
+
+/* Stars */
+.trip-card__stars { position: absolute; bottom: 10px; left: 12px; font-size: 13px; color: var(--star); letter-spacing: 2px; }
+
+/* Body */
+.trip-card__body { padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.trip-card__title { font-size: 17px; font-weight: 800; color: var(--dark); letter-spacing: -.2px; line-height: 1.3; }
+
+/* Date */
+.trip-card__date { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--gray-light); }
+.trip-card__date svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* ── Stat rows (budget + progress) ───────────────────────────── */
+.trip-card__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 1px solid #F2F2F2;
+  padding-top: 10px;
+}
+.trip-card__stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--gray);
+  line-height: 17px;
+}
+.trip-card__stat-value {
+  font-weight: 500;
+  color: var(--dark);
+  font-size: 14px;
+  white-space: nowrap;
+}
+.trip-card__stat-bar {
+  width: 100%;
+  height: 6px;
+  background: #F2F2F2;
+  border-radius: 50px;
+  overflow: hidden;
+}
+.trip-card__stat-fill {
+  height: 100%;
+  border-radius: 50px;
+  transition: width .4s ease;
+}
+/* green = money spent */
+.trip-card__stat-fill--money {
+  background: linear-gradient(90deg, #27AE60 0%, #1e8a4a 100%);
+}
+/* blue = trip progress */
+.trip-card__stat-fill--trip {
+  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+}
+/* empty state */
+.trip-card__stat-fill--zero { background: transparent; }
+
+/* ════════════════════════════════════════
+   ADD CARD
+════════════════════════════════════════ */
+.trip-card-add {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  border: 2px dashed var(--border);
+  min-height: 420px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 14px; cursor: pointer;
+  padding: 32px 28px; text-align: center;
+  transition: border-color .2s, background .2s;
+}
+.trip-card-add:hover { border-color: var(--primary); background: var(--primary-light); }
+.trip-card-add:hover .trip-card-add__circle { border-color: var(--primary); color: var(--primary); }
+.trip-card-add:hover .trip-card-add__title  { color: var(--primary); }
+.trip-card-add__circle {
+  width: 52px; height: 52px; border-radius: 50%;
+  border: 1.5px solid var(--border);
+  color: var(--gray-light);
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color .2s, color .2s;
+}
+.trip-card-add__circle svg { width: 24px; height: 24px; }
+.trip-card-add__title  { font-size: 16px; font-weight: 700; color: var(--dark); transition: color .2s; }
+.trip-card-add__sub    { font-size: 13px; color: var(--gray); line-height: 1.6; max-width: 170px; }
+
+/* ════════════════════════════════════════
+   FOOTER
+════════════════════════════════════════ */
+.footer { background: #0f2a3a; padding: 64px 0 40px; text-align: center; margin-top: 72px; }
+.footer__logo { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.footer__logo-icon {
+  width: 70px; height: 70px; border-radius: 50%;
+  background: rgba(255,255,255,.07);
+  display: flex; align-items: center; justify-content: center; margin: 0 auto;
+}
+.footer__logo-text   { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: -.3px; }
+.footer__tagline     { font-size: 12px; color: rgba(255,255,255,.35); letter-spacing: .6px; }
+.footer__copy        { margin-top: 36px; font-size: 13px; color: rgba(255,255,255,.28); }
+
+/* ─── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .stats__grid { grid-template-columns: repeat(2, 1fr); }
+  .trips__grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 580px) {
+  .container    { padding: 0 16px; }
+  .toolbar__search { width: 100%; }
+  .toolbar__inner  { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .toolbar__tabs   { flex-wrap: wrap; }
+  .stats__grid     { grid-template-columns: repeat(2, 1fr); }
+  .trips__grid     { grid-template-columns: 1fr; }
+  .trip-card-add   { min-height: 200px; }
+}
+
+/* ─── Trip card: location row ─────────────────────────────────── */
+.trip-card__location {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  color: var(--gray);
+  margin-top: -4px;
+}
+.trip-card__location svg { width: 13px; height: 13px; flex-shrink: 0; color: var(--primary); }
+
+/* ─── White stars for pending (Очікує) cards ──────────────────── */
+.trip-card__stars--pending { color: rgba(255,255,255,.82); }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     NAV
+════════════════════════════════════════ -->
+<header class="nav">
+  <div class="container">
+    <div class="nav__inner">
+
+      <a href="index.html" class="nav__logo" aria-label="БезМеж — головна">
+        <svg class="nav__logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="18" cy="18" r="16.5" stroke="#40B3E0" stroke-width="1.8"/>
+          <path d="M9 25 C12 17, 15.5 15, 18 10 C20.5 15, 24 17, 27 25"
+                stroke="#40B3E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <circle cx="18" cy="10" r="2.2" fill="#40B3E0"/>
+          <path d="M25.5 8.5 L28.5 7 L27 10"
+                stroke="#40B3E0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <span class="nav__logo-text">БезМеж</span>
+      </a>
+
+      <nav class="nav__actions" aria-label="Головна навігація">
+        <a href="my-trips-v2.html" class="nav__link nav__link--active">Мої поїздки</a>
+        <a href="#"                class="nav__link">Статистика</a>
+        <div class="nav__divider" aria-hidden="true"></div>
+        <div class="nav__avatar-wrap">
+          <div class="nav__avatar" role="img" aria-label="Профіль користувача — онлайн">АВ</div>
+          <span class="nav__avatar-online" aria-label="Онлайн"></span>
+        </div>
+      </nav>
+
+    </div>
+  </div>
+</header>
+
+
+<!-- ════════════════════════════════════════
+     TOOLBAR
+════════════════════════════════════════ -->
+<div class="toolbar">
+  <div class="container">
+    <div class="toolbar__inner">
+
+      <div class="toolbar__search">
+        <span class="toolbar__search-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </span>
+        <input
+          class="toolbar__search-input"
+          type="search"
+          placeholder="Пошук подорожей..."
+          aria-label="Пошук подорожей"
+        />
+      </div>
+
+      <div class="toolbar__tabs" role="tablist" aria-label="Фільтр за статусом">
+        <button class="toolbar__tab toolbar__tab--active" role="tab" aria-selected="true">Усі подорожі</button>
+        <button class="toolbar__tab" role="tab" aria-selected="false">Активні</button>
+        <button class="toolbar__tab" role="tab" aria-selected="false">У процесі</button>
+        <button class="toolbar__tab" role="tab" aria-selected="false">Завершені</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     STATS
+════════════════════════════════════════ -->
+<section class="stats" aria-label="Загальна статистика">
+  <div class="container">
+    <div class="stats__grid">
+
+      <div class="stats__card">
+        <div class="stats__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#40B3E0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="stats__label">Країни</div>
+          <div class="stats__value">5</div>
+        </div>
+      </div>
+
+      <div class="stats__card">
+        <div class="stats__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#40B3E0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="stats__label">Відвідані місця</div>
+          <div class="stats__value">47</div>
+        </div>
+      </div>
+
+      <div class="stats__card">
+        <div class="stats__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#40B3E0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="stats__label">Загальні витрати</div>
+          <div class="stats__value">$13.8k</div>
+        </div>
+      </div>
+
+      <div class="stats__card">
+        <div class="stats__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#40B3E0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="stats__label">Активні подорожі</div>
+          <div class="stats__value">2</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     TRIPS GRID
+════════════════════════════════════════ -->
+<section class="trips">
+  <div class="container">
+
+    <div class="trips__header">
+      <div>
+        <h1 class="trips__heading">Твої подорожі</h1>
+        <p  class="trips__sub">Керуйте та відстежуйте свої подорожі світу</p>
+      </div>
+      <button class="trips__add-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Нова подорож
+      </button>
+    </div>
+
+    <div class="trips__grid">
+
+      <!-- ══ CARD 1 — Санторіні (У процесі 65%) ════════════════ -->
+      <article class="trip-card" tabindex="0">
+        <div class="trip-card__img-wrap">
+          <img class="trip-card__img"
+               src="https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&q=80"
+               alt="Санторіні — блакитні куполи" loading="eager" />
+          <span class="trip-card__badge trip-card__badge--active">У процесі</span>
+          <div class="trip-card__stars" aria-label="5 зірок">★★★★★</div>
+        </div>
+        <div class="trip-card__body">
+          <h2 class="trip-card__title">Втеча на Санторіні</h2>
+          <div class="trip-card__location">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+              <circle cx="12" cy="9" r="2.5"/>
+            </svg>
+            Санторіні, Греція
+          </div>
+          <div class="trip-card__date">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            10 трав. – 29 трав. 2026
+          </div>
+          <div class="trip-card__stat">
+            <!-- Row 1: label + value -->
+            <div class="trip-card__stat-row">
+              <span>Витрачено коштів</span>
+              <span class="trip-card__stat-value">$ 3200 / $ 4000</span>
+            </div>
+            <!-- Bar 1: green = money -->
+            <div class="trip-card__stat-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" aria-label="Витрачено 80%">
+              <div class="trip-card__stat-fill trip-card__stat-fill--money" style="width:80%"></div>
+            </div>
+            <!-- Row 2: label + value -->
+            <div class="trip-card__stat-row">
+              <span>Прогрес подорожі</span>
+              <span class="trip-card__stat-value">65% / 100%</span>
+            </div>
+            <!-- Bar 2: blue = trip progress -->
+            <div class="trip-card__stat-bar" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" aria-label="Прогрес 65%">
+              <div class="trip-card__stat-fill trip-card__stat-fill--trip" style="width:65%"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ══ CARD 2 — Париж (У процесі 56%) ════════════════════ -->
+      <article class="trip-card" tabindex="0">
+        <div class="trip-card__img-wrap">
+          <img class="trip-card__img"
+               src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=600&q=80"
+               alt="Ейфелева вежа на заході сонця" loading="lazy" />
+          <span class="trip-card__badge trip-card__badge--active">У процесі</span>
+          <div class="trip-card__stars" aria-label="4 зірки">★★★★</div>
+        </div>
+        <div class="trip-card__body">
+          <h2 class="trip-card__title">Ніч у Парижі</h2>
+          <div class="trip-card__location">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+              <circle cx="12" cy="9" r="2.5"/>
+            </svg>
+            Париж, Франція
+          </div>
+          <div class="trip-card__date">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            13 трав. – 22 трав. 2026
+          </div>
+          <div class="trip-card__stat">
+            <div class="trip-card__stat-row">
+              <span>Витрачено коштів</span>
+              <span class="trip-card__stat-value">$ 1800 / $ 5000</span>
+            </div>
+            <div class="trip-card__stat-bar" role="progressbar" aria-valuenow="36" aria-valuemin="0" aria-valuemax="100" aria-label="Витрачено 36%">
+              <div class="trip-card__stat-fill trip-card__stat-fill--money" style="width:36%"></div>
+            </div>
+            <div class="trip-card__stat-row">
+              <span>Прогрес подорожі</span>
+              <span class="trip-card__stat-value">56% / 100%</span>
+            </div>
+            <div class="trip-card__stat-bar" role="progressbar" aria-valuenow="56" aria-valuemin="0" aria-valuemax="100" aria-label="Прогрес 56%">
+              <div class="trip-card__stat-fill trip-card__stat-fill--trip" style="width:56%"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ══ CARD 3 — Токіо (Очікує 0%) ════════════════════════ -->
+      <article class="trip-card" tabindex="0">
+        <div class="trip-card__img-wrap">
+          <img class="trip-card__img"
+               src="https://images.unsplash.com/photo-1480796927426-f609979314bd?w=600&q=80"
+               alt="Токіо — гора Фудзі та сакура" loading="lazy" />
+          <span class="trip-card__badge trip-card__badge--pending">Очікує</span>
+          <div class="trip-card__stars trip-card__stars--pending" aria-label="5 зірок">★★★★★</div>
+        </div>
+        <div class="trip-card__body">
+          <h2 class="trip-card__title">Токіо: неонова мрія</h2>
+          <div class="trip-card__location">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+              <circle cx="12" cy="9" r="2.5"/>
+            </svg>
+            Токіо, Японія
+          </div>
+          <div class="trip-card__date">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            28 серп. – 14 вер. 2026
+          </div>
+          <div class="trip-card__stat">
+            <div class="trip-card__stat-row">
+              <span>Витрачено коштів</span>
+              <span class="trip-card__stat-value">$ 0 / $ 2400</span>
+            </div>
+            <div class="trip-card__stat-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Витрачено 0%">
+              <div class="trip-card__stat-fill trip-card__stat-fill--zero" style="width:0%"></div>
+            </div>
+            <div class="trip-card__stat-row">
+              <span>Прогрес подорожі</span>
+              <span class="trip-card__stat-value">0% / 100%</span>
+            </div>
+            <div class="trip-card__stat-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Прогрес 0%">
+              <div class="trip-card__stat-fill trip-card__stat-fill--zero" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ══ CARD 4 — Балі (Очікує 0%) ═════════════════════════ -->
+      <article class="trip-card" tabindex="0">
+        <div class="trip-card__img-wrap">
+          <img class="trip-card__img"
+               src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80"
+               alt="Балі — бірюзове море та скелі" loading="lazy" />
+          <span class="trip-card__badge trip-card__badge--pending">Очікує</span>
+          <div class="trip-card__stars trip-card__stars--pending" aria-label="5 зірок">★★★★★</div>
+        </div>
+        <div class="trip-card__body">
+          <h2 class="trip-card__title">Балі — повільне життя</h2>
+          <div class="trip-card__location">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+              <circle cx="12" cy="9" r="2.5"/>
+            </svg>
+            Балі, Індонезія
+          </div>
+          <div class="trip-card__date">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            02 лист. – 10 лист. 2026
+          </div>
+          <div class="trip-card__stat">
+            <div class="trip-card__stat-row">
+              <span>Витрачено коштів</span>
+              <span class="trip-card__stat-value">$ 0 / $ 2400</span>
+            </div>
+            <div class="trip-card__stat-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Витрачено 0%">
+              <div class="trip-card__stat-fill trip-card__stat-fill--zero" style="width:0%"></div>
+            </div>
+            <div class="trip-card__stat-row">
+              <span>Прогрес подорожі</span>
+              <span class="trip-card__stat-value">0% / 100%</span>
+            </div>
+            <div class="trip-card__stat-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Прогрес 0%">
+              <div class="trip-card__stat-fill trip-card__stat-fill--zero" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ══ CARD 5 — Нью-Йорк (Завершено 100%) ════════════════ -->
+      <article class="trip-card" tabindex="0">
+        <div class="trip-card__img-wrap">
+          <img class="trip-card__img"
+               src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=600&q=80"
+               alt="Нью-Йорк — хмарочоси" loading="lazy" />
+          <span class="trip-card__badge trip-card__badge--done">Завершено</span>
+          <div class="trip-card__stars" aria-label="4 зірки">★★★★</div>
+        </div>
+        <div class="trip-card__body">
+          <h2 class="trip-card__title">Нью-Йорк: місто без сну</h2>
+          <div class="trip-card__location">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+              <circle cx="12" cy="9" r="2.5"/>
+            </svg>
+            Нью-Йорк, США
+          </div>
+          <div class="trip-card__date">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            06 квіт. – 20 квіт. 2026
+          </div>
+          <div class="trip-card__stat">
+            <div class="trip-card__stat-row">
+              <span>Витрачено коштів</span>
+              <span class="trip-card__stat-value">$ 3400 / $ 3400</span>
+            </div>
+            <div class="trip-card__stat-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" aria-label="Витрачено 100%">
+              <div class="trip-card__stat-fill trip-card__stat-fill--money" style="width:100%"></div>
+            </div>
+            <div class="trip-card__stat-row">
+              <span>Прогрес подорожі</span>
+              <span class="trip-card__stat-value">100% / 100%</span>
+            </div>
+            <div class="trip-card__stat-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" aria-label="Прогрес 100%">
+              <div class="trip-card__stat-fill trip-card__stat-fill--trip" style="width:100%"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ══ ADD NEW CARD ══════════════════════════════════════ -->
+      <div class="trip-card-add"
+           role="button" tabindex="0"
+           aria-label="Додати нову подорож"
+           onclick="alert('Нова подорож')"
+           onkeydown="if(event.key==='Enter'||event.key===' ')alert('Нова подорож')">
+        <div class="trip-card-add__circle" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5"  y1="12" x2="19" y2="12"/>
+          </svg>
+        </div>
+        <p class="trip-card-add__title">Додати нову подорож</p>
+        <p class="trip-card-add__sub">Почніть планувати свою наступну чудову подорож вже сьогодні</p>
+      </div>
+
+    </div><!-- /trips__grid -->
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__logo">
+      <div class="footer__logo-icon">
+        <svg width="40" height="40" viewBox="0 0 42 42" fill="none"
+             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="21" cy="21" r="19.5" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+          <path d="M10 30 C13 21, 17 18, 21 11 C25 18, 29 21, 32 30"
+                stroke="rgba(255,255,255,.75)" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <circle cx="21" cy="11" r="2.2" fill="rgba(255,255,255,.85)"/>
+          <path d="M30 9.5 L33.5 8 L32 11.5"
+                stroke="rgba(255,255,255,.7)" stroke-width="1.4"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="footer__logo-text">БезМеж</div>
+      <div class="footer__tagline">подорожі без меж</div>
+    </div>
+    <p class="footer__copy">© 2025 БезМеж. Створено з турботою для допитливих мандрівників</p>
+  </div>
+</footer>
+
+<script>
+  // Filter tab switching
+  document.querySelectorAll('.toolbar__tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.toolbar__tab').forEach(t => {
+        t.classList.remove('toolbar__tab--active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.add('toolbar__tab--active');
+      tab.setAttribute('aria-selected', 'true');
+    });
+  });
+</script>
+
+</body>
+</html>

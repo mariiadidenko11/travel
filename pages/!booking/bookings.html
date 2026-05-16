@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>БезМеж — Бронювання · Санторіні</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+/* ============================================================
+   БезМеж — Bookings Page CSS · Shared design system
+   ============================================================ */
+:root {
+  --primary:#40B3E0; --primary-dark:#2a9cc8; --primary-light:#e8f6fc;
+  --dark:#1A1A1A; --gray:#757575; --gray-light:#A0A0A0;
+  --bg:#F5F7F9; --white:#FFFFFF; --border:#D9D9D9; --input-bg:#F7F8FA;
+  --green:#27AE60; --green-light:#D1FAE5; --green-dark:#065F46;
+  --red:#EF4444; --red-light:#FEE2E2;
+  --amber:#F59E0B; --amber-light:#FEF3C7;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px;
+  --shadow-card:0 2px 12px rgba(0,0,0,.07); --shadow-md:0 6px 24px rgba(0,0,0,.10);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--dark);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;}
+img{display:block;max-width:100%;}
+a{text-decoration:none;color:inherit;}
+.container{max-width:820px;margin:0 auto;padding:0 24px;width:100%;}
+
+/* NAV */
+.nav{background:var(--white);border-bottom:1px solid rgba(217,217,217,.5);position:sticky;top:0;z-index:100;}
+.nav__inner{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;align-items:center;height:60px;gap:8px;}
+.nav__logo{display:flex;align-items:center;gap:8px;flex-shrink:0;text-decoration:none;margin-right:16px;}
+.nav__logo-icon{width:32px;height:32px;background:var(--primary);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;}
+.nav__logo-text{font-size:16px;font-weight:700;color:var(--primary);letter-spacing:-.2px;}
+.nav__links{display:flex;align-items:center;gap:4px;flex:1;}
+.nav__link{font-size:14px;font-weight:500;color:var(--dark);padding:7px 14px;border-radius:var(--radius-md);transition:color .18s,background .18s;white-space:nowrap;}
+.nav__link:hover{color:var(--primary);background:var(--primary-light);}
+.nav__link--active{background:var(--primary);color:var(--white);}
+.nav__search{position:relative;flex-shrink:0;}
+.nav__search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--gray-light);pointer-events:none;}
+.nav__search-icon svg{width:14px;height:14px;}
+.nav__search-input{background:var(--bg);border:1.5px solid var(--border);border-radius:50px;padding:8px 14px 8px 32px;font-family:'Inter',sans-serif;font-size:13.5px;color:var(--dark);outline:none;width:180px;transition:border-color .2s,box-shadow .2s;}
+.nav__search-input::placeholder{color:var(--gray-light);}
+.nav__search-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(64,179,224,.10);}
+.nav__add-btn{display:inline-flex;align-items:center;background:var(--primary);color:#fff;border:none;border-radius:50px;padding:8px 18px;font-family:'Inter',sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;white-space:nowrap;box-shadow:0 3px 12px rgba(64,179,224,.28);transition:background .2s,transform .15s;}
+.nav__add-btn:hover{background:var(--primary-dark);transform:translateY(-1px);}
+.nav__divider{width:1px;height:33px;background:#757575;margin:0 6px;flex-shrink:0;opacity:.6;}
+.nav__avatar-wrap{position:relative;flex-shrink:0;}
+.nav__avatar{width:40px;height:40px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;font-weight:700;color:#fff;user-select:none;}
+.nav__avatar-online{position:absolute;top:0;right:0;width:10px;height:10px;border-radius:50%;background:#4BF332;border:2px solid #fff;pointer-events:none;}
+
+.back-link{display:inline-flex;align-items:center;gap:5px;font-size:13.5px;font-weight:500;color:var(--gray);padding:16px 0 0;transition:color .18s;}
+.back-link svg{width:15px;height:15px;flex-shrink:0;}
+.back-link:hover{color:var(--primary);}
+.page{flex:1;padding:12px 0 72px;}
+
+/* HERO */
+.hero-banner{position:relative;border-radius:var(--radius-xl);overflow:hidden;height:320px;margin-top:12px;}
+.hero-banner__img{width:100%;height:100%;object-fit:cover;display:block;}
+.hero-banner::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.72) 0%,rgba(0,0,0,.30) 45%,transparent 100%);pointer-events:none;}
+.hero-banner__content{position:absolute;bottom:28px;left:28px;right:28px;z-index:2;}
+.hero-banner__badge{display:inline-block;background:var(--green-light);color:var(--green-dark);font-size:11px;font-weight:700;padding:3px 12px;border-radius:50px;letter-spacing:.3px;margin-bottom:10px;}
+.hero-banner__title{font-size:clamp(24px,4vw,36px);font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1.2;margin-bottom:6px;}
+.hero-banner__location{font-size:14px;color:rgba(255,255,255,.85);}
+
+/* STATS */
+.stats{margin-top:20px;}
+.stats__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.stats__card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);padding:16px 18px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-card);}
+.stats__icon{width:36px;height:36px;border-radius:var(--radius-sm);background:var(--primary-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.stats__icon svg{width:19px;height:19px;color:var(--primary);}
+.stats__label{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--gray-light);margin-bottom:2px;}
+.stats__value{font-size:20px;font-weight:800;color:var(--dark);letter-spacing:-.4px;line-height:1;}
+
+/* TAB BAR */
+.tab-bar{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);padding:6px;margin-top:20px;display:flex;align-items:center;gap:2px;box-shadow:var(--shadow-card);overflow-x:auto;}
+.tab-bar__tab{font-family:'Inter',sans-serif;font-size:14px;font-weight:500;color:var(--gray);background:none;border:none;padding:8px 18px;border-radius:var(--radius-md);cursor:pointer;white-space:nowrap;transition:background .18s,color .18s;}
+.tab-bar__tab:hover{background:var(--bg);color:var(--dark);}
+.tab-bar__tab--active{background:var(--primary);color:var(--white);font-weight:600;}
+
+/* BOOKINGS CARD */
+.bookings-card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);padding:28px 28px 24px;margin-top:20px;box-shadow:var(--shadow-card);}
+
+.bookings-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;gap:12px;flex-wrap:wrap;}
+.bookings-header__title{font-size:18px;font-weight:800;color:var(--dark);letter-spacing:-.3px;margin-bottom:3px;}
+.bookings-header__sub{font-size:13px;color:var(--gray-light);}
+.bookings-header__add-btn{display:inline-flex;align-items:center;gap:7px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius-md);padding:11px 20px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;box-shadow:0 3px 14px rgba(64,179,224,.30);transition:background .2s,transform .15s;flex-shrink:0;}
+.bookings-header__add-btn:hover{background:var(--primary-dark);transform:translateY(-1px);}
+.bookings-header__add-btn svg{width:14px;height:14px;}
+
+/* CATEGORY PICKER */
+.cat-picker{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:0;max-height:0;overflow:hidden;opacity:0;margin-bottom:0;transition:max-height .35s cubic-bezier(.4,0,.2,1),opacity .28s ease,padding .28s ease,margin .28s ease;}
+.cat-picker.visible{max-height:400px;opacity:1;padding:20px;margin-bottom:20px;}
+.cat-picker__title{font-size:11px;font-weight:700;color:var(--gray-light);letter-spacing:.8px;text-transform:uppercase;margin-bottom:14px;}
+.cat-picker__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.cat-picker__item{display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-md);padding:14px 8px;cursor:pointer;text-align:center;transition:border-color .18s,background .18s,transform .15s,box-shadow .18s;}
+.cat-picker__item:hover,.cat-picker__item.selected{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.08);}
+.cat-picker__item__icon{font-size:22px;line-height:1;}
+.cat-picker__item__label{font-size:12px;font-weight:600;color:var(--dark);line-height:1.3;}
+
+/* BOOKING FORM */
+.booking-form{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:0;max-height:0;opacity:0;transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .3s ease,padding .3s ease,margin .3s ease;}
+.booking-form.visible{max-height:1400px;opacity:1;padding:24px;margin-bottom:20px;}
+.booking-form__header{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.booking-form__icon{font-size:22px;}
+.booking-form__title{font-size:15px;font-weight:700;color:var(--dark);}
+.booking-form__grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.booking-form__grid--1col{grid-template-columns:1fr;}
+.booking-form__grid--3col{grid-template-columns:1fr 1fr 1fr;}
+.booking-form__divider{grid-column:1/-1;height:1px;background:var(--border);margin:4px 0;}
+.booking-form__actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
+.booking-form__cancel{font-family:'Inter',sans-serif;font-size:14px;font-weight:500;color:var(--gray);background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-md);padding:10px 20px;cursor:pointer;transition:border-color .18s,color .18s;}
+.booking-form__cancel:hover{border-color:var(--gray);}
+.booking-form__submit{font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:#fff;background:var(--primary);border:none;border-radius:var(--radius-md);padding:10px 24px;cursor:pointer;box-shadow:0 3px 12px rgba(64,179,224,.28);transition:background .2s,transform .15s;}
+.booking-form__submit:hover{background:var(--primary-dark);transform:translateY(-1px);}
+
+/* FORM FIELD */
+.field{display:flex;flex-direction:column;gap:5px;}
+.field__label{font-size:12.5px;font-weight:600;color:var(--dark);}
+.field__input,.field__select,.field__textarea{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-md);padding:10px 13px;font-family:'Inter',sans-serif;font-size:13.5px;color:var(--dark);outline:none;width:100%;transition:border-color .2s,box-shadow .2s;}
+.field__input::placeholder,.field__textarea::placeholder{color:var(--gray-light);}
+.field__input:focus,.field__select:focus,.field__textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(64,179,224,.10);}
+.field__select{appearance:none;-webkit-appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%23A0A0A0' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-color:var(--white);padding-right:30px;}
+.field__textarea{resize:vertical;min-height:72px;}
+.field--span2{grid-column:1/-1;}
+
+/* BOOKING ITEM */
+.bookings-list{display:flex;flex-direction:column;gap:10px;}
+.booking-item{display:flex;align-items:center;gap:12px;border:1.5px solid var(--border);border-radius:var(--radius-md);padding:14px 16px;transition:border-color .2s,background .2s,opacity .35s,transform .35s,max-height .4s,padding .35s,margin .35s;max-height:120px;overflow:hidden;background:var(--bg);}
+.booking-item:hover{border-color:#b8e4f5;background:#f0faff;}
+.booking-item__icon-wrap{width:38px;height:38px;border-radius:var(--radius-sm);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.booking-item__info{flex:1;min-width:0;}
+.booking-item__title{font-size:14px;font-weight:700;color:var(--dark);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.booking-item__meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.booking-item__cat{font-size:11px;font-weight:600;padding:2px 8px;border-radius:50px;white-space:nowrap;}
+.booking-item__date{font-size:12px;color:var(--gray-light);display:flex;align-items:center;gap:3px;}
+.booking-item__date svg{width:11px;height:11px;}
+.booking-item__price{font-size:12px;font-weight:700;color:var(--dark);}
+.booking-item__actions{display:flex;align-items:center;gap:3px;opacity:0;transition:opacity .18s;flex-shrink:0;}
+.booking-item:hover .booking-item__actions{opacity:1;}
+.booking-item__btn{width:28px;height:28px;border-radius:7px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-light);transition:background .18s,color .18s;}
+.booking-item__btn svg{width:13px;height:13px;}
+.booking-item__btn--edit:hover{background:var(--primary-light);color:var(--primary);}
+.booking-item__btn--delete:hover{background:var(--red-light);color:var(--red);}
+.booking-item__btn--restore:hover{background:var(--green-light);color:var(--green);}
+.booking-item--removing{opacity:0;max-height:0;padding:0;border-width:0;transform:translateX(16px);pointer-events:none;margin:0;}
+
+/* EMPTY STATE */
+.bookings-empty{display:flex;flex-direction:column;align-items:center;gap:12px;padding:48px 20px;text-align:center;}
+.bookings-empty__icon{font-size:40px;}
+.bookings-empty__title{font-size:15px;font-weight:700;color:var(--dark);}
+.bookings-empty__sub{font-size:13.5px;color:var(--gray-light);line-height:1.55;max-width:280px;}
+
+/* TRASH */
+.bookings-trash{margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
+.bookings-trash__toggle{display:flex;align-items:center;gap:6px;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;color:var(--gray-light);background:none;border:none;cursor:pointer;padding:0;transition:color .18s;}
+.bookings-trash__toggle svg{width:13px;height:13px;transition:transform .22s;}
+.bookings-trash__toggle:hover{color:var(--gray);}
+.bookings-trash__toggle.open svg{transform:rotate(90deg);}
+.bookings-trash__list{margin-top:10px;display:flex;flex-direction:column;gap:8px;}
+
+/* FOOTER */
+.footer{background:#0f2a3a;padding:56px 0 36px;text-align:center;margin-top:auto;}
+.footer__logo{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.footer__logo-icon{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;margin:0 auto;}
+.footer__logo-text{font-size:20px;font-weight:700;color:#fff;letter-spacing:-.3px;}
+.footer__tagline{font-size:12px;color:rgba(255,255,255,.36);letter-spacing:.6px;}
+.footer__copy{margin-top:32px;font-size:13px;color:rgba(255,255,255,.28);}
+
+@media(max-width:780px){.stats__grid{grid-template-columns:repeat(2,1fr);}.hero-banner{height:240px;}.cat-picker__grid{grid-template-columns:repeat(4,1fr);}.booking-form__grid{grid-template-columns:1fr;}.booking-form__grid--3col{grid-template-columns:1fr 1fr;}}
+@media(max-width:520px){.container{padding:0 16px;}.nav__search{display:none;}.hero-banner{height:200px;}.hero-banner__title{font-size:22px;}.bookings-card{padding:20px 16px 18px;}.cat-picker__grid{grid-template-columns:repeat(2,1fr);}.booking-form__grid--3col{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo"><div class="nav__logo-icon">V</div><span class="nav__logo-text">Voyage Planner</span></a>
+    <div class="nav__links">
+      <a href="my-trips.html" class="nav__link nav__link--active">Мої поїздки</a>
+      <a href="#" class="nav__link">Статистика</a>
+    </div>
+    <div class="nav__search">
+      <span class="nav__search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+      <input class="nav__search-input" type="search" placeholder="Пошук подорожей..." />
+    </div>
+    <button class="nav__add-btn">+ Нова подорож</button>
+    <div class="nav__divider"></div>
+    <div class="nav__avatar-wrap"><div class="nav__avatar">АВ</div><span class="nav__avatar-online"></span></div>
+  </div>
+</header>
+
+<main class="page">
+  <div class="container">
+    <a href="my-trips.html" class="back-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>Назад у мої подорожі</a>
+
+    <!-- HERO -->
+    <div class="hero-banner">
+      <img class="hero-banner__img" src="https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=1200&q=85" alt="Санторіні" loading="eager" />
+      <div class="hero-banner__content">
+        <span class="hero-banner__badge">Активна</span>
+        <h1 class="hero-banner__title">Втеча на Санторіні</h1>
+        <p class="hero-banner__location">Греція,&nbsp; Санторіні</p>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <section class="stats">
+      <div class="stats__grid">
+        <div class="stats__card"><div class="stats__icon"><svg viewBox="0 0 24 24" fill="none" stroke="#40B3E0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="stats__label">Прогрес подорожі</div><div class="stats__value">28%</div></div></div>
+        <div class="stats__card"><div class="stats__icon"><svg viewBox="0 0 24 24" fill="none" stroke="#40B3E0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div><div class="stats__label">Загальний бюджет</div><div class="stats__value">$6500</div></div></div>
+        <div class="stats__card"><div class="stats__icon"><svg viewBox="0 0 24 24" fill="none" stroke="#40B3E0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div><div class="stats__label">Витрачено</div><div class="stats__value">$1 200</div></div></div>
+        <div class="stats__card"><div class="stats__icon"><svg viewBox="0 0 24 24" fill="none" stroke="#40B3E0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div><div class="stats__label">Залишилось</div><div class="stats__value">$6 800</div></div></div>
+      </div>
+    </section>
+
+    <!-- TAB BAR — Бронювання active -->
+    <nav class="tab-bar" role="tablist">
+      <button class="tab-bar__tab" onclick="location.href='overview.html'">Огляд</button>
+      <button class="tab-bar__tab" onclick="location.href='todo.html'">Список справ</button>
+      <button class="tab-bar__tab" onclick="location.href='places.html'">Місця</button>
+      <button class="tab-bar__tab tab-bar__tab--active" aria-selected="true">Бронювання</button>
+      <button class="tab-bar__tab">Нотатки</button>
+      <button class="tab-bar__tab">Фото</button>
+    </nav>
+
+    <!-- BOOKINGS CARD -->
+    <div class="bookings-card">
+
+      <!-- Header -->
+      <div class="bookings-header">
+        <div class="bookings-header__left">
+          <div class="bookings-header__title">Бронювання</div>
+          <div class="bookings-header__sub" id="bookingCounter">2 бронювання</div>
+        </div>
+        <button class="bookings-header__add-btn" id="openPickerBtn" onclick="togglePicker()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Додати бронювання
+        </button>
+      </div>
+
+      <!-- Category picker -->
+      <div class="cat-picker" id="catPicker">
+        <div class="cat-picker__title">Виберіть тип бронювання</div>
+        <div class="cat-picker__grid" id="catGrid"></div>
+      </div>
+
+      <!-- Dynamic booking form (rendered by JS) -->
+      <div class="booking-form" id="bookingForm">
+        <div class="booking-form__header">
+          <span class="booking-form__icon" id="formIcon"></span>
+          <span class="booking-form__title" id="formTitle"></span>
+        </div>
+        <div id="formFields"></div>
+        <div class="booking-form__actions">
+          <button class="booking-form__cancel" onclick="closeForm()">Скасувати</button>
+          <button class="booking-form__submit" onclick="submitBooking()">Зберегти бронювання</button>
+        </div>
+      </div>
+
+      <!-- Bookings list -->
+      <div class="bookings-list" id="bookingsList"></div>
+
+      <!-- Empty state -->
+      <div class="bookings-empty" id="bookingsEmpty" style="display:none">
+        <div class="bookings-empty__icon">🗂️</div>
+        <p class="bookings-empty__title">Бронювань ще немає</p>
+        <p class="bookings-empty__sub">Натисніть «+ Додати бронювання», щоб організувати готелі, перельоти та інше</p>
+      </div>
+
+      <!-- Trash -->
+      <div class="bookings-trash" id="bookingsTrash" style="display:none">
+        <button class="bookings-trash__toggle" id="trashToggle" onclick="toggleTrash()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          Нещодавно видалені (<span id="trashCount">0</span>)
+        </button>
+        <div class="bookings-trash__list" id="trashList" style="display:none"></div>
+      </div>
+
+    </div><!-- /bookings-card -->
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__logo">
+      <div class="footer__logo-icon"><svg width="36" height="36" viewBox="0 0 42 42" fill="none"><circle cx="21" cy="21" r="19.5" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/><path d="M10 30 C13 21, 17 18, 21 11 C25 18, 29 21, 32 30" stroke="rgba(255,255,255,.75)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="21" cy="11" r="2.2" fill="rgba(255,255,255,.85)"/><path d="M30 9.5 L33.5 8 L32 11.5" stroke="rgba(255,255,255,.7)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="footer__logo-text">БезМеж</div>
+      <div class="footer__tagline">подорожі без меж</div>
+    </div>
+    <p class="footer__copy">© 2025 БезМеж. Створено з турботою для допитливих мандрівників</p>
+  </div>
+</footer>
+
+<script>
+// ════════════════════════════════════════════════════════════
+//  БезМеж — Bookings Engine
+// ════════════════════════════════════════════════════════════
+
+// ── Category config ──────────────────────────────────────────
+const CATS = {
+  accommodation: { label:'Проживання',  icon:'🏨', color:'#8B5CF6', bg:'#EDE9FE' },
+  transport:     { label:'Транспорт',   icon:'✈️', color:'#0EA5E9', bg:'#E0F2FE' },
+  food:          { label:'Їжа',         icon:'🍽️', color:'#F97316', bg:'#FFEDD5' },
+  leisure:       { label:'Дозвілля',    icon:'🎭', color:'#14B8A6', bg:'#CCFBF1' },
+  shopping:      { label:'Шопінг',      icon:'🛍️', color:'#F59E0B', bg:'#FEF3C7' },
+  park:          { label:'Парк',        icon:'🌿', color:'#27AE60', bg:'#D1FAE5' },
+  beach:         { label:'Пляж',        icon:'🏖️', color:'#40B3E0', bg:'#e8f6fc' },
+  other:         { label:'Інше',        icon:'📌', color:'#6B7280', bg:'#F3F4F6' },
+};
+
+// ── Forms config per category ─────────────────────────────────
+const FORMS = {
+  accommodation: {
+    title: 'Проживання',
+    rows: [
+      [f('text','name','Назва готелю / помешкання','напр. Hotel Caldera View'), f('select','type','Тип проживання',['Готель','Апартаменти','Будинок','Вілла','Хатина','Кемпінг','Хостел'])],
+      [f('text','location','Адреса / місцезнаходження','Oia, Santorini'), f('number','guests','Кількість гостей','2')],
+      [f('datetime-local','checkin','Заїзд (дата та час)'), f('datetime-local','checkout','Виїзд (дата та час)')],
+      [f('text','room','Тип номера / деталі','Deluxe з видом на кальдеру'), f('text','ref','Номер підтвердження','напр. BK-20256789')],
+      [f('text','price','Ціна'), f('select','currency','Валюта',['USD','EUR','UAH','GBP','CHF'])],
+      [f('textarea','notes','Нотатки (побажання, особливі запити)','','span2')],
+    ]
+  },
+  transport: {
+    title: 'Транспорт',
+    rows: [
+      [f('select','type','Тип транспорту',['Літак','Поїзд','Авто в оренду','Таксі','Круїз','Яхта','Автобус','Метро','Паром']), f('number','passengers','Кількість пасажирів','1')],
+      [f('text','from','Місце відправлення','напр. Athens Airport'), f('text','to','Місце прибуття','напр. Santorini Airport')],
+      [f('datetime-local','departure','Дата та час відправлення'), f('datetime-local','returnDate','Дата та час повернення (якщо є)')],
+      [f('text','pickup','Деталі посадки / висадки',''), f('text','ref','Номер підтвердження / рейсу','')],
+      [f('text','price','Ціна'), f('select','currency','Валюта',['USD','EUR','UAH','GBP','CHF'])],
+      [f('textarea','notes','Нотатки (багаж, місця, супутники)','','span2')],
+    ]
+  },
+  food: {
+    title: 'Їжа та ресторани',
+    rows: [
+      [f('text','name','Назва закладу','напр. Селіні'), f('text','location','Адреса / місцезнаходження','Fira, Santorini')],
+      [f('datetime-local','date','Дата та час'), f('number','people','Кількість осіб','2')],
+      [f('textarea','notes','Нотатки (привід, вподобання)','','span2')],
+    ]
+  },
+  leisure: {
+    title: 'Дозвілля та екскурсії',
+    rows: [
+      [f('text','name','Назва активності або події','напр. Sunset Cruise'), f('select','type','Тип',['Тур','Музей','Концерт','Фестиваль','Екскурсія','Майстер-клас','Спорт'])],
+      [f('text','location','Місце проведення',''), f('text','duration','Тривалість','напр. 3 год')],
+      [f('datetime-local','date','Дата та час'), f('number','tickets','Кількість квитків / учасників','1')],
+      [f('textarea','notes','Нотатки (маршрут, місце зустрічі)','','span2')],
+    ]
+  },
+  shopping: {
+    title: 'Шопінг',
+    rows: [
+      [f('text','name','Магазин / торговий центр',''), f('text','location','Місцезнаходження','')],
+      [f('datetime-local','date','Дата та час'), f('text','purpose','Мета (подарунки, необхідне тощо)','')],
+      [f('text','budget','Орієнтовний бюджет',''), f('select','currency','Валюта',['USD','EUR','UAH','GBP','CHF'])],
+      [f('textarea','notes','Нотатки (список покупок, вішліст)','','span2')],
+    ]
+  },
+  park: {
+    title: 'Парк',
+    rows: [
+      [f('text','name','Назва парку',''), f('text','location','Місцезнаходження','')],
+      [f('datetime-local','date','Дата та час'), f('number','people','Кількість осіб','1')],
+      [f('select','activity','Тип активності',['Прогулянка','Пікнік','Спорт','Огляд визначних місць','Фотозйомка','Відпочинок']), f('text','notes_short','Маршрут або план','')],
+      [f('textarea','notes','Нотатки (погода, спорядження)','','span2')],
+    ]
+  },
+  beach: {
+    title: 'Пляж',
+    rows: [
+      [f('text','name','Назва пляжу','напр. Камарі'), f('text','location','Місцезнаходження','')],
+      [f('datetime-local','date','Дата та час'), f('select','activity','Тип активності',['Плавання','Засмага','Серфінг','Відпочинок','Дайвінг','Водні розваги'])],
+      [f('textarea','notes','Нотатки','','span2')],
+    ]
+  },
+  other: {
+    title: 'Інше',
+    rows: [
+      [f('text','name','Назва / заголовок',''), f('text','location','Місцезнаходження (необов\'язково)','')],
+      [f('datetime-local','date','Дата та час'), f('number','participants','Кількість учасників','1')],
+      [f('textarea','description','Опис активності','','span2')],
+      [f('textarea','notes','Нотатки','','span2')],
+    ]
+  },
+};
+
+function f(type, name, label, placeholder='', extraClass='') {
+  return { type, name, label, placeholder, extraClass };
+}
+
+// ── State ─────────────────────────────────────────────────────
+let bookings = [
+  { id:1, cat:'accommodation', title:'Готель Caldera View',    date:'2026-05-10T15:00', price:'$1 200',  note:'Запросити ранній заїзд' },
+  { id:2, cat:'transport',     title:'Рейс Athens → Santorini', date:'2026-05-10T08:30', price:'$320',   note:'' },
+];
+let deleted  = [];
+let nextId   = 3;
+let activeCat = null;
+let editId    = null;
+
+// ── SVGs ─────────────────────────────────────────────────────
+const EDIT_SVG  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
+const DEL_SVG   = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>`;
+const REST_SVG  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`;
+const CLOCK_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+
+// ── Build category picker ────────────────────────────────────
+function buildCatGrid() {
+  const grid = document.getElementById('catGrid');
+  Object.entries(CATS).forEach(([key, cat]) => {
+    const item = document.createElement('div');
+    item.className = 'cat-picker__item';
+    item.style.setProperty('--cat-color', cat.color);
+    item.style.setProperty('--cat-bg', cat.bg);
+    item.innerHTML = `<span class="cat-picker__item__icon">${cat.icon}</span><span class="cat-picker__item__label">${cat.label}</span>`;
+    item.addEventListener('click', () => selectCat(key, item));
+    grid.appendChild(item);
+  });
+}
+
+function selectCat(key, el) {
+  document.querySelectorAll('.cat-picker__item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+  el.style.borderColor = CATS[key].color;
+  el.style.background  = CATS[key].bg;
+  activeCat = key;
+  editId    = null;
+  buildForm(key);
+}
+
+// ── Build contextual form ────────────────────────────────────
+function buildForm(catKey) {
+  const cat  = CATS[catKey];
+  const form = FORMS[catKey];
+  document.getElementById('formIcon').textContent  = cat.icon;
+  document.getElementById('formTitle').textContent = form.title;
+
+  const container = document.getElementById('formFields');
+  container.innerHTML = '';
+
+  form.rows.forEach(row => {
+    // Determine if this row is 1-col, 2-col, or 3-col
+    const cols = row.length;
+    const gridClass = cols === 1 ? 'booking-form__grid--1col'
+                    : cols === 3 ? 'booking-form__grid--3col'
+                    : 'booking-form__grid';
+    const rowEl = document.createElement('div');
+    rowEl.className = `booking-form__grid ${gridClass}`;
+    rowEl.style.marginBottom = '0';
+
+    row.forEach(field => {
+      const wrap = document.createElement('div');
+      wrap.className = 'field' + (field.extraClass === 'span2' ? ' field--span2' : '');
+
+      let input = '';
+      if (field.type === 'textarea') {
+        input = `<textarea class="field__textarea" name="${field.name}" id="f_${field.name}" placeholder="${field.placeholder || ''}"></textarea>`;
+      } else if (field.type === 'select') {
+        const opts = field.placeholder
+          .split ? field.placeholder
+          : (Array.isArray(field.placeholder) ? field.placeholder : []);
+        // placeholder here is array of options passed as the 5th arg
+        const options = (field.placeholder && Array.isArray(field.placeholder))
+          ? field.placeholder.map(o => `<option>${o}</option>`).join('')
+          : '<option></option>';
+        input = `<select class="field__select" name="${field.name}" id="f_${field.name}">${options}</select>`;
+      } else {
+        input = `<input class="field__input" type="${field.type}" name="${field.name}" id="f_${field.name}" placeholder="${field.placeholder || ''}">`;
+      }
+
+      wrap.innerHTML = `<label class="field__label" for="f_${field.name}">${field.label}</label>${input}`;
+      rowEl.appendChild(wrap);
+    });
+
+    // Wrap rows in a gap container
+    const outer = document.createElement('div');
+    outer.style.cssText = 'margin-bottom:14px;';
+    outer.appendChild(rowEl);
+    container.appendChild(outer);
+  });
+
+  const formEl = document.getElementById('bookingForm');
+  formEl.classList.add('visible');
+  setTimeout(() => formEl.scrollIntoView({ behavior:'smooth', block:'nearest' }), 50);
+}
+
+// ── Toggle picker ────────────────────────────────────────────
+function togglePicker() {
+  const picker = document.getElementById('catPicker');
+  const isOpen = picker.classList.contains('visible');
+  if (isOpen) {
+    picker.classList.remove('visible');
+    closeForm();
+  } else {
+    picker.classList.add('visible');
+    picker.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }
+}
+
+function closeForm() {
+  document.getElementById('bookingForm').classList.remove('visible');
+  document.getElementById('catPicker').classList.remove('visible');
+  document.querySelectorAll('.cat-picker__item').forEach(i => {
+    i.classList.remove('selected');
+    i.style.borderColor = ''; i.style.background = '';
+  });
+  activeCat = null; editId = null;
+}
+
+// ── Submit booking ───────────────────────────────────────────
+function submitBooking() {
+  if (!activeCat) return;
+
+  const form  = FORMS[activeCat];
+  const cat   = CATS[activeCat];
+
+  // Gather first text/select field as title
+  const firstField = form.rows[0]?.[0];
+  const titleInput = firstField ? document.getElementById('f_' + firstField.name) : null;
+  const title = titleInput ? (titleInput.value.trim() || cat.label) : cat.label;
+
+  // Date
+  const dateFields = ['f_checkin','f_departure','f_date'];
+  let date = '';
+  for (const id of dateFields) {
+    const el = document.getElementById(id);
+    if (el && el.value) { date = el.value; break; }
+  }
+
+  // Price
+  const priceEl    = document.getElementById('f_price');
+  const currencyEl = document.getElementById('f_currency');
+  let price = '';
+  if (priceEl && priceEl.value) {
+    price = (currencyEl ? currencyEl.value : '') + ' ' + priceEl.value;
+  }
+
+  // Note
+  const noteEl = document.getElementById('f_notes') || document.getElementById('f_description');
+  const note   = noteEl ? noteEl.value.trim() : '';
+
+  if (editId !== null) {
+    // Update existing
+    const b = bookings.find(b => b.id === editId);
+    if (b) { b.title = title; b.date = date; b.price = price; b.note = note; }
+  } else {
+    bookings.unshift({ id: nextId++, cat: activeCat, title, date, price, note });
+  }
+
+  closeForm();
+  render();
+
+  // Animate first item
+  const first = document.getElementById('bookingsList').firstChild;
+  if (first) {
+    first.style.opacity = '0'; first.style.transform = 'translateY(-8px)';
+    requestAnimationFrame(() => {
+      first.style.transition = 'opacity .3s ease, transform .3s ease';
+      first.style.opacity = '1'; first.style.transform = 'translateY(0)';
+    });
+  }
+}
+
+// ── Format date display ──────────────────────────────────────
+function fmtDate(str) {
+  if (!str) return '';
+  try {
+    return new Date(str).toLocaleDateString('uk-UA', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+  } catch { return str; }
+}
+
+// ── Build booking item element ───────────────────────────────
+function buildItem(b, isTrash = false) {
+  const cat = CATS[b.cat] || CATS.other;
+  const div = document.createElement('div');
+  div.className = 'booking-item';
+  div.dataset.id = b.id;
+
+  div.innerHTML = `
+    <div class="booking-item__icon-wrap" style="background:${cat.bg}">${cat.icon}</div>
+    <div class="booking-item__info">
+      <div class="booking-item__title">${b.title}</div>
+      <div class="booking-item__meta">
+        <span class="booking-item__cat" style="background:${cat.bg};color:${cat.color}">${cat.label}</span>
+        ${b.date ? `<span class="booking-item__date">${CLOCK_SVG} ${fmtDate(b.date)}</span>` : ''}
+        ${b.price ? `<span class="booking-item__price">${b.price}</span>` : ''}
+      </div>
+    </div>
+    <div class="booking-item__actions">
+      ${isTrash
+        ? `<button class="booking-item__btn booking-item__btn--restore" title="Відновити">${REST_SVG}</button>`
+        : `<button class="booking-item__btn booking-item__btn--edit"   title="Редагувати">${EDIT_SVG}</button>
+           <button class="booking-item__btn booking-item__btn--delete" title="Видалити">${DEL_SVG}</button>`}
+    </div>`;
+
+  if (!isTrash) {
+    div.querySelector('.booking-item__btn--edit').addEventListener('click', e => { e.stopPropagation(); editBooking(b.id); });
+    div.querySelector('.booking-item__btn--delete').addEventListener('click', e => { e.stopPropagation(); deleteBooking(b.id); });
+  } else {
+    div.querySelector('.booking-item__btn--restore').addEventListener('click', e => { e.stopPropagation(); restoreBooking(b.id); });
+  }
+  return div;
+}
+
+// ── Edit ─────────────────────────────────────────────────────
+function editBooking(id) {
+  const b = bookings.find(b => b.id === id);
+  if (!b) return;
+  editId = id;
+  activeCat = b.cat;
+  // Open picker + pre-select
+  document.getElementById('catPicker').classList.add('visible');
+  document.querySelectorAll('.cat-picker__item').forEach((item, idx) => {
+    const key = Object.keys(CATS)[idx];
+    if (key === b.cat) {
+      item.classList.add('selected');
+      item.style.borderColor = CATS[key].color;
+      item.style.background  = CATS[key].bg;
+    }
+  });
+  buildForm(b.cat);
+  // Pre-fill title
+  const firstField = FORMS[b.cat].rows[0]?.[0];
+  if (firstField) {
+    const el = document.getElementById('f_' + firstField.name);
+    if (el) el.value = b.title;
+  }
+}
+
+// ── Delete ────────────────────────────────────────────────────
+function deleteBooking(id) {
+  const idx = bookings.findIndex(b => b.id === id);
+  if (idx === -1) return;
+  const el = document.querySelector(`.booking-item[data-id="${id}"]`);
+  if (el) {
+    el.style.transition = 'opacity .3s,transform .3s,max-height .35s,padding .35s,margin .35s';
+    el.style.opacity = '0'; el.style.transform = 'translateX(16px)';
+    el.style.overflow = 'hidden';
+    el.style.maxHeight = el.offsetHeight + 'px';
+    setTimeout(() => { el.style.maxHeight = '0'; el.style.margin = '0'; el.style.padding = '0'; }, 50);
+    setTimeout(() => {
+      deleted.unshift(bookings.splice(idx, 1)[0]);
+      if (deleted.length > 20) deleted.pop();
+      render();
+    }, 380);
+  }
+}
+
+// ── Restore ───────────────────────────────────────────────────
+function restoreBooking(id) {
+  const idx = deleted.findIndex(b => b.id === id);
+  if (idx === -1) return;
+  bookings.unshift(deleted.splice(idx, 1)[0]);
+  render();
+}
+
+// ── Trash toggle ──────────────────────────────────────────────
+function toggleTrash() {
+  const btn  = document.getElementById('trashToggle');
+  const list = document.getElementById('trashList');
+  const open = list.style.display === 'none';
+  list.style.display = open ? 'flex' : 'none';
+  list.style.flexDirection = 'column';
+  btn.classList.toggle('open', open);
+}
+
+// ── Render ────────────────────────────────────────────────────
+function render() {
+  const list   = document.getElementById('bookingsList');
+  const empty  = document.getElementById('bookingsEmpty');
+  const trash  = document.getElementById('bookingsTrash');
+  const tList  = document.getElementById('trashList');
+  const tCount = document.getElementById('trashCount');
+  const counter = document.getElementById('bookingCounter');
+
+  list.innerHTML = '';
+  bookings.forEach(b => list.appendChild(buildItem(b)));
+  empty.style.display = bookings.length ? 'none' : 'flex';
+  counter.textContent = `${bookings.length} бронювань`;
+
+  trash.style.display = deleted.length ? 'block' : 'none';
+  tList.innerHTML = '';
+  tCount.textContent = deleted.length;
+  deleted.forEach(b => tList.appendChild(buildItem(b, true)));
+}
+
+// ── Init ──────────────────────────────────────────────────────
+buildCatGrid();
+render();
+</script>
+</body>
+</html>
